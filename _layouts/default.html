@@ -1,0 +1,47 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <title>{{ page.title }}</title>
+
+    <link rel="stylesheet" href="/css/styles.css">
+    <link rel="stylesheet" href="/css/pygment_trac.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link href="//netdna.bootstrapcdn.com/font-awesome/3.1.1/css/font-awesome.css" rel="stylesheet">
+  </head>
+  <body>
+    <div class="wrapper">
+      <header>
+        <h1>Morris Jobke</h1>
+        <h4>kabum.github.io <a href="/feed.xml"><i class="icon-rss"></i></a></h4>
+
+        <p class="view">
+          <i class="icon-github"></i> <a href="https://github.com/kabum">@kabum</a><br />
+          <i class="icon-twitter"></i> <a href="https://twitter.com/MorrisJbk">@MorrisJbk</a><br />
+          <br />
+        </p>
+
+        <h3>Blog posts</h3>
+
+        <p class="view">
+          {% for post in site.posts %}
+            {{ post.date | date_to_string }} <a href="{{ post.url }}">{{ post.title }}</a><br />
+          {% endfor %}
+        </p>
+
+      </header>
+      <section>
+        {{ content }}
+      </section>
+      <footer>
+        <p><small>Hosted on GitHub Pages &mdash; Theme by <a href="https://github.com/orderedlist">orderedlist</a></small></p>
+      </footer>
+    </div>
+    <script src="/js/scale.fix.js"></script>
+
+  </body>
+</html>
