@@ -6,9 +6,9 @@ layout: nil
 
 	<title type="text" xml:lang="en">{{ site.name }}</title>
 	<link type="application/atom+xml" href="http://kabum.github.io/feed.xml" rel="self"/>
- 	<link type="text" href="http://kabum.github.io" rel="alternate"/>
+	<link rel="self" href="http://kabum.github.io"/>
 	<updated>{{ site.time | date_to_xmlschema }}</updated>
-	<id>http://kabum.github.io</id>
+	<id>http://kabum.github.io/</id>
 	<author>
 		<name>Morris Jobke</name>
 	</author>
