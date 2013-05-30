@@ -1,3 +1,4 @@
 name: kabum.github.io
 pygments: true
 permalink: pretty
+timezone: MEZ
