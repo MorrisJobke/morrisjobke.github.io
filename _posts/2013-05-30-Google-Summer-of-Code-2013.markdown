@@ -26,7 +26,7 @@ But there will be a great implementation. At the end of this period the meta dat
 
 Ampache, subphonic, ... APIs for music, that determined to be included in delivery, will be implemented in this period. Also it seems to be the time to (have) fix(ed) all upcoming issues, bugs, unlikely behaviours ... or how they are called.
 
-### Weeks 13
+### Week 13
 
 The summer has nearly ended and it's time for vacation.
 
