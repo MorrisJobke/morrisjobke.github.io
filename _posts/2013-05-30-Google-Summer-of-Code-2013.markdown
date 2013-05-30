@@ -1,7 +1,7 @@
 ---
 layout: post
 title:  "Google Summer of Code 2013 - May the fun begin!"
-date:   2012-05-30 14:26:21 CET
+date:   2013-05-30 14:26:21 CET
 ---
 
 I'm really proud to be part of this year's Google Summer of Code. My [proposal] is about including a [RESTful] API for music into ownCloud. It's inspired by the project [shiva] and will be based on it's [resource definition]. Due to the currently unmaintained state of the media app it will include a rewrite from scratch based on the new [appframework].
