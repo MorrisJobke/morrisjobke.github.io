@@ -1,7 +1,7 @@
 ---
 layout: post
 title:  "Domain-Weltkarte"
-date:   2012-05-29 17:56:54+02:00
+date:   2012-05-29 17:56:54 CET
 ---
 
 Ich habe soeben von einer Aktion für Blogger gelesen, bei der man kostenlos eine [Domain-Weltkarte] im Wert von 27 € erhält. Man kann die Karte auch regulär kaufen. Das tolle an der Aktion ist, dass [checkdomain] pro verkaufter bzw. an Blogger verschickter Weltkarte 10 € an die Deutsche Kinderkrebsstiftung spendet.

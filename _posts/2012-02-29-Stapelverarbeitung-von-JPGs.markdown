@@ -1,7 +1,7 @@
 ---
 layout: post
 title:  "Stapelverarbeitung von JPGs - Komprimieren und PDF erstellen"
-date:   2012-02-29 15:03:00+01:00
+date:   2012-02-29 15:03:00 CET
 ---
 
 Unter Linux kann man recht einfach mehrere JPG-Dateien mit einmal auf eine Qualitätsstufe/Komprimierungsgrad setzen. Anschließend sollen diese noch zu einer PDF zusammen gefasst werden. Dazu wird [ImageMagick][] verwendet.
