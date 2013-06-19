@@ -253,3 +253,19 @@ footer {
     color:#444;
   }
 }
+
+/* ADDED */
+
+#blogposts {
+  text-overflow:ellipsis;
+  overflow: hidden;
+  white-space:nowrap;
+}
+
+#wordcloud {
+  text-align:justify;
+}
+
+#wordcloud > a:hover {
+  text-decoration: underline;
+}

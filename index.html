@@ -4,5 +4,38 @@ title: Morris Jobke
 ---
 
 <div id="home">
-  <h1>About me</h1>
+  <h1 style="text-align:center">Über mich</h1>
+  <div id="wordcloud">
+    <a href="https://www.csn.tu-chemnitz.de" rel="8">Chemnitzer Studentennetz</a>
+    <a href="http://www.geocaching.com/profile/?guid=98140e53-7399-4437-bdef-253b944512b6" rel="10">Geocaching</a>
+    <a href="http://rib.fm/" rel="1">Rock im Betonwerk</a>
+    <a href="https://www.tu-chemnitz.de/studium/studiengaenge/master/ma_pvs.php" rel="3">Master "High Performance &amp; Cloud Computing"</a>
+    <a href="#" rel="7">Siebenmeilenstiefel</a>
+    <a href="https://owncloud.org/" rel="18">ownCloud</a>
+    <a href="http://www.chemnitz.freifunk.net/" rel="10">Freifunk</a>
+    <a href="#" rel="5">Metal</a>
+    <a href="#" rel="25">Open Source</a>
+    <a href="#" rel="14">Rad fahren</a>
+    <a href="https://www.tu-chemnitz.de/studium/studiengaenge/bachelor/ba_angewandte_informatik.php" rel="7">Bachelor "Angewandte Informatik"</a>
+    <a href="https://www.archlinux.org" rel="12">Arch Linux</a>
+    <a href="https://www.tu-chemnitz.de/" rel="5">Technische Universität Chemnitz</a>
+    <a href="/2013/05/30/Google-Summer-of-Code-2013/" rel="20">Google Summer of Code 2013</a>
+    <a href="http://www.withfullforce.de/" rel="3">With Full Force</a>
+    <a href="http://www.cinestar.de/de/kino/chemnitz-cinestar-am-roten-turm/veranstaltungen/sneak-preview" rel="8">Sneak Preview</a>
+  </div>
 </div>
+<script src="js/jquery-1.10.1.min.js"></script>
+<script src="js/jquery.tagcloud.js"></script>
+<script src="js/jqcloud-1.0.4.min.js"></script>
+<script>
+$(function() {
+  $.fn.tagcloud.defaults = {
+    size: {start: 13, end: 30, unit: 'pt'},
+    color: {start: '#98DDFF', end: '#006292'}
+  };
+
+  $(function () {
+    $('#wordcloud a').tagcloud();
+  });
+});
+</script>

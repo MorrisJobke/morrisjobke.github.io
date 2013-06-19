@@ -12,23 +12,28 @@
     <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
     <link href="//netdna.bootstrapcdn.com/font-awesome/3.1.1/css/font-awesome.css" rel="stylesheet">
+    <link rel="alternate" type="application/atom+xml" title="Atom feed" href="/feed.atom" />
   </head>
   <body>
     <div class="wrapper">
       <header>
-        <h1>Morris Jobke</h1>
-        <h4>kabum.github.io <a href="/feed.xml"><i class="icon-rss"></i></a></h4>
+        <h1><a href="/">Morris Jobke</a></h1>
+        <h4>kabum.github.io <a href="/feed.atom" title="Complete feed"><i class="icon-rss"></i></a><br /><a href="/feed-owncloud.atom" title="ownCloud only">ownCloud only <i class="icon-rss"></i></a></h4>
+
+        <p class="view">
+
+        </p>
 
         <p class="view">
           <i class="icon-github"></i> <a href="https://github.com/kabum">@kabum</a><br />
           <i class="icon-twitter"></i> <a href="https://twitter.com/MorrisJbk">@MorrisJbk</a><br />
-          <i class="icon-comment-alt"></i> <a href="irc://chat.freenode.net/#owncloud-dev">mjob@freenode</a><br />
+          <i class="icon-comment-alt"></i> <a href="irc://chat.freenode.net/#owncloud-dev">mjob@freenode</a>
           <br />
         </p>
 
         <h3>Blog posts</h3>
 
-        <p class="view">
+        <p class="view" id="blogposts">
           {% for post in site.posts %}
             {{ post.date | date_to_string }} <a href="{{ post.url }}">{{ post.title }}</a><br />
           {% endfor %}

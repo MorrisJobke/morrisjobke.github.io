@@ -1,4 +1,6 @@
 name: kabum.github.io
+author: Morris Jobke
 pygments: true
-permalink: pretty
+permalink: /:year/:month/:day/:title/
 timezone: CET
+url: http://kabum.github.io
