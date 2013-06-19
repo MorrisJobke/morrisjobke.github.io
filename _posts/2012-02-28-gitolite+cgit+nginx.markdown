@@ -2,6 +2,7 @@
 layout: post
 title:  "gitolite + cgit + nginx"
 date:   2012-02-28 19:00:00 CET
+categories: [howto]
 ---
 
 Ziel dieser Anleitung soll es sein einen einfach zu wartenden Git-Server einzurichten, der ein einfaches Web-Frontend bietet. Dazu wird gitolite zur Git-Repository-Administration und cgit als Webfrontend verwendet. Das ganze soll unter Ubuntu 10.04 laufen.

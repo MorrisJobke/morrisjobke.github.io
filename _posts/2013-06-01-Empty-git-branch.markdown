@@ -2,6 +2,7 @@
 layout: post
 title:  "Empty git branch"
 date:   2013-06-01 15:59:22 CET
+categories: [howto]
 ---
 
 If you do a complete rework of a project which is in a git repository, the previous history is really irrelevant. It would be great to start a new branch without any history. With the following commands you easily create such a branch. ([via])
