@@ -4,3 +4,6 @@ pygments: true
 permalink: /:year/:month/:day/:title/
 timezone: CET
 url: http://kabum.github.io
+
+disqus:
+	short_name: kabumgithubio
