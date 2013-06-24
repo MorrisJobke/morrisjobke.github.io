@@ -7,7 +7,7 @@ categories: [gsoc, owncloud]
 
 It's time for the first report about my progress. More than 3 weeks
 has passed since I get the great news to be accepted for this years
-Google Summer of Code. Let have look what is done.
+Google Summer of Code. Let's have look what is done.
 
 > ### Weeks -2 to 0 - The community bonding period
 >
@@ -22,7 +22,7 @@ Google Summer of Code. Let have look what is done.
 
 ### AppFramework improvements - refactoring to upstream
 
-I'm a bit behind the initial shedule but also a step ahead the feature
+I'm a bit behind the initial schedule but also a step ahead the feature
 set. In this 3 weeks I've written a [HTTPMiddleware][] for
 AppFramework which provides the authentication based on url passed
 credentials like in http://user:pwd@example.org. The JSONResponse get
