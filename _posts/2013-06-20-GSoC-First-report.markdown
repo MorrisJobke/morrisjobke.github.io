@@ -33,7 +33,7 @@ database results to entity instances are prepared in a [third pull request][]
 
 ### Bad news
 
-The current state of the future branch isn't fully tested and the
+The current state of the master branch isn't fully tested and the
 "fulltree" switch is not (yet) available.
 
 ### Good news

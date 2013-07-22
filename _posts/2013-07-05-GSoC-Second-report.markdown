@@ -6,7 +6,7 @@ categories: [gsoc, owncloud]
 ---
 
 In the last two weeks - since my previous report - new features has find it's
-way into the `future-dev` branch. For a detailed list of all changes have a
+way into [feature branches][]. For a detailed list of all changes have a
 look at the [GitHub comparision][] for this period.
 
 ### Coverage report
@@ -116,6 +116,7 @@ Code logo.
 
 ![Welcome package][Welcome-package]
 
+[feature branches]: http://nvie.com/posts/a-successful-git-branching-model/
 [GitHub comparision]: https://github.com/owncloud/music/compare/2e1e0fc41d56a392dc13bb1463f173b8a4bc66e9...533dc23397c83b4370f1749a755236c132d6b850
 [Code-Coverage]: /images/2013-07-05-Code-coverage.png
 [Welcome-package]: /images/2013-06-25-GSoCWelcomePackage.jpg
