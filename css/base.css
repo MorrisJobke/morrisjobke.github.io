@@ -1,0 +1,130 @@
+@import url(https://fonts.googleapis.com/css?family=Ubuntu:300,300italic,400,700);
+@import url(https://fonts.googleapis.com/css?family=Ubuntu+Mono);
+
+body {
+	font-family: Ubuntu, Arial, sans-serif;
+	color: #444;
+	margin: 0;
+	font-size: 1.1em;
+	font-weight: 300;
+}
+
+.container {
+	margin: 0 auto;
+	padding: 0 1em;
+}
+
+.header {
+	margin: 6em 0.5em 1em 0.5em;
+	text-transform: uppercase;
+	font-weight: 300;
+}
+
+.name {
+	font-size: 2em;
+}
+
+.header ul, .articles {
+	list-style: none;
+	padding: 0;
+}
+
+.header li {
+	display: inline;
+	margin: 0 0.2em;
+}
+
+.header a {
+	color: #444;
+}
+
+.header a:hover {
+	color: #39C;
+}
+
+a {
+	color: #39C;
+	text-decoration: none;
+}
+
+.item-right, .date {
+	float: right;
+}
+
+.header i {
+	font-size: 20px;
+}
+
+.hero {
+	background-size: cover;
+	height: 180px;
+	box-shadow: inset 0 0 15px #000);
+	background-color: #39C;
+}
+
+.articles {
+	margin-top: 2em;
+}
+
+.articles li {
+	margin: 0.7em;
+}
+
+#wordcloud {
+	margin: 1em 0;
+	text-align:justify;
+}
+
+#wordcloud > a:hover {
+	text-decoration: underline;
+}
+
+p {
+	text-align: justify;
+	line-height: 1.5;
+}
+
+.meta {
+	float: right;
+	font-weight: 300;
+	font-size: 0.7em;
+	color: #ccc;
+}
+
+h1, h2, h3, h4, h5 {
+	font-weight: normal;
+	border-left: 3px solid #39C;
+	margin: 10px -10px 10px -10px;
+	padding: 10px 10px 10px 10px;
+	text-transform: uppercase;
+}
+
+code, pre {
+	font-family: "Ubuntu Mono", Monospace;
+}
+
+img {
+	width: 100%;
+}
+
+pre {
+	background-color: rgba(51, 153, 204, 0.1);
+	padding: 1em;
+	overflow: auto;
+	max-height:260px;
+}
+
+blockquote {
+	border-left: 2px solid #CCC;
+	margin:0;
+	padding:0 0 0 20px;
+	font-style: italic;
+	color: #CCC;
+}
+
+@-moz-document url-prefix() {
+	code, pre {
+		font-weight: bold;
+	}
+}
+
