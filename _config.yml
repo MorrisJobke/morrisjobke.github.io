@@ -1,9 +1,9 @@
-name: kabum.github.io
+name: morrisjobke.de
 author: Morris Jobke
 pygments: true
 permalink: /:year/:month/:day/:title/
 timezone: CET
-url: http://kabum.github.io
+url: http://morrisjobke.de
 
 disqus:
     short_name: kabumgithubio
