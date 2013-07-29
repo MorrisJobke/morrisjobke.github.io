@@ -59,10 +59,7 @@ a {
 	background-size: cover;
 	height: 180px;
 	background-color: #39C;
-}
-
-.articles {
-	margin-top: 2em;
+	margin-bottom: 2em;
 }
 
 .articles li {
@@ -70,7 +67,6 @@ a {
 }
 
 #wordcloud {
-	margin: 1em 0;
 	text-align:justify;
 }
 
