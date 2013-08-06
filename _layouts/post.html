@@ -23,3 +23,11 @@ layout: default
 </script>
 <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
 <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+<script src="/js/jquery-1.10.1.min.js"></script>
+<script src="/js/lightbox-2.6.min.js"></script>
+<script>
+  $(function() {
+    // wrap all images inside the #post with an link to provide the data used by lightbox
+    $('#post img').map(function(){$(this).wrap('<a href="' + this.src + '" data-lightbox="images" />')})
+  });
+</script>
