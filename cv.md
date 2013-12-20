@@ -34,7 +34,7 @@ Since June 2011
 	core team member - responsible for finance, database (PostgreSQL), webserver, website (Django web framework)
 
 2013
-:   **Google Summer of Code** at [ownCloud][]
+:   **Google Summer of Code attendee** at [ownCloud][]
 
 	[owncloud - Media app replacement - introduce a RESTful API for music][]
 
