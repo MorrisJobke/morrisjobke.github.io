@@ -8,12 +8,10 @@ Education
 ---------
 
 Since 2012
-:   **Master of Science - High Performance and Cloud Computing**
-	([Technische Universität Chemnitz][], Germany)
+:   **Master of Science - High Performance and Cloud Computing** ([Technische Universität Chemnitz][], Germany)
 
 2009-2012
-:   **Bachelor of Science - Applied Computer Science**
-	([Technische Universität Chemnitz][], Germany)
+:   **Bachelor of Science - Applied Computer Science** ([Technische Universität Chemnitz][], Germany)
 
 	[Bachelor thesis][]: Neugestaltung der Datenbank des Chemnitzer Studentennetzes - [Slides][]
 
