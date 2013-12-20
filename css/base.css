@@ -75,7 +75,6 @@ a {
 }
 
 p {
-	text-align: justify;
 	line-height: 1.5;
 }
 
@@ -91,7 +90,10 @@ h1, h2, h3, h4, h5 {
 	border-left: 3px solid #39C;
 	margin: 10px -10px 10px -10px;
 	padding: 10px 10px 10px 10px;
-	text-transform: uppercase;
+}
+
+p > code {
+	font-weight: bold;
 }
 
 code, pre {
@@ -123,3 +125,34 @@ blockquote {
 	}
 }
 
+
+/* Curriculum vitae */
+
+#cv h2 {
+	color: #39C;
+	border-left: 0;
+}
+
+#cv h2:before {
+	margin: 0 10px 4px 0;
+	width: 110px;
+	height: 10px;
+	display: inline-block;
+	content: "";
+	background-color: #39C;
+}
+
+#cv dt {
+	width: 110px;
+	margin-right: 10px;
+	float: left;
+	text-align: right;
+}
+
+#cv dd {
+	margin: 0 0 30px 120px;
+}
+
+#cv p {
+    margin: 0 0 5px 0;
+}
