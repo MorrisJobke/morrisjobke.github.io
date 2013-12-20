@@ -21,11 +21,26 @@ Since 2012
 Experience
 ----------
 
+Since March 2013
+:	**Volunteer** at the [ownCloud][]
+	(Chemnitz, Germany).
+
+	working on the [music app][] and [ownCloud core][]
+
 Since June 2011
-:	**Volunteer** at the [Chemnitzer Studentennetz](https://www.csn.tu-chemnitz.de/)
+:	**Volunteer** at the [Chemnitzer Studentennetz][]
 	(Chemnitz, Germany).
 
 	core team member - responsible for finance, database (PostgreSQL), webserver, website (Django web framework)
+
+2013
+:   **Google Summer of Code** at [ownCloud][]
+
+	[owncloud - Media app replacement - introduce a RESTful API for music][]
+
+	This should replace the currently unmaintained media app and introduce a RESTful API for music. The resulting app is based on appframework and uses AngularJS for the frontend.
+
+	Result: [music app][]
 
 2010-2013
 :   **Student research assistant** at the [University Computer Center][] ([Technische Universität Chemnitz][], Germany).
@@ -65,9 +80,14 @@ Spanish
 
 [Technische Universität Chemnitz]: https://www.tu-chemnitz.de
 [University Computer Center]: https://www.tu-chemnitz.de/urz
+[Chemnitzer Studentennetz]: https://www.csn.tu-chemnitz.de
 [GitHub]: https://github.com/kabum
 [Coderwall]: https://coderwall.com/kabum
 [Bachelor thesis]: /bachelor_thesis/thesis.pdf
 [Slides]: /bachelor_thesis/slides.pdf
 [ExtJS]: http://www.sencha.com/products/extjs/
 [Django]: https://www.djangoproject.com/
+[ownCloud]: https://owncloud.org
+[owncloud - Media app replacement - introduce a RESTful API for music]: https://www.google-melange.com/gsoc/proposal/review/google/gsoc2013/kabum/9001
+[music app]: https://github.com/owncloud/music
+[ownCloud core]: https://github.com/owncloud/core
