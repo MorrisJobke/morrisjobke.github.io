@@ -5,13 +5,16 @@ date:   2013-12-20 02:00:00 CET
 ---
 
 Education
----------
+----------
 
 Since 2012
-:   **Master of Science - High Performance and Cloud Computing** ([Technische Universität Chemnitz][], Germany)
+:	**Master of Science - High Performance and Cloud Computing** ([Technische Universität Chemnitz][], Germany)
+
 
 2009-2012
-:   **Bachelor of Science - Applied Computer Science** ([Technische Universität Chemnitz][], Germany)
+:	**Bachelor of Science - Applied Computer Science**
+
+	([Technische Universität Chemnitz][], Germany)
 
 	[Bachelor thesis][]: Neugestaltung der Datenbank des Chemnitzer Studentennetzes - [Slides][]
 
@@ -19,7 +22,7 @@ Experience
 ----------
 
 Since June 2011
-:   **Volunteer** at the [Chemnitzer Studentennetz](https://www.csn.tu-chemnitz.de/)
+:	**Volunteer** at the [Chemnitzer Studentennetz](https://www.csn.tu-chemnitz.de/)
 	(Chemnitz, Germany).
 
 	core team member - responsible for finance, database (PostgreSQL), webserver, website (Django web framework)
