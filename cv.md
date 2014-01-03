@@ -45,7 +45,7 @@ Since June 2011
 2010-2013
 :   **Student research assistant** at the [University Computer Center][] ([Technische Universität Chemnitz][], Germany).
 
-	Revision and implementation of the user interface of the web-based file manager WFM. Used technology: PHP for the backend and ExtJS as frontend JavaScript framework
+	Revision and implementation of the user interface of the web-based file manager WFM. Used technology: PHP for the backend and ExtJS as JavaScript framework for the frontend
 
 Computer skills
 ---------------
