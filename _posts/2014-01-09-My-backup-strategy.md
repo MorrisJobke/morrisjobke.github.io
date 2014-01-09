@@ -56,7 +56,7 @@ partition and suspends the USB device using [this script][].
 	#
 	#  script to use rsnapshot with a (not always mounted) external hard
 	#  drive (this script gets called by an udev rule)
-	#  see https://morrisjobke.de/2014/01/09/My-backup-strategy/
+	#  see http://morrisjobke.de/2014/01/09/My-backup-strategy/
 	#
 	#  Copyright (C) 2014, Morris Jobke <morris.jobke@gmail.com>
 	#
