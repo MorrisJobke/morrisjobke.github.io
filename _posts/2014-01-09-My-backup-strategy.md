@@ -14,6 +14,9 @@ gone. After a while I wrote a little script to push essential files to the
 universities file system - the first solution that was allowed to name itself
 backup.
 
+**Update: I experienced that for longer running backups the script gets killed
+and found a solution [here][]. I updated this post according to this.**
+
 ## Hardware
 
 As my data grows it was time for the next step - a backup with more capacity.
@@ -23,7 +26,22 @@ supply of the external hard drive to the timer clock and the USB into the PC -
 ready to set up the software part.
 
 The actual backup is done using [rsnapshot][] ([Ubuntuusers wiki - german][]).
-To invoke this a litte helper script is called using a udev rule.
+To invoke this a litte helper script is called using a udev rule and a systemd
+service.
+
+## systemd service
+
+The actual script has to be started as an systemd service. Otherwise it will
+be killed by systemd/udev. I created following service file
+`/etc/systemd/system/backup@.service` as described [here][].
+
+	[Unit]
+	Description=Backup to USB HDD
+	BindsTo=dev-%i.device
+
+	[Service]
+	Type=simple
+	ExecStart=path/to/Backup/backup.sh
 
 ## udev rule
 
@@ -32,7 +50,8 @@ The rule needs to be applied before the udisks2 rules (on ArchLinux the rule is
 named [80-udisks2.rules][]).
 
 	SUBSYSTEMS=="usb",ACTION=="add",KERNEL=="sd?1",ATTRS{serial}=="aabbccdd",
-		SYMLINK+="backup",RUN+="path/to/backup.sh",ENV{UDISKS_IGNORE}="1"
+	SYMLINK+="backup",RUN+="/usr/bin/systemctl --no-block start
+	backup@%k.service",	ENV{UDISKS_IGNORE}="1"
 
 This calls the script `path/to/backup.sh` right after the recognition of the
 usb device. `SYMLINK+="backup"` creates the device `/dev/backup` for an easier
@@ -123,8 +142,11 @@ partition and suspends the USB device using [this script][].
 
 I'm open for suggestions to improve this.
 
+*Bonus:* You can check the current backup run with `systemctl status backup@sdX1.service`.
+
 [auto mount of udisks2]: https://bbs.archlinux.org/viewtopic.php?pid=1157811#p1157811
 [80-udisks2.rules]: https://www.archlinux.org/packages/extra/x86_64/udisks2/
 [this script]: https://github.com/vain/suspend-usb-device/blob/master/suspend-usb-device
 [rsnapshot]: http://www.rsnapshot.org/
 [Ubuntuusers wiki - german]: http://wiki.ubuntuusers.de/rsnapshot
+[here]: https://forums.opensuse.org/showthread.php/485261-Script-run-from-udev-rule-gets-killed-shortly-after-start?s=7eac3bc03468320a68ace6e067aa3d5a&p=2542715#post2542715
