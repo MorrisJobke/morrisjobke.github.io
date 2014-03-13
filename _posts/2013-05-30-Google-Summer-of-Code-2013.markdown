@@ -39,7 +39,7 @@ Thanks for reading,
 
 *Morris*
 
-[proposal]: https://www.google-melange.com/gsoc/proposal/review/google/gsoc2013/kabum/9001
+[proposal]: https://www.google-melange.com/gsoc/proposal/review/student/google/gsoc2013/kabum/5727390428823552
 [shiva]: https://github.com/tooxie/shiva-server
 [resource definition]: https://github.com/tooxie/shiva-server#resource
 [RESTful]: https://en.wikipedia.org/wiki/Representational_state_transfer#RESTful_web_APIs
