@@ -1,0 +1,79 @@
+small.ok-orange {
+	background-color: rgb(255, 84, 73);
+	font-family: 'Droid Sans Mono', monospace;
+	padding: 3px;
+}
+
+section img.logo, #timeline img {
+	border: 0;
+	box-shadow: 0 0 0 black;
+	margin: 0;
+}
+
+section img.logo {
+	height: 400px;
+}
+
+span.bold {
+	font-weight: bold;
+}
+
+#about, #how, #goals, #support, #whats-next, #important-stuff {
+	text-align: left;
+}
+
+#about, #how, #goals {
+	font-family: 'Droid Sans Mono', monospace;
+}
+
+#about p, #how p, #goals p {
+	margin: 30px 0;
+}
+
+#support li, #whats-next li, #important-stuff li {
+	margin: 15px 0;
+}
+
+.ok-lab-blue .reveal .state-background {
+	background: rgba(32, 184, 247, 1.0 );
+}
+
+.ok-lab-green .reveal .state-background {
+	background: rgba(36, 217, 162, 1.0 );
+}
+
+.ok-lab-red .reveal .state-background {
+	background: rgba(254, 126, 117, 1.0 );
+}
+
+#how, #goals{
+	font-size: 30px;
+}
+
+#stamp:after
+{
+    content:"CHEMNITZ";
+    position:absolute;
+    bottom:180px;
+    right:30px;
+    z-index:1;
+    font-family:'Droid Sans Mono',Arial,sans-serif;
+    -webkit-transform: rotate(-15deg); /* Safari */
+    -moz-transform: rotate(-15deg); /* Firefox */
+    -ms-transform: rotate(-15deg); /* IE */
+    -o-transform: rotate(-15deg); /* Opera */
+    transform: rotate(-15deg);
+    font-size:70px;
+    color:#c00;
+    border:solid 4px #c00;
+    padding:15px;
+    border-radius:5px;
+    zoom:1;
+    filter:alpha(opacity=90);
+    opacity:0.9;
+    -webkit-text-shadow: 0 0 2px #c00;
+    text-shadow: 0 0 2px #c00;
+    box-shadow: 0 0 2px #c00;
+    background-color: rgba(255,255,255,0.6);
+}
+
