@@ -21,9 +21,13 @@ Since 2012
 Experience
 ----------
 
+Since March 2014
+:	**Student trainee** at [ownCloud GmbH][].
+
+	working on the [music app][] and [ownCloud core][]
+
 Since March 2013
-:	**Volunteer** at the [ownCloud][]
-	(Chemnitz, Germany).
+:	**Volunteer** at [ownCloud][].
 
 	working on the [music app][] and [ownCloud core][]
 
@@ -88,6 +92,7 @@ Spanish
 [ExtJS]: http://www.sencha.com/products/extjs/
 [Django]: https://www.djangoproject.com/
 [ownCloud]: https://owncloud.org
+[ownCloud GmbH]: https://owncloud.com
 [owncloud - Media app replacement - introduce a RESTful API for music]: https://www.google-melange.com/gsoc/proposal/review/google/gsoc2013/kabum/9001
 [music app]: https://github.com/owncloud/music
 [ownCloud core]: https://github.com/owncloud/core
