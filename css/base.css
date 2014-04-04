@@ -1,4 +1,4 @@
-@import url(https://fonts.googleapis.com/css?family=Droid+Sans+Mono|Open+Sans:400,700|Bree+Serif);
+@import url(https://fonts.googleapis.com/css?family=Open+Sans:400,700|Bree+Serif);
 
 body {
 	font-family: 'Open Sans', sans-serif;
@@ -98,7 +98,7 @@ p > code {
 }
 
 code, pre {
-	font-family: 'Droid Sans Mono', Monospace;
+	font-family: monospace;
 }
 
 img {
