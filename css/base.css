@@ -4,7 +4,7 @@ body {
 	font-family: 'Open Sans', sans-serif;
 	color: #444;
 	margin: 0;
-	font-size: 1.1em;
+	font-size: 15px;
 	font-weight: 300;
 	background-color: white;
 }
@@ -12,6 +12,7 @@ body {
 .container {
 	margin: 0 auto;
 	padding: 0 1em;
+	max-width: 900px;
 }
 
 .header {
