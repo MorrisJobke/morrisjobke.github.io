@@ -6,6 +6,3 @@ timezone: CET
 url: http://morrisjobke.de
 include: [".well-known"]
 markdown: kramdown
-
-disqus:
-    short_name: kabumgithubio
