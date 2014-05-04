@@ -11,18 +11,22 @@ body {
 
 .container {
 	margin: 0 auto;
-	padding: 0 1em;
+	padding: 0 14px;
 	max-width: 900px;
 }
 
 .header {
-	margin: 6em 0.5em 1em 0.5em;
+	padding: 50px 0 15px 0;
 	text-transform: uppercase;
 	font-weight: 300;
+	background-color: #39C;
+	color: #fff;
+	margin: 0;
+	margin-bottom: 20px;
 }
 
 .name {
-	font-size: 2em;
+	font-size: 28px;
 }
 
 .header ul, .articles {
@@ -32,15 +36,19 @@ body {
 
 .header li {
 	display: inline;
-	margin: 0 0.2em;
+	margin: 0 5px;
 }
 
 .header a {
-	color: #444;
+	color: #FFF;
 }
 
 .header a:hover {
-	color: #39C;
+	color: #222;
+}
+
+.header i {
+	font-size: 20px;
 }
 
 a {
@@ -48,23 +56,16 @@ a {
 	text-decoration: none;
 }
 
+a:hover, a:focus {
+	text-decoration: underline;
+}
+
 .item-right, .date {
 	float: right;
 }
 
-.header i {
-	font-size: 20px;
-}
-
-.hero {
-	background-size: cover;
-	height: 180px;
-	background-color: #39C;
-	margin-bottom: 2em;
-}
-
 .articles li {
-	margin: 0.7em;
+	margin: 10px 0;
 }
 
 #wordcloud {
@@ -76,13 +77,13 @@ a {
 }
 
 p {
-	line-height: 1.5;
+	line-height: 23px;
 }
 
 .meta {
 	float: right;
 	font-weight: 300;
-	font-size: 0.7em;
+	font-size: 10px;
 	color: #ccc;
 }
 
@@ -108,7 +109,7 @@ img {
 
 pre {
 	background-color: rgba(51, 153, 204, 0.1);
-	padding: 1em;
+	padding: 14px;
 	overflow: auto;
 	max-height:260px;
 }
@@ -125,6 +126,18 @@ blockquote {
 	code, pre {
 		font-weight: bold;
 	}
+}
+
+.footer {
+	margin: 30px auto;
+	opacity: 0.7;
+	text-align: center;
+	font-size: 12px;
+}
+
+.footer img {
+	width: inherit;
+	margin-bottom: -4px;
 }
 
 
