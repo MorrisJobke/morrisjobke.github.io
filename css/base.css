@@ -1,7 +1,7 @@
-@import url(https://fonts.googleapis.com/css?family=Open+Sans:400,700|Bree+Serif);
+@import url(https://fonts.googleapis.com/css?family=Cantarell:400,700|Roboto+Slab|Source+Code+Pro);
 
 body {
-	font-family: 'Open Sans', sans-serif;
+	font-family: 'Cantarell', sans-serif;
 	color: #444;
 	margin: 0;
 	font-size: 15px;
@@ -19,10 +19,12 @@ body {
 	padding: 50px 0 15px 0;
 	text-transform: uppercase;
 	font-weight: 300;
-	background-color: #39C;
 	color: #fff;
 	margin: 0;
 	margin-bottom: 20px;
+
+	background-image: url('/images/GNOME-stripes.jpg');
+	background-position: center;
 }
 
 .name {
@@ -43,17 +45,12 @@ body {
 	color: #FFF;
 }
 
-.header a:hover, .header a:focus {
-	color: #222;
-	text-decoration: none;
-}
-
 .header i {
 	font-size: 20px;
 }
 
 a {
-	color: #39C;
+	color: #059;
 	text-decoration: none;
 }
 
@@ -83,15 +80,15 @@ p {
 
 .meta {
 	float: right;
-	font-weight: 300;
-	font-size: 10px;
-	color: #ccc;
+	font-size: 15px;
+	line-height: 30px;
+	color: #888;
 }
 
 h1, h2, h3, h4, h5 {
-	font-family: 'Bree Serif', serif;
+	font-family: 'Roboto Slab', serif;
 	font-weight: normal;
-	border-left: 3px solid #39C;
+	border-left: 3px solid #059;
 	margin: 10px -10px 10px -10px;
 	padding: 10px 10px 10px 10px;
 }
@@ -101,7 +98,7 @@ p > code {
 }
 
 code, pre {
-	font-family: monospace;
+	font-family: 'Source Code Pro', monospace;
 }
 
 img {
@@ -123,12 +120,6 @@ blockquote {
 	color: #CCC;
 }
 
-@-moz-document url-prefix() {
-	code, pre {
-		font-weight: bold;
-	}
-}
-
 .footer {
 	margin: 30px auto;
 	opacity: 0.7;
@@ -145,7 +136,7 @@ blockquote {
 /* Curriculum vitae */
 
 #cv h2 {
-	color: #39C;
+	color: #059;
 	border-left: 0;
 }
 
@@ -155,7 +146,7 @@ blockquote {
 	height: 10px;
 	display: inline-block;
 	content: "";
-	background-color: #39C;
+	background-color: #059;
 }
 
 #cv dt {
