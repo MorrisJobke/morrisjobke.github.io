@@ -22,7 +22,12 @@ Since 2012
 Experience
 ----------
 
-Since March 2014
+Since November 2014
+:	**Software engineer** at [ownCloud GmbH][].
+
+	working on the [ownCloud core][]
+
+March 2014 - Oktober 2014
 :	**Student trainee** at [ownCloud GmbH][].
 
 	working on the [music app][] and [ownCloud core][]
