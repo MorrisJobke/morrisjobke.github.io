@@ -11,4 +11,6 @@ date:   2014-09-18 11:33:10 CET
 
 # Wunschliste Antje
 
-* ...
+* Schminkspiegel
+* Keramikpfanne
+* Zeitungsständer
