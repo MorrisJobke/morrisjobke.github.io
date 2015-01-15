@@ -2,7 +2,7 @@
 layout: post
 title:  "Blackfire PHP Profiler on ArchLinux"
 date:   2015-01-15 09:53:00 CET
-categories: [howto]
+categories: [howto, owncloud]
 ---
 
 [Blackfire](https://blackfire.io) is a PHP profiler. To get it run you need the agent and the probe. The probe is a PHP extensions that gathers all the data of the request. The agent is a daemon that is running on your system and processes the data of the probe and sends it to blackfire.io, where the data is then visualized.
