@@ -8,24 +8,28 @@ permalink: cv/
 Education
 ----------
 
-Since 2012
+2012 - 2015
 :	**Master of Science - High Performance and Cloud Computing** ([Technische Universität Chemnitz][], Germany)
 
+	Master thesis: Inhaltsorientierte Sekundärindexierung in Wide Column Stores
 
 2009-2012
-:	**Bachelor of Science - Applied Computer Science**
-
-	([Technische Universität Chemnitz][], Germany)
+:	**Bachelor of Science - Applied Computer Science** ([Technische Universität Chemnitz][], Germany)
 
 	[Bachelor thesis][]: Neugestaltung der Datenbank des Chemnitzer Studentennetzes - [Slides][]
 
-Experience
-----------
+Stuff I have done
+-----------------
 
 Since November 2014
 :	**Software engineer** at [ownCloud GmbH][].
 
 	working on the [ownCloud core][]
+
+Since April 2014
+: **Lab Lead** at [Code for Chemnitz][]
+
+	help to spread the word about Open Data and work with Open Data, make the life of other citizens easier
 
 March 2014 - Oktober 2014
 :	**Student trainee** at [ownCloud GmbH][].
@@ -102,3 +106,4 @@ Spanish
 [owncloud - Media app replacement - introduce a RESTful API for music]: https://www.google-melange.com/gsoc/proposal/review/google/gsoc2013/kabum/9001
 [music app]: https://github.com/owncloud/music
 [ownCloud core]: https://github.com/owncloud/core
+[Code for Chemnitz]: http://codeforchemnitz.de/
