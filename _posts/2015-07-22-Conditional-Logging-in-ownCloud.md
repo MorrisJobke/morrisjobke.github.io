@@ -5,7 +5,7 @@ date:   2015-07-22 21:46:00 CET
 categories: [howto, owncloud]
 ---
 
-If you have a installation of ownCloud and you experience a bug it is quite difficult to debug the problem, because usually only errors and warnings are logged. But to identify a problem it is really helpful to log more stuff to get all the information that are needed. Wouldn't it be cool to raise the log level from "warning" to "debug" just for specific conditions? That's what [I just added some time ago](https://github.com/owncloud/core/pull/15965) and it landed in ownCloud 8.1.
+If you have an installation of ownCloud and you experience a bug it is quite difficult to debug the problem, because usually only errors and warnings are logged. But to identify a problem it is really helpful to log more stuff to get all the information that are needed. Wouldn't it be cool to raise the log level from "warning" to "debug" just for specific conditions? That's what [I just added some time ago](https://github.com/owncloud/core/pull/15965) and it landed in ownCloud 8.1.
 
 ## Conditions
 
