@@ -30,7 +30,7 @@ To setup conditional logging the following config parameter needs to be set in `
 
 By default `log.condition` is set to an empty array. All array entries are optional. This means that it is also allowed to only specify the list of apps.
 
-The options for users and apps are quite self-explanatory: If the request is made by an user that is in the list all log messages will be written or if the log message is raised by an app that is in the list then all log messages will be written.
+The options for users and apps are quite self-explanatory: If the request is made by a user that is in the list all log messages will be written or if the log message is raised by an app that is in the list then all log messages will be written.
 
 The option `shared_secret` is something special to pick a very specific use case. If you notice that for a single request something bad happens then you can add a parameter named `log_secret` with the exact same value as set in the config to log all messages of this single request. Be aware to use a random string that isn't easy to guess and remove the setting once it is not needed anymore.
 
