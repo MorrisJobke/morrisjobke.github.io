@@ -7,12 +7,3 @@ layout: default
 <div id="post">
 {{ content }}
 </div>
-
-<script src="/js/jquery-1.10.1.min.js"></script>
-<script src="/js/lightbox-2.6.min.js"></script>
-<script>
-  $(function() {
-    // wrap all images inside the #post with an link to provide the data used by lightbox
-    $('#post img').map(function(){$(this).wrap('<a href="' + this.src + '" data-lightbox="images" />')})
-  });
-</script>
