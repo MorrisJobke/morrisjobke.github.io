@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="chrome=1" />
-    <title>{{ page.title }} - Morris Jobke</title>
+    <title>{{ page.title }}{% if page.title %} - {% endif %}Morris Jobke</title>
 
     <link rel="stylesheet" href="/css/pygment_trac.css" />
     <link rel="alternate" type="application/atom+xml" title="Atom feed" href="/feed.atom" />
@@ -16,11 +16,9 @@
       <div class="container">
         <span class="name">Morris<b>Jobke</b></span>
         <ul class="menu">
-          <li><a href="/">About</a></li> /
-          <li><a href="/articles">Articles</a></li> /
+          <li><a href="/">Articles</a></li> /
           <li><a href="/talks">Talks</a></li> /
-          <li><a href="/links">Links</a></li> /
-          <li><a href="/cv">Curriculum vitae</a></li>
+          <li><a href="/links">Links</a></li>
           <li class="item-right"><a href="/feed.atom"><i class="icon-rss"></i></a></li>
           <li class="item-right"><a href="https://twitter.com/MorrisJbk"><i class="icon-twitter"></i></a></li>
           <li class="item-right"><a href="https://github.com/MorrisJobke"><i class="icon-github"></i></a></li>
