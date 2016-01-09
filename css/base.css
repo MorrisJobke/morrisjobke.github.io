@@ -22,8 +22,7 @@ body {
 	margin: 0;
 	margin-bottom: 20px;
 
-	background-image: url('/images/GNOME-stripes.jpg');
-	background-position: center;
+	background-color: #406DA6;
 }
 
 .name {
@@ -75,6 +74,7 @@ a:hover, a:focus {
 
 p {
 	line-height: 23px;
+  padding-left: 10px;
 }
 
 .meta {
@@ -87,9 +87,7 @@ p {
 h1, h2, h3, h4, h5 {
 	font-family: 'Roboto Slab', serif;
 	font-weight: normal;
-	border-left: 3px solid #059;
-	margin: 10px -10px 10px -10px;
-	padding: 10px 10px 10px 10px;
+	padding: 10px 0;
 }
 
 p > code {
@@ -109,6 +107,7 @@ pre {
 	padding: 14px;
 	overflow: auto;
 	max-height:260px;
+  margin-left: 10px;
 }
 
 blockquote {
