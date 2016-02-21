@@ -39,11 +39,11 @@ body {
 
 .header a {
 	color: #FFF;
+	text-decoration: none;
 }
 
 a {
 	color: #059;
-	text-decoration: none;
 }
 
 a:hover, a:focus {
@@ -58,17 +58,9 @@ a:hover, a:focus {
 	margin: 10px 0;
 }
 
-#wordcloud {
-	text-align:justify;
-}
-
-#wordcloud > a:hover {
-	text-decoration: underline;
-}
-
 p {
 	line-height: 23px;
-  padding-left: 10px;
+	padding-left: 10px;
 }
 
 .meta {
@@ -100,8 +92,8 @@ pre {
 	background-color: rgba(51, 153, 204, 0.1);
 	padding: 14px;
 	overflow: auto;
-	max-height:260px;
-  margin-left: 10px;
+	max-height:350px;
+	margin-left: 10px;
 }
 
 blockquote {
@@ -109,7 +101,11 @@ blockquote {
 	margin:0;
 	padding:0 0 0 20px;
 	font-style: italic;
-	color: #CCC;
+	color: #999;
+}
+
+blockquote a {
+	color: #666;
 }
 
 .footer {
