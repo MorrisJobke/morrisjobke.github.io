@@ -58,6 +58,10 @@ a:hover, a:focus {
 	margin: 10px 0;
 }
 
+.articles a {
+	text-decoration: none;
+}
+
 p {
 	line-height: 23px;
 	padding-left: 10px;
