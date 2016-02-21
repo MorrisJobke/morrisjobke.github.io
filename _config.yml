@@ -1,6 +1,6 @@
 name: morrisjobke.de
 author: Morris Jobke
-highlighter: pygments
+highlighter: rouge
 permalink: /:year/:month/:day/:title/
 timezone: CET
 url: http://morrisjobke.de

@@ -108,12 +108,12 @@ Tip: Checkout the help section of the command:
 	Usage: dokku [--quiet|--trace|--rm-container|--rm|--force] COMMAND <app> [command-specific-options]
 
 	Options:
-	apps                                                                                         List your apps
-	apps:create <app>                                                                            Create a new app
-	apps:destroy <app>                                                                           Permanently destroy an app
-	apps:rename <old-app> <new-app>                                                              Rename an app
-	backup:export [file]                                                                         Export dokku configuration files
-	backup:import [file]                                                                         Import dokku configuration files
+	apps                               List your apps
+	apps:create <app>                  Create a new app
+	apps:destroy <app>                 Permanently destroy an app
+	apps:rename <old-app> <new-app>    Rename an app
+	backup:export [file]               Export dokku configuration files
+	backup:import [file]               Import dokku configuration files
 	...
 
 ## Show me the commands!
