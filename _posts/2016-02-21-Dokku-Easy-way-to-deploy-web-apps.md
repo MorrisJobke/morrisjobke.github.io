@@ -42,7 +42,7 @@ For the above example I used Herokus [Getting started with PHP](https://github.c
 
 ## Dokku on ArchLinux
 
-The only drawback of this tool was that only Ubuntu 14.04 was supported, but I thought it couldn't be too hard to somehow make those 200 lines of Bash compatible with ArchLinux (which I currently use on my server). It turned out that 200 lines of Bash is the optimistic view on the code base, but how cares - I fixed the issues I had, [opened a pull request](https://github.com/dokku/dokku/pull/1918), [updated the AUR package](https://aur.archlinux.org/packages/dokku/) and had some nice chats with the maintainers. Now the setup on ArchLinux is a breeze:
+The only drawback of this tool was that only Ubuntu 14.04 was supported, but I thought it couldn't be too hard to somehow make those 200 lines of Bash compatible with ArchLinux (which I currently use on my server). It turned out that 200 lines of Bash is the optimistic view on the code base, but who cares - I fixed the issues I had, [opened a pull request](https://github.com/dokku/dokku/pull/1918), [updated the AUR package](https://aur.archlinux.org/packages/dokku/) and had some nice chats with the maintainers. Now the setup on ArchLinux is a breeze:
 
 	$ pacaur -S dokku
 	$ cat ~/.ssh/id_rsa.pub | sudo sshcommand acl-add dokku 'local key'
