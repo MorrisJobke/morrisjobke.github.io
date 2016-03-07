@@ -17,8 +17,8 @@
   src: local('Roboto Slab Regular'), local('RobotoSlab-Regular'), url(fonts/y7lebkjgREBJK96VQi37ZrrIa-7acMAeDBVuclsi6Gc.woff) format('woff');
 }
 @font-face {
-  font-family: 'Source Code Pro';
+  font-family: 'Inconsolata';
   font-style: normal;
   font-weight: 400;
-  src: local('Source Code Pro'), local('SourceCodePro-Regular'), url(fonts/mrl8jkM18OlOQN8JLgasD9Hq-FFgoDNV3GTKpHwuvtI.woff) format('woff');
+  src: local('Inconsolata'), url(fonts/BjAYBlHtW3CJxDcjzrnZCLrIa-7acMAeDBVuclsi6Gc.woff) format('woff');
 }
