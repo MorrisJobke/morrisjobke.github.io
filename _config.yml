@@ -1,5 +1,4 @@
 name: morrisjobke.de
-author: Morris Jobke
 highlighter: rouge
 permalink: /:year/:month/:day/:title/
 timezone: CET
@@ -10,4 +9,5 @@ gems:
   - jekyll-seo-tag
 twitter:
   username: MorrisJbk
-  creator: MorrisJbk
+author:
+  twitter: MorrisJbk
