@@ -7,7 +7,6 @@ categories: [howto]
 
 Because I get quite often asked about my git config I will post it here and leave some notes.
 
-
 ```
 [core]
 	whitespace = cr-at-eol
