@@ -53,7 +53,7 @@ I have two aliases - `git lg` gives a nice and simple overview of the git histor
 
 ![git lg](/images/2018-03-03-git-lg.png)
 
-The second alias cleans up the git repository from branches that are fully merged in the current branch. Usually you call this on your master and stable branches to cleanup merged feature or backport branches. Just call `git cu` and you are done.
+The second alias - `git cu` - cleans up the git repository from branches that are fully merged in the current branch. Usually you call this on your master and stable branches to cleanup merged feature or backport branches.
 
 The default colors in git are quite boring so I use basically green (staged), yellow (changed) and red (untracked) as indicator for different sections in the git status and git branch outputs.
 
