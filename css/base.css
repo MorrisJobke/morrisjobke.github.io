@@ -62,7 +62,7 @@ a:hover, a:focus {
 
 .articles a {
 	text-decoration: none;
-	overflow-y: hidden;
+	overflow: hidden;
 	white-space: nowrap;
 	text-overflow: ellipsis;
 	flex-grow: 1;
