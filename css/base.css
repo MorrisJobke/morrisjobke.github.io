@@ -51,15 +51,21 @@ a:hover, a:focus {
 }
 
 .item-right, .date {
-	float: right;
+	align-self: flex-end;
+	flex-shrink: 0;
 }
 
 .articles li {
 	margin: 10px 0;
+	display: flex;
 }
 
 .articles a {
 	text-decoration: none;
+	overflow-y: hidden;
+	white-space: nowrap;
+	text-overflow: ellipsis;
+	flex-grow: 1;
 }
 
 p {
