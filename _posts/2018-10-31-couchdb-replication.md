@@ -31,7 +31,7 @@ $ curl "http://DOMAIN:5984/SOURCE_DATABASE/_changes?filter=DESIGNDOCUMENT%2FNAME
 
 This shows the output and potential errors in the JavaScript code of the filter.
 
-For the actual replication you need to create following document for the one time replication of existing documents:
+For the actual replication you need to create following documents in the `_replicator` database for the one time replication of existing documents:
 
 ```json
 {
@@ -42,7 +42,7 @@ For the actual replication you need to create following document for the one tim
 }
 ```
 
-And I created a continuous replication as well:
+And I created a continuous replication document as well:
 
 ```json
 {
