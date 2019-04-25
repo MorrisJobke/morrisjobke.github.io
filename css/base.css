@@ -130,6 +130,11 @@ blockquote a {
 	margin-bottom: -4px;
 }
 
+hr {
+	border: none;
+	border-top: 1px solid rgb(194, 194, 194);
+}
+
 
 /* Curriculum vitae */
 
