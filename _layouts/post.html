@@ -8,4 +8,6 @@ layout: default
 {{ content }}
 </div>
 
+{% if page.enable_comments %}
 {% include comments.html %}
+{% endif %}

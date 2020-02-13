@@ -3,6 +3,7 @@ layout: post
 title:  "Hadoop - NameNode, Checkpoint Node and Backup Node"
 date:   2013-12-11 19:20:00 CET
 categories: [hadoop]
+enable_comments: true
 ---
 
 ### NameNode
