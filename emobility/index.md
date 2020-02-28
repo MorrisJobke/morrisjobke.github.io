@@ -30,6 +30,7 @@ Letztes Update: Ende April 2019
 * [Well-to-Tank Factors (lowcvp.org.uk)](https://www.lowcvp.org.uk/Hubs/leb/TestingandAccreditation/WTTFactors.htm)
 * [Electric Vehicle (EV) (batteryuniversity.com)](https://batteryuniversity.com/learn/article/electric_vehicle_ev)
 * [The Life Cycle Energy Consumption and Greenhouse Gas Emissions from Lithium-Ion Batteries (pdf) (ivl.se)](https://www.ivl.se/download/18.5922281715bdaebede9559/1496046218976/C243+The+life+cycle+energy+consumption+and+CO2+emissions+from+lithium+ion+batteries+.pdf)
+* [Elektro, Diesel und Wasserstoffauto im Vergleich - Erklärvideo mit den gängigsten Fragen rund um Elektromobilität (youtu.be)](https://youtu.be/WBqNS0nQzPY) (Februar 2020)
 
 ### Lange Artikel
 
