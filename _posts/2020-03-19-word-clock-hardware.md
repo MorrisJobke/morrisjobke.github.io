@@ -81,6 +81,6 @@ Den Mikrocontroller sowie das USB-Breakout-Board habe ich auf die Rückseite des
 
 Für den Stromanschluss kann man nun ein Micro-USB-Kabel sowie ein herkömmliches USB-Netzteil verwenden. Achtet hier bitte darauf, dass das Netzteil ausreichend dimensioniert ist. Wenn alle LEDs auf voller Helligkeit leuchten könnten sie sonst das Netzteil überlasten. Die genauen Werte könnt ihr dem Datenblatt des LED-Streifens entnehmen.
 
-Ein Blog-Post zur Software wird noch folgen.
+Ein Blog-Post zur Software wird noch folgen. **Edit:** [hier ist er](/2020/03/20/word-clock-software/)
 
 Viel Spaß beim Basteln :)
