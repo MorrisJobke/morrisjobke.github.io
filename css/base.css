@@ -10,6 +10,7 @@ body {
 	margin: 0 auto;
 	padding: 0 14px;
 	max-width: 900px;
+	word-wrap: break-word;
 }
 
 .header {
@@ -112,6 +113,7 @@ blockquote {
 	padding:0 0 0 20px;
 	font-style: italic;
 	color: #999;
+	text-align: justify;
 }
 
 blockquote a {
