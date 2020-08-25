@@ -9,7 +9,7 @@ Eine kleine Notizsammlung hinsichtlich Mini PV-Anlage:
 
 * Idee: Mietern die Möglichkeit bieten ihre Grundlast über Solarmodule zu reduzieren
     * Wikipedia: [https://de.wikipedia.org/wiki/Solarmodul#Stecker-fertige_Solarmodule](https://de.wikipedia.org/wiki/Solarmodul#Stecker-fertige_Solarmodule) 
-* Randbedingung: Anlage mit maximal 600 W Leistung kann direkt vom Mieter (und nicht wie normalerweise vom Solarteur) bei der Bundesnetzargentur angemeldet werden.
+* Randbedingung: Anlage mit maximal 600 W Leistung kann direkt vom Mieter (und nicht wie normalerweise vom Solarteur) bei der Netzbetreiber angemeldet werden.
     * Anmeldung in Chemnitz bei inetz: [https://www.inetz.de/startseite/erzeugungsanlagen/anschluss-und-parallelbetrieb/](https://www.inetz.de/startseite/erzeugungsanlagen/anschluss-und-parallelbetrieb/)
         * Punkt „Vereinfachtes Anmeldeverfahren für Kleinst-Photovoltaikanlagen (Plug-In)“
     * Formular zur Anmeldung:
