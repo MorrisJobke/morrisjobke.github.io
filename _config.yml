@@ -8,6 +8,6 @@ markdown: kramdown
 gems:
   - jekyll-seo-tag
 twitter:
-  username: MorrisJbk
+  username: MorrisJobke
 author:
-  twitter: MorrisJbk
+  twitter: MorrisJobke
