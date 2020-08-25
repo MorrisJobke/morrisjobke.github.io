@@ -14,7 +14,7 @@ Eine kleine Notizsammlung hinsichtlich Mini PV-Anlage:
 
 ### Randbedingung
 
-* Anlage mit maximal 600 W Leistung kann direkt vom Mieter (und nicht wie normalerweise vom Solarteur) bei der Netzbetreiber angemeldet werden.
+* Anlage mit maximal 600 W Leistung kann direkt vom Mieter (und nicht wie normalerweise vom Solarteur) beim Netzbetreiber angemeldet werden.
 * Anmeldung in Chemnitz bei inetz: [https://www.inetz.de/startseite/erzeugungsanlagen/anschluss-und-parallelbetrieb/](https://www.inetz.de/startseite/erzeugungsanlagen/anschluss-und-parallelbetrieb/)
     * Punkt „Vereinfachtes Anmeldeverfahren für Kleinst-Photovoltaikanlagen (Plug-In)“
 * Formular zur Anmeldung:
