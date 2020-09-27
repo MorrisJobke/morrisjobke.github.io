@@ -95,6 +95,7 @@ Letztes Update: Ende April 2019
 
 ## Laden
 
+* [Allgemeine FAQ Seite rund um das Thema Laden (ladefragen.de)](https://ladefragen.de/)
 
 `<Ironie>`
 
