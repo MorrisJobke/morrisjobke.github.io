@@ -69,6 +69,7 @@ Letztes Update: Ende April 2019
 ### Stromverbrauch
 
 * [Vergleich von Energiebedarf von Verbrenner und E-Auto (edison.handelsblatt.com)](https://edison.handelsblatt.com/e-hub/so-viel-strom-brauchen-autos-mit-verbrennungsmotor/20826274.html)
+* [Endenergiebezogene Analyse Diesel versus Elektromobilität](https://www.springerprofessional.de/elektromobilitaet/dieselmotor/endenergiebezogene-analyse-diesel-versus-elektromobilitaet/16673694)
 
 ## Akku
 
