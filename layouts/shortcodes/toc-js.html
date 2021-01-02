@@ -1,0 +1,12 @@
+<script src="/js/toc.js"></script>
+
+<script type="text/javascript">
+	var list = initTOC({
+		// headers selector
+		selector:'h2, h3, h4, h5, h6',
+		// selector to specify elements search scope
+		scope:'body',
+	})
+	console.log(list)
+	document.getElementById('toc').appendChild(list)
+</script>
