@@ -1,5 +1,5 @@
 ---
-title:  "🚗🔋 Elektromobilität"
+title: "🚗🔋 Elektromobilität"
 date: "2019-04-25T08:33:00Z"
 ---
 
