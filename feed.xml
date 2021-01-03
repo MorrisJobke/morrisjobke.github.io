@@ -1,4 +1,29 @@
-<feed xmlns="http://www.w3.org/2005/Atom"><title>Morris Jobke</title><link href="https://morrisjobke.de/feed.xml" rel="self"/><link href="https://morrisjobke.de/"/><updated>2020-08-25T19:37:00+00:00</updated><id>https://morrisjobke.de/</id><author><name>Morris Jobke</name></author><generator>Hugo -- gohugo.io</generator><entry><title type="html">Mini PV-Anlage - Balkonkraftwerk - Steckerfertige PV-Anlage</title><link href="https://morrisjobke.de/2020/08/25/mini-photovoltaik-anlage/"/><id>https://morrisjobke.de/2020/08/25/mini-photovoltaik-anlage/</id><published>2020-08-25T19:37:00+00:00</published><updated>2020-08-25T19:37:00+00:00</updated><content type="html"><![CDATA[<p>Eine kleine Notizsammlung hinsichtlich Mini PV-Anlage:</p>
+<feed xmlns="http://www.w3.org/2005/Atom"><title>Morris Jobke</title><link href="https://morrisjobke.de/feed.xml" rel="self"/><link href="https://morrisjobke.de/"/><updated>2021-01-03T21:12:00+00:00</updated><id>https://morrisjobke.de/</id><author><name>Morris Jobke</name></author><generator>Hugo -- gohugo.io</generator><entry><title type="html">Collection #1</title><link href="https://morrisjobke.de/2021/01/03/collection-1/"/><id>https://morrisjobke.de/2021/01/03/collection-1/</id><published>2021-01-03T21:12:00+00:00</published><updated>2021-01-03T21:12:00+00:00</updated><content type="html"><![CDATA[<p>From time to time I have some blog posts, tools, extensions, guides or just little code snippets I want to keep listed somewhere and share it. So this is the first of those collections and was inspired by the <a href="https://blog.kovah.de/en/collection">collections of kovah</a>.</p>
+<h1 id="scriptable-ios">Scriptable (iOS)</h1>
+<p>Scriptable is an iOS app that allows to run JavaScript code snippets on your iOS device. Those can be used as short cuts, siri answers or widgets.</p>
+<p><a href="https://scriptable.app">https://scriptable.app</a></p>
+<h1 id="dozer---hiding-macos-menu-bar-entries">Dozer - Hiding macOS menu bar entries</h1>
+<p>The tool Dozer allows to hide specific macOS menu bar elements behind a little dot icon.</p>
+<p><a href="https://github.com/Mortennn/Dozer/">https://github.com/Mortennn/Dozer/</a></p>
+<h1 id="pxe-boot-via-edgerouter-and-freenas">PXE boot via EdgeRouter and FreeNAS</h1>
+<p>Using the TFTP server in FreeNAS and the config settings from the reddit post below in an Ubiquity EdgeRouter makes booting via PXE possible.</p>
+<p><a href="https://www.reddit.com/r/Ubiquiti/comments/fu71b0/edgerouter_dhcp_configuration_for_pxe_booting/fmbf0yq/">https://www.reddit.com/r/Ubiquiti/comments/fu71b0/edgerouter_dhcp_configuration_for_pxe_booting/fmbf0yq/</a></p>
+<h1 id="beginners-guide-to-error-handling-in-rust">Beginner&rsquo;s guide to Error Handling in Rust</h1>
+<p><a href="http://www.sheshbabu.com/posts/rust-error-handling/">http://www.sheshbabu.com/posts/rust-error-handling/</a></p>
+<h1 id="php-memprof-php">php-memprof #php</h1>
+<blockquote>
+<p>php-memprof is a fast and accurate memory profiling extension for PHP that can be used to find the cause of memory leaks.</p>
+</blockquote>
+<p><a href="https://github.com/arnaud-lb/php-memory-profiler">https://github.com/arnaud-lb/php-memory-profiler</a></p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">brew install traildb/judy/judy
+pecl install memprof
+</code></pre></div><div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php"><span style="color:#f92672">&lt;?</span><span style="color:#a6e22e">php</span>
+
+<span style="color:#66d9ef">if</span> (<span style="color:#a6e22e">function_exists</span>(<span style="color:#e6db74">&#39;memprof_enabled&#39;</span>) <span style="color:#f92672">&amp;&amp;</span> <span style="color:#a6e22e">memprof_enabled</span>()) {
+	<span style="color:#a6e22e">memprof_dump_callgrind</span>(<span style="color:#a6e22e">fopen</span>(<span style="color:#e6db74">&#34;/tmp/callgrind.out&#34;</span>, <span style="color:#e6db74">&#34;w&#34;</span>));
+}
+</code></pre></div><div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">MEMPROF_PROFILE<span style="color:#f92672">=</span><span style="color:#ae81ff">1</span> php script.php
+</code></pre></div>]]></content></entry><entry><title type="html">Mini PV-Anlage - Balkonkraftwerk - Steckerfertige PV-Anlage</title><link href="https://morrisjobke.de/2020/08/25/mini-photovoltaik-anlage/"/><id>https://morrisjobke.de/2020/08/25/mini-photovoltaik-anlage/</id><published>2020-08-25T19:37:00+00:00</published><updated>2020-08-25T19:37:00+00:00</updated><content type="html"><![CDATA[<p>Eine kleine Notizsammlung hinsichtlich Mini PV-Anlage:</p>
 <h3 id="idee">Idee</h3>
 <ul>
 <li>Mietern die Möglichkeit bieten ihre Grundlast über Solarmodule zu reduzieren</li>
