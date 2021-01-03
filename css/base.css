@@ -1,0 +1,170 @@
+body {
+	font-family: 'Cantarell', sans-serif;
+	color: #444;
+	margin: 0;
+	font-size: 15px;
+	background-color: white;
+}
+
+.container {
+	margin: 0 auto;
+	padding: 0 14px;
+	max-width: 900px;
+	word-wrap: break-word;
+}
+
+.header {
+	padding: 50px 0 15px 0;
+	text-transform: uppercase;
+	font-weight: 300;
+	color: #fff;
+	margin: 0;
+	margin-bottom: 20px;
+
+	background-color: #406DA6;
+}
+
+.name {
+	font-size: 28px;
+}
+
+.header ul, .articles {
+	list-style: none;
+	padding: 0;
+}
+
+.header li {
+	display: inline;
+	margin: 0 5px;
+}
+
+.header a {
+	color: #FFF;
+	text-decoration: none;
+}
+
+a {
+	color: #059;
+}
+
+a:hover, a:focus {
+	text-decoration: underline;
+}
+
+.item-right, .date {
+	align-self: flex-end;
+	flex-shrink: 0;
+}
+
+.articles li {
+	margin: 10px 0;
+	display: flex;
+}
+
+.articles a {
+	text-decoration: none;
+	overflow: hidden;
+	white-space: nowrap;
+	text-overflow: ellipsis;
+	flex-grow: 1;
+}
+
+p {
+	line-height: 23px;
+	padding-left: 10px;
+}
+
+.meta {
+	float: right;
+	font-size: 15px;
+	line-height: 30px;
+	color: #888;
+}
+
+h1, h2, h3, h4, h5 {
+	font-family: 'Roboto Slab', serif;
+	font-weight: normal;
+	padding: 10px 0;
+}
+
+p > code {
+	font-weight: bold;
+}
+
+code, pre {
+	font-family: 'Inconsolata', monospace;
+}
+
+img {
+	width: 100%;
+}
+
+pre {
+	background-color: rgba(64, 109, 166, 0.1);
+	padding: 14px;
+	overflow: auto;
+	max-height:350px;
+	margin-left: 10px;
+}
+
+blockquote {
+	border-left: 2px solid #CCC;
+	margin:0;
+	padding:0 0 0 20px;
+	font-style: italic;
+	color: #999;
+	text-align: justify;
+}
+
+blockquote a {
+	color: #666;
+}
+
+.footer {
+	margin: 30px auto;
+	opacity: 0.7;
+	text-align: center;
+	font-size: 12px;
+}
+
+.footer img {
+	width: inherit;
+	margin-bottom: -4px;
+}
+
+hr {
+	border: none;
+	border-top: 1px solid rgb(194, 194, 194);
+}
+
+
+/* Curriculum vitae */
+
+#cv h2 {
+	color: #059;
+	border-left: 0;
+}
+
+#cv h2:before {
+	margin: 0 10px 4px 0;
+	width: 110px;
+	height: 10px;
+	display: inline-block;
+	content: "";
+	background-color: #059;
+}
+
+#cv dt {
+	width: 110px;
+	margin-right: 10px;
+	float: left;
+	text-align: right;
+}
+
+#cv dd {
+	margin: 0 0 30px 120px;
+}
+
+#cv p {
+    margin: 0 0 5px 0;
+}

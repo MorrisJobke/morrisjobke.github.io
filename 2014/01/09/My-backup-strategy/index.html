@@ -1,0 +1,106 @@
+<!doctype html><html lang=en-us><head><meta charset=utf-8><meta http-equiv=x-ua-compatible content="chrome=1"><meta name=viewport content="width=device-width,initial-scale=1"><title>Morris Jobke</title><link rel=stylesheet href=/css/pygment_trac.css><link rel=alternate type=application/atom+xml title="Atom feed" href=/feed.xml><link rel=stylesheet href=/css/webfonts.css><link rel=stylesheet href="/css/base.css?v=3"><meta property="og:title" content="My backup strategy"><meta property="og:description" content="For a long time I didn&rsquo;t have a real backup strategy. I just had some HDDs with - hopefully - more than one copy of the important files. Then I decided to not trust into such a more or less random backup and build up a software RAID (RAID 5) using mdadm. Yeah, I know RAID isn&rsquo;t a real backup but it&rsquo;s a lot better than just having single HDDs which could fail and then the data is gone."><meta property="og:type" content="article"><meta property="og:url" content="https://morrisjobke.de/2014/01/09/My-backup-strategy/"><meta property="article:published_time" content="2014-01-09T00:10:59+00:00"><meta property="article:modified_time" content="2014-01-09T00:10:59+00:00"><meta name=twitter:card content="summary"><meta name=twitter:title content="My backup strategy"><meta name=twitter:description content="For a long time I didn&rsquo;t have a real backup strategy. I just had some HDDs with - hopefully - more than one copy of the important files. Then I decided to not trust into such a more or less random backup and build up a software RAID (RAID 5) using mdadm. Yeah, I know RAID isn&rsquo;t a real backup but it&rsquo;s a lot better than just having single HDDs which could fail and then the data is gone."><meta name=twitter:site content="@MorrisJobke"><meta itemprop=name content="My backup strategy"><meta itemprop=description content="For a long time I didn&rsquo;t have a real backup strategy. I just had some HDDs with - hopefully - more than one copy of the important files. Then I decided to not trust into such a more or less random backup and build up a software RAID (RAID 5) using mdadm. Yeah, I know RAID isn&rsquo;t a real backup but it&rsquo;s a lot better than just having single HDDs which could fail and then the data is gone."><meta itemprop=datePublished content="2014-01-09T00:10:59+00:00"><meta itemprop=dateModified content="2014-01-09T00:10:59+00:00"><meta itemprop=wordCount content="778"><meta itemprop=keywords content></head><body><div class=header><div class=container><span class=name>Morris<b>Jobke</b></span><ul class=menu><li><a href=/>Articles</a></wli> /<li><a href=/talks>Talks</a></li>/<li><a href=/links>Links</a></li><li class=item-right><a href=/feed.xml><svg width="20" height="20" viewBox="0 0 1792 1792" xmlns="http://www.w3.org/2000/svg"><path d="M576 1344q0 80-56 136t-136 56-136-56-56-136 56-136 136-56 136 56 56 136zm512 123q2 28-17 48-18 21-47 21H889q-25 0-43-16.5t-20-41.5q-22-229-184.5-391.5T250 902q-25-2-41.5-20T192 839V704q0-29 21-47 17-17 43-17h5q160 13 306 80.5T826 902q114 113 181.5 259t80.5 306zm512 2q2 27-18 47-18 20-46 20h-143q-26 0-44.5-17.5T1329 1476q-12-215-101-408.5t-231.5-336-336-231.5T252 398q-25-1-42.5-19.5T192 335V192q0-28 20-46 18-18 44-18h3q262 13 501.5 120T1186 542q187 186 294 425.5t120 501.5z" fill="#fff"/></svg></a></li><li class=item-right><a href=https://twitter.com/MorrisJobke><svg width="20" height="20" viewBox="0 0 1792 1792" xmlns="http://www.w3.org/2000/svg"><path d="M1684 408q-67 98-162 167 1 14 1 42 0 130-38 259.5T1369.5 1125 1185 1335.5t-258 146-323 54.5q-271 0-496-145 35 4 78 4 225 0 401-138-105-2-188-64.5T285 1033q33 5 61 5 43 0 85-11-112-23-185.5-111.5T172 710v-4q68 38 146 41-66-44-105-115t-39-154q0-88 44-163 121 149 294.5 238.5T884 653q-8-38-8-74 0-134 94.5-228.5T1199 256q140 0 236 102 109-21 205-78-37 115-142 178 93-10 186-50z" fill="#fff"/></svg></a></li><li class=item-right><a href=https://github.com/MorrisJobke><svg width="20" height="20" viewBox="0 0 1792 1792" xmlns="http://www.w3.org/2000/svg"><path d="M1664 896q0 251-146.5 451.5T1139 1625q-27 5-39.5-7t-12.5-30v-211q0-97-52-142 57-6 102.5-18t94-39 81-66.5 53-105T1386 856q0-121-79-206 37-91-8-204-28-9-81 11t-92 44l-38 24q-93-26-192-26t-192 26q-16-11-42.5-27T578 459.5 492 446q-44 113-7 204-79 85-79 206 0 85 20.5 150t52.5 105 80.5 67 94 39 102.5 18q-40 36-49 103-21 10-45 15t-57 5-65.5-21.5T484 1274q-19-32-48.5-52t-49.5-24l-20-3q-21 0-29 4.5t-5 11.5 9 14 13 12l7 5q22 10 43.5 38t31.5 51l10 23q13 38 44 61.5t67 30 69.5 7 55.5-3.5l23-4q0 38 .5 89t.5 54q0 18-13 30t-40 7q-232-77-378.5-277.5T128 896q0-209 103-385.5T510.5 231 896 128t385.5 103T1561 510.5 1664 896z" fill="#fff"/></svg></a></li></ul></div></div><div class=container><h1>My backup strategy <span class=meta>9 Jan 2014</span></h1><div id=post><p>For a long time I didn&rsquo;t have a real backup strategy. I just had some HDDs
+with - hopefully - more than one copy of the important files. Then I decided
+to not trust into such a more or less random backup and build up a software
+RAID (RAID 5) using <code>mdadm</code>. Yeah, I know RAID isn&rsquo;t a real backup but it&rsquo;s a
+lot better than just having single HDDs which could fail and then the data is
+gone. After a while I wrote a little script to push essential files to the
+universities file system - the first solution that was allowed to name itself
+backup.</p><p><strong>Update: I experienced that for longer running backups the script gets killed
+and found a solution <a href="https://forums.opensuse.org/showthread.php/485261-Script-run-from-udev-rule-gets-killed-shortly-after-start?s=7eac3bc03468320a68ace6e067aa3d5a&p=2542715#post2542715">here</a>. I updated this post according to this.</strong></p><h2 id=hardware>Hardware</h2><p>As my data grows it was time for the next step - a backup with more capacity.
+So I bought an external hard drive and a timer clock. Put the latter into
+plug-socket, setting up the timer for an suitable time slot, connect the power
+supply of the external hard drive to the timer clock and the USB into the PC -
+ready to set up the software part.</p><p>The actual backup is done using <a href=http://www.rsnapshot.org/>rsnapshot</a> (<a href=http://wiki.ubuntuusers.de/rsnapshot>Ubuntuusers wiki - german</a>).
+To invoke this a litte helper script is called using a udev rule and a systemd
+service.</p><h2 id=systemd-service>systemd service</h2><p>The actual script has to be started as an systemd service. Otherwise it will
+be killed by systemd/udev. I created following service file
+<code>/etc/systemd/system/backup@.service</code> as described <a href="https://forums.opensuse.org/showthread.php/485261-Script-run-from-udev-rule-gets-killed-shortly-after-start?s=7eac3bc03468320a68ace6e067aa3d5a&p=2542715#post2542715">here</a>.</p><pre><code>[Unit]
+Description=Backup to USB HDD
+BindsTo=dev-%i.device
+
+[Service]
+Type=simple
+ExecStart=path/to/Backup/backup.sh
+</code></pre><h2 id=udev-rule>udev rule</h2><p>I used following udev rule (located in <code>/etc/udev/rules.d/10-usb-hdd-backup.rules</code>).
+The rule needs to be applied before the udisks2 rules (on ArchLinux the rule is
+named <a href=https://www.archlinux.org/packages/extra/x86_64/udisks2/>80-udisks2.rules</a>).</p><pre><code>SUBSYSTEMS==&quot;usb&quot;,ACTION==&quot;add&quot;,KERNEL==&quot;sd?1&quot;,ATTRS{serial}==&quot;aabbccdd&quot;,
+SYMLINK+=&quot;backup&quot;,RUN+=&quot;/usr/bin/systemctl --no-block start
+backup@%k.service&quot;,	ENV{UDISKS_IGNORE}=&quot;1&quot;
+</code></pre><p>This calls the script <code>path/to/backup.sh</code> right after the recognition of the
+usb device. <code>SYMLINK+="backup"</code> creates the device <code>/dev/backup</code> for an easier
+device handling and <code>ENV{UDISKS_IGNORE}="1"</code> disables the <a href="https://bbs.archlinux.org/viewtopic.php?pid=1157811#p1157811">auto mount of
+udisks2</a>.</p><p>To retrieve the serial just plug the drive in and look up the serial with
+following command (where <code>/dev/sdf</code> is the external device).</p><pre><code>$ udevadm info -a -p  $(udevadm info -q path -n /dev/sdf) | grep serial
+</code></pre><h2 id=backupsh>backup.sh</h2><p>This is the script I used to invoke rsnapshot. It mounts the partition, checks
+for the folders <code>daily.0</code>, <code>weekly.0</code> and <code>monthly.0</code> inside of the
+destination folder to call the daily part once a day, the weekly part once
+every 7 days and the monthly once every 30 days. Then it unmounts the
+partition and suspends the USB device using <a href=https://github.com/vain/suspend-usb-device/blob/master/suspend-usb-device>this script</a>.</p><pre><code>#!/bin/bash
+#
+#  script to use rsnapshot with a (not always mounted) external hard
+#  drive (this script gets called by an udev rule)
+#  see http://morrisjobke.de/2014/01/09/My-backup-strategy/
+#
+#  Copyright (C) 2014, Morris Jobke &lt;morris.jobke@gmail.com&gt;
+#
+#  This program is free software: you can redistribute it and/or modify
+#  it under the terms of the GNU General Public License as published by
+#  the Free Software Foundation, either version 3 of the License, or
+#  (at your option) any later version.
+#
+#  This program is distributed in the hope that it will be useful,
+#  but WITHOUT ANY WARRANTY; without even the implied warranty of
+#  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#  GNU General Public License for more details.
+#
+#  You should have received a copy of the GNU General Public License
+#  along with this program.  If not, see &lt;http://www.gnu.org/licenses/&gt;.
+
+DEV_NAME=/dev/backup
+MNT_NAME=/mnt/backup
+BACKUP_FOLDER=${MNT_NAME}/wigrid.snapshots
+SUSPEND_USB_SCRIPT=path/to/suspend-usb-device.sh
+
+# create directory if needed
+if [ ! -d &quot;$MNT_NAME&quot; ]; then
+    mkdir &quot;$MNT_NAME&quot;
+fi
+
+# mount
+mount -t auto &quot;$DEV_NAME&quot; &quot;$MNT_NAME&quot;
+
+logger &quot;rsnapshot started&quot;
+
+if [ ! -d &quot;${BACKUP_FOLDER}/daily.0&quot; ] || [ $(find ${BACKUP_FOLDER}/daily.0
+    -maxdepth 0 -type d -mtime +1 | grep daily) ]; then
+    # if no daily backup is available or daily backup is older than 1 day
+    # then run daily
+    logger &quot;rsnapshot daily&quot;
+    rsnapshot daily
+fi
+
+if [ ! -d &quot;${BACKUP_FOLDER}/weekly.0&quot; ] || [ $(find ${BACKUP_FOLDER}/weekly.0
+    -maxdepth 0 -type d -mtime +7 | grep weekly) ]; then
+    # if no weekly backup is available or weekly backup is older than 7 days
+    # then run weekly
+    logger &quot;rsnapshot weekly&quot;
+    rsnapshot weekly
+fi
+
+if [ ! -d &quot;${BACKUP_FOLDER}/monthly.0&quot; ] || [ $(find ${BACKUP_FOLDER}/monthly.0
+    -maxdepth 0 -type d -mtime +30 | grep monthly) ]; then
+    # if no monthly backup is available or monthly backup is older than 30 days
+    # then run monthly
+    logger &quot;rsnapshot monthly&quot;
+    rsnapshot monthly
+fi
+
+logger &quot;rsnapshot finished&quot;
+
+#unmount
+umount &quot;$MNT_NAME&quot;
+
+# suspending USB device
+# from https://raw2.github.com/vain/suspend-usb-device/master/suspend-usb-device
+${SUSPEND_USB_SCRIPT} &quot;$DEV_NAME&quot;
+</code></pre><p>I&rsquo;m open for suggestions to improve this.</p><p><em>Bonus:</em> You can check the current backup run with <code>systemctl status backup@sdX1.service</code>.</p></div></div><div class="container footer">Morris Jobke - <a rel=license href=http://creativecommons.org/licenses/by/4.0/>Creative Commons Attribution 4.0 International License</a></div></body></html>
