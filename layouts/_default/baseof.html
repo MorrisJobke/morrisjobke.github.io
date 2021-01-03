@@ -6,10 +6,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{ if isset .Site "Title" }}{{ .Site.Title }} - {{ end }}Morris Jobke</title>
 
-    <link rel="stylesheet" href="/css/pygment_trac.css" />
+    {{ $pygmentTracCSS := os.Stat "static/css/pygment_trac.css" }}
+    {{ $webfontsCSS := os.Stat "static/css/webfonts.css" }}
+    {{ $baseCSS := os.Stat "static/css/base.css" }}
+    <link rel="stylesheet" href="/css/pygment_trac.css?{{ $pygmentTracCSS.ModTime.Unix }}" />
     <link rel="alternate" type="application/atom+xml" title="Atom feed" href="/feed.xml" />
-    <link rel="stylesheet" href="/css/webfonts.css" />
-    <link rel="stylesheet" href="/css/base.css?v=3" />
+    <link rel="stylesheet" href="/css/webfonts.css?{{ $webfontsCSS.ModTime.Unix }}" />
+    <link rel="stylesheet" href="/css/base.css?{{ $baseCSS.ModTime.Unix }}" />
 
     {{ template "_internal/opengraph.html" . }}
     {{ template "_internal/twitter_cards.html" . }}
