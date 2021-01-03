@@ -1,0 +1,7 @@
+{{ define "main" }}
+  <ul class="articles">
+  {{ range where .Site.RegularPages "Section" "in" .Site.Params.mainSections }}
+    <li><a href="{{ .Permalink }}">{{ .Title }}</a><span class="date">{{ .Date.Format "2 Jan 2006" }}</span></li>
+  {{ end }}
+  </ul>
+{{ end }}

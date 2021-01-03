@@ -1,0 +1,114 @@
+---
+categories:
+- howto
+- owncloud
+date: "2016-03-07T15:11:00Z"
+title: ownCloud 9.0 - calendar migration analysis
+---
+
+Soon the release of ownCloud 9 is coming. With this release the ownCloud core will provide the CalDAV and CardDAV endpoints that are previously provided by the calendar and contacts app. Therefore a migration was needed. This migration is done automatically during the upgrade and you usually shouldn't need to dig into this. As always: We aim for the best user experience but sometimes things go wrong - so I will here describe how to debug migration issues.
+
+**Warning:** This should not be executed if you don't know what is done here - don't blindly execute this, because it could lead to data loss if you already changed calendar events after the upgrade to 9.0. The best is to execute this only on a test system.
+
+This post should cover how one could debug the calendar migration that has failed or was aborted. If your migration worked fine then you don't need to read this. ;)
+
+## Checking if migration went well
+
+{{< highlight sql >}}
+/* show old calendars and count */
+SELECT o.calendarid, c.userid, c.displayname, c.uri, COUNT(o.calendarid)
+FROM oc_clndr_objects o
+JOIN oc_clndr_calendars c ON o.calendarid = c.id
+GROUP BY calendarid
+ORDER BY c.userid, c.displayname;
+
+/* show new calendars and count */
+SELECT o.calendarid, c.principaluri, c.displayname, c.uri, COUNT(o.calendarid)
+FROM oc_calendarobjects o
+JOIN oc_calendars c ON o.calendarid = c.id
+GROUP BY calendarid
+ORDER BY c.principaluri, c.displayname;
+{{< / highlight >}}
+
+The above two statements will show the old calendars with a count of events in the calendars and the same for the new calendar.
+
+Ideally this should look like this - the count of the old calendars should be the same as the new ones:
+
+{{< highlight sql >}}
+MariaDB [owncloud_stable]> SELECT o.calendarid, c.userid, c.displayname, c.uri, COUNT(o.calendarid)
+    -> FROM oc_clndr_objects o
+    -> JOIN oc_clndr_calendars c ON o.calendarid = c.id
+    -> GROUP BY calendarid
+    -> ORDER BY c.userid, c.displayname;
++------------+--------+------------------+-----------------+---------------------+
+| calendarid | userid | displayname      | uri             | COUNT(o.calendarid) |
++------------+--------+------------------+-----------------+---------------------+
+|          8 | mjob   | Example 1        | example1        |                 143 |
+|          7 | mjob   | Feiertage        | feiertage       |                 140 |
+|          1 | mjob   | Morris           | defaultcalendar |                1019 |
+|          9 | mjob   | Projekte         | projekte        |                   3 |
++------------+--------+------------------+-----------------+---------------------+
+4 rows in set (0.00 sec)
+
+MariaDB [owncloud_stable]> SELECT o.calendarid, c.principaluri, c.displayname, c.uri, COUNT(o.calendarid)
+    -> FROM oc_calendarobjects o
+    -> JOIN oc_calendars c ON o.calendarid = c.id
+    -> GROUP BY calendarid
+    -> ORDER BY c.principaluri, c.displayname;
++------------+-----------------------+------------------+-----------------+---------------------+
+| calendarid | principaluri          | displayname      | uri             | COUNT(o.calendarid) |
++------------+-----------------------+------------------+-----------------+---------------------+
+|          7 | principals/users/mjob | Example 1        | example1        |                 143 |
+|          6 | principals/users/mjob | Feiertage        | feiertage       |                 140 |
+|         13 | principals/users/mjob | Morris           | defaultcalendar |                1019 |
+|          8 | principals/users/mjob | Projekte         | projekte        |                   3 |
++------------+-----------------------+------------------+-----------------+---------------------+
+{{< / highlight >}}
+
+If this is the case: Stop reading and be happy that everything worked well. :)
+
+If the count is not the same it looks like this (the calendar `Morris` holds 1019 entries in the old table but only 267 in the new table):
+
+{{< highlight sql >}}
++------------+--------+------------------+-----------------+---------------------+
+| calendarid | userid | displayname      | uri             | COUNT(o.calendarid) |
++------------+--------+------------------+-----------------+---------------------+
+|          8 | mjob   | Example 1        | example1        |                 143 |
+|          7 | mjob   | Feiertage        | feiertage       |                 140 |
+|          1 | mjob   | Morris           | defaultcalendar |                1019 |
+|          9 | mjob   | Projekte         | projekte        |                   3 |
++------------+--------+------------------+-----------------+---------------------+
+4 rows in set (0.00 sec)
+
+...
+
++------------+-----------------------+------------------+-----------------+---------------------+
+| calendarid | principaluri          | displayname      | uri             | COUNT(o.calendarid) |
++------------+-----------------------+------------------+-----------------+---------------------+
+|          7 | principals/users/mjob | Example 1        | example1        |                 143 |
+|          6 | principals/users/mjob | Feiertage        | feiertage       |                 140 |
+|         13 | principals/users/mjob | Morris           | defaultcalendar |                 267 |
+|          8 | principals/users/mjob | Projekte         | projekte        |                   3 |
++------------+-----------------------+------------------+-----------------+---------------------+
+{{< / highlight >}}
+
+This means some events are not migrated and more trouble shooting is required.
+
+## Running the migration again
+
+As already written this is usually done automatically during the upgrade of ownCloud 8.2 to 9.0.
+
+Nevertheless you maybe want to retrigger this. <s>Those commands are only available in debug mode. **Note:** be aware that debug mode should not be used on production instances because it could leak informations in the debug messages once an error occurs.</s> **Edit:** The debug mode is not needed anymore with 9.0.0 RC4. (I added comments to those `config:system:set` commands)
+
+The migration steps will only run for not yet migrated calendars. Therefore you need to delete the new calendar that was not fully migrated, because the migration step will check if the calendar only exists. If the calendar exists it will handle it as an already migrated calendar. **Note:** This will delete all data that was added after the upgrade from 8.2 to 9.0 to this calendar. **Only do this if you didn't added any event to this calendar after the upgrade to 9.0!**
+
+Replace `USER` with your database user, `DATABASENAME` with the database name of your ownCloud and `CALENDARID` with the id of the calendar in `oc_calendars` (new calendar). `USERNAME` in the migrate command needs to be replaced with the ownCloud username of which the migration step should be run.
+
+{{< highlight shell >}}
+$ # ./occ config:system:set debug --value true --type boolean
+$ mysql -u USER -p DATABASENAME --exec "DELETE FROM oc_calendarobjects WHERE calendarid = CALENDARID; DELETE FROM oc_calendars WHERE id = CALENDARID;"
+$ ./occ dav:migrate-calendars USERNAME -v
+$ # ./occ config:system:set debug --value false --type boolean
+{{< / highlight >}}
+
+Then check the logs and the output for error messages and maybe report this to ownCloud.
