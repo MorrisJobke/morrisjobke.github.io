@@ -2,7 +2,7 @@
 categories:
 - howto
 - owncloud
-date: "2015-07-22T21:46:00Z"
+date: "2015-07-22T19:46:00Z"
 title: Conditional Logging in ownCloud
 ---
 

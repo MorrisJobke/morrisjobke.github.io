@@ -2,7 +2,7 @@
 categories:
 - gsoc
 - owncloud
-date: "2013-08-30T11:25:00Z"
+date: "2013-08-30T09:25:00Z"
 title: GSoC - Developer Meetup in Berlin and Alpha Release
 ---
 

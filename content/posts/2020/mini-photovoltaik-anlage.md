@@ -1,7 +1,7 @@
 ---
 categories:
 - notes
-date: "2020-08-25T21:37:00Z"
+date: "2020-08-25T19:37:00Z"
 title: Mini PV-Anlage - Balkonkraftwerk - Steckerfertige PV-Anlage
 ---
 

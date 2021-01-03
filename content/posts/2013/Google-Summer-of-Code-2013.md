@@ -2,7 +2,7 @@
 categories:
 - gsoc
 - owncloud
-date: "2013-05-30T14:26:21Z"
+date: "2013-05-30T12:26:21Z"
 title: Google Summer of Code 2013 - May the fun begin!
 ---
 

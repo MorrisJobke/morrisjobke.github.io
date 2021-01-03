@@ -1,7 +1,7 @@
 ---
 categories:
 - howto
-date: "2012-02-28T19:00:00Z"
+date: "2012-02-28T18:00:00Z"
 title: gitolite + cgit + nginx
 aliases:
 - /2012/02/28/gitolite+cgit+nginx

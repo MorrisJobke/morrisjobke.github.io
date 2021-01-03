@@ -1,6 +1,6 @@
 ---
 title:  "Talks"
-date:   2014-10-23 22:22:22 CET
+date: "2014-10-23T20:22:22Z"
 ---
 
 ownCloud

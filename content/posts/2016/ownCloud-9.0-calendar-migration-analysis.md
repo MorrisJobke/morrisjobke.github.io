@@ -2,7 +2,7 @@
 categories:
 - howto
 - owncloud
-date: "2016-03-07T16:11:00Z"
+date: "2016-03-07T15:11:00Z"
 title: ownCloud 9.0 - calendar migration analysis
 ---
 

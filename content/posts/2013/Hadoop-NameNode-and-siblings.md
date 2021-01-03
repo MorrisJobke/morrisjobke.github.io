@@ -1,7 +1,7 @@
 ---
 categories:
 - hadoop
-date: "2013-12-11T19:20:00Z"
+date: "2013-12-11T18:20:00Z"
 title: Hadoop - NameNode, Checkpoint Node and Backup Node
 ---
 

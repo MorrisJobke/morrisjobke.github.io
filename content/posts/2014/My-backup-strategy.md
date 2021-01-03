@@ -1,7 +1,7 @@
 ---
 categories:
 - howto
-date: "2014-01-09T01:10:59Z"
+date: "2014-01-09T00:10:59Z"
 title: My backup strategy
 ---
 

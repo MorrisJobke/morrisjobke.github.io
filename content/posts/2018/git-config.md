@@ -1,7 +1,7 @@
 ---
 categories:
 - howto
-date: "2018-03-03T13:30:00Z"
+date: "2018-03-03T12:30:00Z"
 title: My git config
 ---
 

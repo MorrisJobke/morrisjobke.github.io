@@ -1,7 +1,7 @@
 ---
 categories:
 - howto
-date: "2013-06-01T15:59:22Z"
+date: "2013-06-01T13:59:22Z"
 title: Empty git branch
 ---
 

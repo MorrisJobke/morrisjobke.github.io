@@ -2,7 +2,7 @@
 categories:
 - gsoc
 - owncloud
-date: "2013-08-06T15:15:00Z"
+date: "2013-08-06T13:15:00Z"
 title: GSoC - Weeks 6 and 7
 ---
 

@@ -1,7 +1,7 @@
 ---
 categories:
 - howto
-date: "2020-03-20T19:19:00Z"
+date: "2020-03-20T18:19:00Z"
 title: Word Clock - Software
 ---
 

@@ -1,7 +1,7 @@
 ---
 categories:
 - owncloud
-date: "2016-05-31T14:35:00Z"
+date: "2016-05-31T12:35:00Z"
 title: Thanks for the journey, ownCloud Inc.
 ---
 

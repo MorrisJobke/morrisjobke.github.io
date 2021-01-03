@@ -1,7 +1,5 @@
 ---
-layout: default
 title: Links
-permalink: links/
 ---
 
  * [git - the simple guide](https://rogerdudler.github.io/git-guide/index.html)

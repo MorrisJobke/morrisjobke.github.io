@@ -1,7 +1,7 @@
 ---
 categories:
 - howto
-date: "2015-12-03T10:51:00Z"
+date: "2015-12-03T09:51:00Z"
 title: How to do a git rebase
 ---
 

@@ -2,7 +2,7 @@
 categories:
 - howto
 - owncloud
-date: "2015-07-23T09:46:00Z"
+date: "2015-07-23T07:46:00Z"
 title: Verbose ownCloud upgrade
 ---
 

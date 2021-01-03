@@ -1,7 +1,7 @@
 ---
 categories:
 - howto
-date: "2012-02-29T15:03:00Z"
+date: "2012-02-29T14:03:00Z"
 title: Stapelverarbeitung von JPGs - Komprimieren und PDF erstellen
 ---
 

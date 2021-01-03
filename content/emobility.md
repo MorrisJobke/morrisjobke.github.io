@@ -1,7 +1,6 @@
 ---
-layout: plain
 title:  "🚗🔋 Elektromobilität"
-date:   2019-04-25 10:33:00 CET
+date: "2019-04-25T08:33:00Z"
 ---
 
 Bei Diskussionen rund um Elektromobilität stößt man immer wieder auf gewisse Punkte und Anmerkungen, denen man sich stellen sollte. Aus diesem Grund habe ich meine kleine Notizensammlung hier einmal veröffentlicht, sodass man sich einen Überblick verschaffen kann. Diese Sammlung erhebt keinerlei Anspruch auf Vollständigkeit, noch sind alle Kommentare von mir. Einen Teil der Links entstammt dem [#fakten-fakten-fakten](https://cleanelectric.slack.com/messages/CC4BMEGLA) Channel im [CleanEletric-Slack](https://join.slack.com/t/cleanelectric/shared_invite/enQtMzE2ODMzNDgyODk5LTM4Yzk5NTRiMjhiMzc4YjUyYjU1YzI5Y2E0NmFlNzY1NmNkN2NlOTk4YzRmZDhiMzFjMmJmZTRmNTI0OWQ1NjQ). Falls dies so ist, habe ich es gekennzeichnent.

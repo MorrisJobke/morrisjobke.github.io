@@ -1,7 +1,7 @@
 ---
 categories:
 - howto
-date: "2018-10-31T22:53:00Z"
+date: "2018-10-31T21:53:00Z"
 title: CouchDB - filtered replication by example
 ---
 

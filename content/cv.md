@@ -1,7 +1,7 @@
 ---
 layout: cv
 title:  "Curriculum vitae"
-date:   2013-12-20 02:00:00 CET
+date: "2013-12-20T01:00:00Z"
 ---
 
 Education

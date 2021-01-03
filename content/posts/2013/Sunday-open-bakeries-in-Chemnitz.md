@@ -1,7 +1,7 @@
 ---
 categories:
 - other
-date: "2013-08-11T19:39:00Z"
+date: "2013-08-11T17:39:00Z"
 title: Sunday opened bakeries in Chemnitz
 ---
 

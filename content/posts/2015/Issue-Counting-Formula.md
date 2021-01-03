@@ -2,7 +2,7 @@
 categories:
 - howto
 - owncloud
-date: "2015-01-09T01:39:45Z"
+date: "2015-01-09T00:39:45Z"
 title: Issue Counting Formula
 ---
 

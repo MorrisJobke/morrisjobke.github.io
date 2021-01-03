@@ -2,7 +2,7 @@
 categories:
 - howto
 - owncloud
-date: "2015-01-15T09:53:00Z"
+date: "2015-01-15T08:53:00Z"
 title: Blackfire PHP Profiler on ArchLinux
 ---
 

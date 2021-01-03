@@ -1,7 +1,7 @@
 ---
 categories:
 - howto
-date: "2016-02-21T17:55:00Z"
+date: "2016-02-21T16:55:00Z"
 title: Dokku - An easy way to deploy web apps
 ---
 
