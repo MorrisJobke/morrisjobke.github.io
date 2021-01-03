@@ -21,6 +21,9 @@ jobs:
       - name: Build
         run: hugo --minify
 
+      - name: Copy feed to old location
+        run: cp public/feed.xml public/feed.atom
+
       - name: Deploy
         uses: peaceiris/actions-gh-pages@v3
         with:
