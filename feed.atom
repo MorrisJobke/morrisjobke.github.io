@@ -1,4 +1,90 @@
-<feed xmlns="http://www.w3.org/2005/Atom"><title>Morris Jobke</title><link href="https://morrisjobke.de/feed.xml" rel="self"/><link href="https://morrisjobke.de/"/><updated>2021-01-03T21:12:00+00:00</updated><id>https://morrisjobke.de/</id><author><name>Morris Jobke</name></author><generator>Hugo -- gohugo.io</generator><entry><title type="html">Collection #1</title><link href="https://morrisjobke.de/2021/01/03/collection-1/"/><id>https://morrisjobke.de/2021/01/03/collection-1/</id><published>2021-01-03T21:12:00+00:00</published><updated>2021-01-03T21:12:00+00:00</updated><content type="html"><![CDATA[<p>From time to time I have some blog posts, tools, extensions, guides or just little code snippets I want to keep listed somewhere and share it. So this is the first of those collections and was inspired by the <a href="https://blog.kovah.de/en/collection">collections of kovah</a>.</p>
+<feed xmlns="http://www.w3.org/2005/Atom"><title>Morris Jobke</title><link href="https://morrisjobke.de/feed.xml" rel="self"/><link href="https://morrisjobke.de/"/><updated>2021-01-05T22:15:00+00:00</updated><id>https://morrisjobke.de/</id><author><name>Morris Jobke</name></author><generator>Hugo -- gohugo.io</generator><entry><title type="html">First steps with NixOps</title><link href="https://morrisjobke.de/2021/01/05/first-steps-with-nixops/"/><id>https://morrisjobke.de/2021/01/05/first-steps-with-nixops/</id><published>2021-01-05T22:15:00+00:00</published><updated>2021-01-05T22:15:00+00:00</updated><content type="html"><![CDATA[<p>I wanted to play around a bit with <a href="https://nixos.org">NixOS</a> and <a href="https://nixos.org/nixops">NixOps</a>. Those are the notes on how I got started with it on macOS and an VM inside VirtualBox.</p>
+<h2 id="requirements">Requirements</h2>
+<p>You need to have <code>nixops</code> installed locally. I installed <a href="https://nixos.org">nix</a> on macOS Big Sur via <a href="https://www.philipp.haussleiter.de/2020/04/fixing-nix-setup-on-macos-catalina/">the tutorial on Philipps blog post</a> and then ran <code>nix-env -i nixops</code>.</p>
+<h2 id="configuration-files">Configuration files</h2>
+<p>The following two configuration files are needed for a first simple <a href="https://nixos.org/nixops">NixOps</a> setup.</p>
+<p><code>trivial.nix</code></p>
+<pre><code>{
+  network.description = &quot;Web server&quot;;
+
+  webserver =
+    { config, pkgs, ... }:
+    { services.httpd.enable = true;
+      services.httpd.adminAddr = &quot;alice@example.org&quot;;
+      networking.firewall.allowedTCPPorts = [ 80 ];
+
+      services.httpd.logFormat = &quot;combined&quot;;
+      services.httpd.virtualHosts = {
+        &quot;main&quot; = {
+          documentRoot = &quot;/tmp&quot;;
+        };
+      };
+    };
+}
+</code></pre><p><code>trivial-vbox.nix</code></p>
+<pre><code>{
+  webserver =
+    { config, pkgs, ... }:
+    { deployment.targetEnv = &quot;virtualbox&quot;;
+      deployment.virtualbox.memorySize = 1024; # megabytes
+      deployment.virtualbox.vcpu = 2; # number of cpus
+      deployment.virtualbox.headless = true;
+    };
+}
+</code></pre><h2 id="deploying-it">Deploying it</h2>
+<p>Create deployment:</p>
+<pre><code>$ nixops create ./trivial.nix ./trivial-vbox.nix -d trivial
+</code></pre><p>Show deployment state:</p>
+<pre><code>$ nixops info -d trivial
+Network name: trivial
+Network UUID: 89dbba3d-4f9c-11eb-b54e-acbc32a44755
+Network description: Web server
+Nix expressions: /Users/morris/Projects/nixops-machines/trivial.nix /Users/morris/Projects/nixops-machines/trivial-vbox.nix
+
++-----------+---------+------------+-------------+------------+
+| Name      |  Status | Type       | Resource Id | IP address |
++-----------+---------+------------+-------------+------------+
+| webserver | Missing | virtualbox |             |            |
++-----------+---------+------------+-------------+------------+
+</code></pre><p>Deploy machine (that creates the VM and deploys the NixOS configuration):</p>
+<pre><code>$ nixops deploy -d trivial
+webserver&gt; creating VirtualBox VM...
+webserver&gt; Virtual machine 'nixops-89dbba3d-4f9c-11eb-b54e-acbc32a44755-webserver' is created and registered.
+webserver&gt; UUID: db550623-f02f-4e8c-a0c8-e79ec7dee325
+webserver&gt; Settings file: '/Users/morris/VirtualBox VMs/nixops-89dbba3d-4f9c-11eb-b54e-acbc32a44755-webserver/nixops-89dbba3d-4f9c-11eb-b54e-acbc32a44755-webserver.vbox'
+webserver&gt; creating disk ‘disk1’...
+webserver&gt; these derivations will be built:
+webserver&gt;   /nix/store/rr7p21npwab33dyf0aph8vlkqqhvkxlk-virtualbox-nixops-19.03.172205.ea497998e4b.vmdk.xz.drv
+webserver&gt;   /nix/store/sw3bp8vnc3m2cp0lfv1pfjm2kk9p9pvj-virtualbox-nixops-21.03.vmdk.drv
+webserver&gt; these paths will be fetched (2.87 MiB download, 9.22 MiB unpacked):
+webserver&gt;   /nix/store/01pkcbbpl13rrvgxlhcbxyfbsi88g56s-curl-7.74.0
+webserver&gt;   /nix/store/1cvgyzi5hz4ni0cz5pv09frgq6lln9i4-stdenv-darwin
+webserver&gt;   /nix/store/301q4qwn3rvl9b8l0c5296bgrf9hb914-curl-7.74.0-bin
+webserver&gt;   /nix/store/48mk2wkwhrhpcfzsr23kbh25lkirhwih-openssl-1.1.1i-bin
+...
+</code></pre><p>Check the machine state:</p>
+<pre><code>$ nixops check -d trivial
+Machines state:
++-----------+--------+-----+-----------+----------+----------------+------------------------------------------+-------+
+| Name      | Exists | Up  | Reachable | Disks OK | Load avg.      | Units                                    | Notes |
++-----------+--------+-----+-----------+----------+----------------+------------------------------------------+-------+
+| webserver | Yes    | Yes | Yes       | N/A      | 0.02 0.16 0.14 | ● home.mount [failed]                    |       |
+|           |        |     |           |          |                |   sys-fs-fuse-connections.mount [failed] |       |
+|           |        |     |           |          |                |   sys-kernel-config.mount [failed]       |       |
+|           |        |     |           |          |                | ● tmp.mount [failed]                     |       |
++-----------+--------+-----+-----------+----------+----------------+------------------------------------------+-------+
+Non machines resources state:
++------+--------+
+| Name | Exists |
++------+--------+
++------+--------+
+</code></pre><h2 id="links">Links</h2>
+<ul>
+<li><a href="https://releases.nixos.org/nixops/nixops-1.7/manual/manual.html">NixOps 1.7 manual</a></li>
+<li><a href="https://noqqe.de/blog/2020/06/24/nixos-httpd/">Was NixOS kann - Ein Webserver-Beispiel (noqqe.de)</a></li>
+<li><a href="https://www.philipp.haussleiter.de/2020/04/fixing-nix-setup-on-macos-catalina/">Fixing nix Setup on MacOS Catalina</a></li>
+</ul>
+]]></content></entry><entry><title type="html">Collection #1</title><link href="https://morrisjobke.de/2021/01/03/collection-1/"/><id>https://morrisjobke.de/2021/01/03/collection-1/</id><published>2021-01-03T21:12:00+00:00</published><updated>2021-01-03T21:12:00+00:00</updated><content type="html"><![CDATA[<p>From time to time I have some blog posts, tools, extensions, guides or just little code snippets I want to keep listed somewhere and share it. So this is the first of those collections and was inspired by the <a href="https://blog.kovah.de/en/collection">collections of kovah</a>.</p>
 <h1 id="scriptable-ios">Scriptable (iOS)</h1>
 <p>Scriptable is an iOS app that allows to run JavaScript code snippets on your iOS device. Those can be used as short cuts, siri answers or widgets.</p>
 <p><a href="https://scriptable.app">https://scriptable.app</a></p>

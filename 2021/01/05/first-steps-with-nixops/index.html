@@ -1,0 +1,75 @@
+<!doctype html><html lang=en-us><head><meta charset=utf-8><meta http-equiv=x-ua-compatible content="chrome=1"><meta name=viewport content="width=device-width,initial-scale=1"><title>Morris Jobke</title><link rel=stylesheet href=/css/pygment_trac.css?1609885168><link rel=alternate type=application/atom+xml title="Atom feed" href=/feed.xml><link rel=stylesheet href=/css/webfonts.css?1609885168><link rel=stylesheet href=/css/base.css?1609885168><meta property="og:title" content="First steps with NixOps"><meta property="og:description" content="I wanted to play around a bit with NixOS and NixOps. Those are the notes on how I got started with it on macOS and an VM inside VirtualBox.
+Requirements You need to have nixops installed locally. I installed nix on macOS Big Sur via the tutorial on Philipps blog post and then ran nix-env -i nixops.
+Configuration files The following two configuration files are needed for a first simple NixOps setup."><meta property="og:type" content="article"><meta property="og:url" content="https://morrisjobke.de/2021/01/05/first-steps-with-nixops/"><meta property="article:published_time" content="2021-01-05T22:15:00+00:00"><meta property="article:modified_time" content="2021-01-05T22:15:00+00:00"><meta name=twitter:card content="summary"><meta name=twitter:title content="First steps with NixOps"><meta name=twitter:description content="I wanted to play around a bit with NixOS and NixOps. Those are the notes on how I got started with it on macOS and an VM inside VirtualBox.
+Requirements You need to have nixops installed locally. I installed nix on macOS Big Sur via the tutorial on Philipps blog post and then ran nix-env -i nixops.
+Configuration files The following two configuration files are needed for a first simple NixOps setup."><meta name=twitter:site content="@MorrisJobke"><meta itemprop=name content="First steps with NixOps"><meta itemprop=description content="I wanted to play around a bit with NixOS and NixOps. Those are the notes on how I got started with it on macOS and an VM inside VirtualBox.
+Requirements You need to have nixops installed locally. I installed nix on macOS Big Sur via the tutorial on Philipps blog post and then ran nix-env -i nixops.
+Configuration files The following two configuration files are needed for a first simple NixOps setup."><meta itemprop=datePublished content="2021-01-05T22:15:00+00:00"><meta itemprop=dateModified content="2021-01-05T22:15:00+00:00"><meta itemprop=wordCount content="388"><meta itemprop=keywords content></head><body><div class=header><div class=container><span class=name>Morris<b>Jobke</b></span><ul class=menu><li><a href=/>Articles</a></wli> /<li><a href=/talks>Talks</a></li>/<li><a href=/links>Links</a></li><li class=item-right><a href=/feed.xml><svg width="20" height="20" viewBox="0 0 1792 1792" xmlns="http://www.w3.org/2000/svg"><path d="M576 1344q0 80-56 136t-136 56-136-56-56-136 56-136 136-56 136 56 56 136zm512 123q2 28-17 48-18 21-47 21H889q-25 0-43-16.5t-20-41.5q-22-229-184.5-391.5T250 902q-25-2-41.5-20T192 839V704q0-29 21-47 17-17 43-17h5q160 13 306 80.5T826 902q114 113 181.5 259t80.5 306zm512 2q2 27-18 47-18 20-46 20h-143q-26 0-44.5-17.5T1329 1476q-12-215-101-408.5t-231.5-336-336-231.5T252 398q-25-1-42.5-19.5T192 335V192q0-28 20-46 18-18 44-18h3q262 13 501.5 120T1186 542q187 186 294 425.5t120 501.5z" fill="#fff"/></svg></a></li><li class=item-right><a href=https://twitter.com/MorrisJobke><svg width="20" height="20" viewBox="0 0 1792 1792" xmlns="http://www.w3.org/2000/svg"><path d="M1684 408q-67 98-162 167 1 14 1 42 0 130-38 259.5T1369.5 1125 1185 1335.5t-258 146-323 54.5q-271 0-496-145 35 4 78 4 225 0 401-138-105-2-188-64.5T285 1033q33 5 61 5 43 0 85-11-112-23-185.5-111.5T172 710v-4q68 38 146 41-66-44-105-115t-39-154q0-88 44-163 121 149 294.5 238.5T884 653q-8-38-8-74 0-134 94.5-228.5T1199 256q140 0 236 102 109-21 205-78-37 115-142 178 93-10 186-50z" fill="#fff"/></svg></a></li><li class=item-right><a href=https://github.com/MorrisJobke><svg width="20" height="20" viewBox="0 0 1792 1792" xmlns="http://www.w3.org/2000/svg"><path d="M1664 896q0 251-146.5 451.5T1139 1625q-27 5-39.5-7t-12.5-30v-211q0-97-52-142 57-6 102.5-18t94-39 81-66.5 53-105T1386 856q0-121-79-206 37-91-8-204-28-9-81 11t-92 44l-38 24q-93-26-192-26t-192 26q-16-11-42.5-27T578 459.5 492 446q-44 113-7 204-79 85-79 206 0 85 20.5 150t52.5 105 80.5 67 94 39 102.5 18q-40 36-49 103-21 10-45 15t-57 5-65.5-21.5T484 1274q-19-32-48.5-52t-49.5-24l-20-3q-21 0-29 4.5t-5 11.5 9 14 13 12l7 5q22 10 43.5 38t31.5 51l10 23q13 38 44 61.5t67 30 69.5 7 55.5-3.5l23-4q0 38 .5 89t.5 54q0 18-13 30t-40 7q-232-77-378.5-277.5T128 896q0-209 103-385.5T510.5 231 896 128t385.5 103T1561 510.5 1664 896z" fill="#fff"/></svg></a></li></ul></div></div><div class=container><h1>First steps with NixOps <span class=meta>5 Jan 2021</span></h1><div id=post><p>I wanted to play around a bit with <a href=https://nixos.org>NixOS</a> and <a href=https://nixos.org/nixops>NixOps</a>. Those are the notes on how I got started with it on macOS and an VM inside VirtualBox.</p><h2 id=requirements>Requirements</h2><p>You need to have <code>nixops</code> installed locally. I installed <a href=https://nixos.org>nix</a> on macOS Big Sur via <a href=https://www.philipp.haussleiter.de/2020/04/fixing-nix-setup-on-macos-catalina/>the tutorial on Philipps blog post</a> and then ran <code>nix-env -i nixops</code>.</p><h2 id=configuration-files>Configuration files</h2><p>The following two configuration files are needed for a first simple <a href=https://nixos.org/nixops>NixOps</a> setup.</p><p><code>trivial.nix</code></p><pre><code>{
+  network.description = &quot;Web server&quot;;
+
+  webserver =
+    { config, pkgs, ... }:
+    { services.httpd.enable = true;
+      services.httpd.adminAddr = &quot;alice@example.org&quot;;
+      networking.firewall.allowedTCPPorts = [ 80 ];
+
+      services.httpd.logFormat = &quot;combined&quot;;
+      services.httpd.virtualHosts = {
+        &quot;main&quot; = {
+          documentRoot = &quot;/tmp&quot;;
+        };
+      };
+    };
+}
+</code></pre><p><code>trivial-vbox.nix</code></p><pre><code>{
+  webserver =
+    { config, pkgs, ... }:
+    { deployment.targetEnv = &quot;virtualbox&quot;;
+      deployment.virtualbox.memorySize = 1024; # megabytes
+      deployment.virtualbox.vcpu = 2; # number of cpus
+      deployment.virtualbox.headless = true;
+    };
+}
+</code></pre><h2 id=deploying-it>Deploying it</h2><p>Create deployment:</p><pre><code>$ nixops create ./trivial.nix ./trivial-vbox.nix -d trivial
+</code></pre><p>Show deployment state:</p><pre><code>$ nixops info -d trivial
+Network name: trivial
+Network UUID: 89dbba3d-4f9c-11eb-b54e-acbc32a44755
+Network description: Web server
+Nix expressions: /Users/morris/Projects/nixops-machines/trivial.nix /Users/morris/Projects/nixops-machines/trivial-vbox.nix
+
++-----------+---------+------------+-------------+------------+
+| Name      |  Status | Type       | Resource Id | IP address |
++-----------+---------+------------+-------------+------------+
+| webserver | Missing | virtualbox |             |            |
++-----------+---------+------------+-------------+------------+
+</code></pre><p>Deploy machine (that creates the VM and deploys the NixOS configuration):</p><pre><code>$ nixops deploy -d trivial
+webserver&gt; creating VirtualBox VM...
+webserver&gt; Virtual machine 'nixops-89dbba3d-4f9c-11eb-b54e-acbc32a44755-webserver' is created and registered.
+webserver&gt; UUID: db550623-f02f-4e8c-a0c8-e79ec7dee325
+webserver&gt; Settings file: '/Users/morris/VirtualBox VMs/nixops-89dbba3d-4f9c-11eb-b54e-acbc32a44755-webserver/nixops-89dbba3d-4f9c-11eb-b54e-acbc32a44755-webserver.vbox'
+webserver&gt; creating disk ‘disk1’...
+webserver&gt; these derivations will be built:
+webserver&gt;   /nix/store/rr7p21npwab33dyf0aph8vlkqqhvkxlk-virtualbox-nixops-19.03.172205.ea497998e4b.vmdk.xz.drv
+webserver&gt;   /nix/store/sw3bp8vnc3m2cp0lfv1pfjm2kk9p9pvj-virtualbox-nixops-21.03.vmdk.drv
+webserver&gt; these paths will be fetched (2.87 MiB download, 9.22 MiB unpacked):
+webserver&gt;   /nix/store/01pkcbbpl13rrvgxlhcbxyfbsi88g56s-curl-7.74.0
+webserver&gt;   /nix/store/1cvgyzi5hz4ni0cz5pv09frgq6lln9i4-stdenv-darwin
+webserver&gt;   /nix/store/301q4qwn3rvl9b8l0c5296bgrf9hb914-curl-7.74.0-bin
+webserver&gt;   /nix/store/48mk2wkwhrhpcfzsr23kbh25lkirhwih-openssl-1.1.1i-bin
+...
+</code></pre><p>Check the machine state:</p><pre><code>$ nixops check -d trivial
+Machines state:
++-----------+--------+-----+-----------+----------+----------------+------------------------------------------+-------+
+| Name      | Exists | Up  | Reachable | Disks OK | Load avg.      | Units                                    | Notes |
++-----------+--------+-----+-----------+----------+----------------+------------------------------------------+-------+
+| webserver | Yes    | Yes | Yes       | N/A      | 0.02 0.16 0.14 | ● home.mount [failed]                    |       |
+|           |        |     |           |          |                |   sys-fs-fuse-connections.mount [failed] |       |
+|           |        |     |           |          |                |   sys-kernel-config.mount [failed]       |       |
+|           |        |     |           |          |                | ● tmp.mount [failed]                     |       |
++-----------+--------+-----+-----------+----------+----------------+------------------------------------------+-------+
+Non machines resources state:
++------+--------+
+| Name | Exists |
++------+--------+
++------+--------+
+</code></pre><h2 id=links>Links</h2><ul><li><a href=https://releases.nixos.org/nixops/nixops-1.7/manual/manual.html>NixOps 1.7 manual</a></li><li><a href=https://noqqe.de/blog/2020/06/24/nixos-httpd/>Was NixOS kann - Ein Webserver-Beispiel (noqqe.de)</a></li><li><a href=https://www.philipp.haussleiter.de/2020/04/fixing-nix-setup-on-macos-catalina/>Fixing nix Setup on MacOS Catalina</a></li></ul></div></div><div class="container footer">Morris Jobke - <a rel=license href=http://creativecommons.org/licenses/by/4.0/>Creative Commons Attribution 4.0 International License</a></div></body></html>
