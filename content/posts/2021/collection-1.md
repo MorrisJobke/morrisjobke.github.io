@@ -1,7 +1,7 @@
 ---
 title:  "Collection #1"
 date:   "2021-01-03T21:12:00Z"
-categories: 
+categories:
 - collection
 ---
 
