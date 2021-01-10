@@ -1,4 +1,33 @@
-<feed xmlns="http://www.w3.org/2005/Atom"><title>Morris Jobke</title><link href="https://morrisjobke.de/feed.xml" rel="self"/><link href="https://morrisjobke.de/"/><updated>2021-01-05T22:15:00+00:00</updated><id>https://morrisjobke.de/</id><author><name>Morris Jobke</name></author><generator>Hugo -- gohugo.io</generator><entry><title type="html">First steps with NixOps</title><link href="https://morrisjobke.de/2021/01/05/first-steps-with-nixops/"/><id>https://morrisjobke.de/2021/01/05/first-steps-with-nixops/</id><published>2021-01-05T22:15:00+00:00</published><updated>2021-01-05T22:15:00+00:00</updated><content type="html"><![CDATA[<p>I wanted to play around a bit with <a href="https://nixos.org">NixOS</a> and <a href="https://nixos.org/nixops">NixOps</a>. Those are the notes on how I got started with it on macOS and an VM inside VirtualBox.</p>
+<feed xmlns="http://www.w3.org/2005/Atom"><title>Morris Jobke</title><link href="https://morrisjobke.de/feed.xml" rel="self"/><link href="https://morrisjobke.de/"/><updated>2021-01-10T13:01:00+00:00</updated><id>https://morrisjobke.de/</id><author><name>Morris Jobke</name></author><generator>Hugo -- gohugo.io</generator><entry><title type="html">Collection #2</title><link href="https://morrisjobke.de/2021/01/10/collection-2/"/><id>https://morrisjobke.de/2021/01/10/collection-2/</id><published>2021-01-10T13:01:00+00:00</published><updated>2021-01-10T13:01:00+00:00</updated><content type="html"><![CDATA[<h1 id="apple-tv-screensavers">Apple TV screensavers</h1>
+<p>As the Apple TV screensavers are really beautiful I hecked how to get them to have them also on other devices. The website below provides all of them with options to download them.</p>
+<p><a href="https://bzamayo.com/watch-all-the-apple-tv-aerial-video-screensavers">https://bzamayo.com/watch-all-the-apple-tv-aerial-video-screensavers</a></p>
+<h1 id="undoing-a-git-bisect-mistake">Undoing a git bisect mistake</h1>
+<p>If one does a long git bisect it could happen that a commit is wrongly marked as bad/good. There is a nice way to fix this and not need to manually do the already done bisecting steps again.</p>
+<p>Basically this boils down to dumping the history of the bisect with <code>git bisect log</code>, then edit the wrong bisect marking, reset it with <code>git bisect reset</code> and finally replay the log via <code>git bisect replay FILE</code>.</p>
+<p><a href="https://stackoverflow.com/questions/8594758/undoing-a-git-bisect-mistake#8594800">https://stackoverflow.com/questions/8594758/undoing-a-git-bisect-mistake#8594800</a></p>
+<p>The log itself looks like this:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ git bisect log
+git bisect start
+<span style="color:#75715e"># good: [73c2ad293bc2ad12126fe42e8c3f3dd137bab2ab] Merge pull request #23998 from nextcloud/backport/23937/stable20</span>
+git bisect good 73c2ad293bc2ad12126fe42e8c3f3dd137bab2ab
+<span style="color:#75715e"># bad: [785029d69332d83773a19c75077f25779fabd55a] Merge pull request #24424 from nextcloud/dependabot/npm_and_yarn/css-vars-ponyfill-2.4.2</span>
+git bisect bad 785029d69332d83773a19c75077f25779fabd55a
+<span style="color:#75715e"># good: [e14ba58b6d2fec3702e4ad1f8445ccc74d922beb] Merge pull request #22794 from nextcloud/version/20.0.0/rc1</span>
+git bisect good e14ba58b6d2fec3702e4ad1f8445ccc74d922beb
+<span style="color:#75715e"># bad: [3076eb4e9bb4006a5670aa08a2b35d2cfa42cd6c] Merge pull request #23767 from nextcloud/techdebt/noid/add-deprecated-tag-to-all-methods</span>
+git bisect bad 3076eb4e9bb4006a5670aa08a2b35d2cfa42cd6c
+<span style="color:#75715e"># bad: [d51da5714b20544673aec6be3ff7fec1f67cb20b] Merge pull request #23371 from nextcloud/enhancement/psalm-typed-bootstrap-registration-context</span>
+git bisect bad d51da5714b20544673aec6be3ff7fec1f67cb20b
+<span style="color:#75715e"># good: [020ba0847ba4fd8af39e9a730e3d8460cc56c9e3] Bump moment from 2.27.0 to 2.29.0</span>
+git bisect good 020ba0847ba4fd8af39e9a730e3d8460cc56c9e3
+</code></pre></div><h1 id="sql-for-csvexcel-files">SQL for CSV/Excel files</h1>
+<p><code>q</code> is a handy tool to run SQL-like queries on CSV or TSV files. (via <a href="https://twitter.com/danimo/status/1337363460280217604">@danimo</a>)</p>
+<p><a href="https://harelba.github.io/q/">https://harelba.github.io/q/</a></p>
+<h1 id="minimal-viable-search-using-postgres">Minimal Viable Search using Postgres</h1>
+<p>This blog post describes how to build some quick and easy way to implement search within Postgres.</p>
+<p><a href="http://www.sheshbabu.com/posts/minimal-viable-search-using-postgres/">http://www.sheshbabu.com/posts/minimal-viable-search-using-postgres/</a></p>
+<p>Feedback by <a href="https://twitter.com/brainafk/status/1290897820711620608">@brainafk</a> is to maybe use a stored generated column instead of the trigger.</p>
+]]></content></entry><entry><title type="html">First steps with NixOps</title><link href="https://morrisjobke.de/2021/01/05/first-steps-with-nixops/"/><id>https://morrisjobke.de/2021/01/05/first-steps-with-nixops/</id><published>2021-01-05T22:15:00+00:00</published><updated>2021-01-05T22:15:00+00:00</updated><content type="html"><![CDATA[<p>I wanted to play around a bit with <a href="https://nixos.org">NixOS</a> and <a href="https://nixos.org/nixops">NixOps</a>. Those are the notes on how I got started with it on macOS and an VM inside VirtualBox.</p>
 <h2 id="requirements">Requirements</h2>
 <p>You need to have <code>nixops</code> installed locally. I installed <a href="https://nixos.org">nix</a> on macOS Big Sur via <a href="https://www.philipp.haussleiter.de/2020/04/fixing-nix-setup-on-macos-catalina/">the tutorial on Philipps blog post</a> and then ran <code>nix-env -i nixops</code>.</p>
 <h2 id="configuration-files">Configuration files</h2>
