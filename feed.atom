@@ -1,4 +1,115 @@
-<feed xmlns="http://www.w3.org/2005/Atom"><title>Morris Jobke</title><link href="https://morrisjobke.de/feed.xml" rel="self"/><link href="https://morrisjobke.de/"/><updated>2021-01-10T13:01:00+00:00</updated><id>https://morrisjobke.de/</id><author><name>Morris Jobke</name></author><generator>Hugo -- gohugo.io</generator><entry><title type="html">Collection #2</title><link href="https://morrisjobke.de/2021/01/10/collection-2/"/><id>https://morrisjobke.de/2021/01/10/collection-2/</id><published>2021-01-10T13:01:00+00:00</published><updated>2021-01-10T13:01:00+00:00</updated><content type="html"><![CDATA[<h1 id="apple-tv-screensavers">Apple TV screensavers</h1>
+<feed xmlns="http://www.w3.org/2005/Atom"><title>Morris Jobke</title><link href="https://morrisjobke.de/feed.xml" rel="self"/><link href="https://morrisjobke.de/"/><updated>2021-02-21T11:03:00+00:00</updated><id>https://morrisjobke.de/</id><author><name>Morris Jobke</name></author><generator>Hugo -- gohugo.io</generator><entry><title type="html">My experience with NixOps</title><link href="https://morrisjobke.de/2021/02/21/my-experience-with-nixops/"/><id>https://morrisjobke.de/2021/02/21/my-experience-with-nixops/</id><published>2021-02-21T11:03:00+00:00</published><updated>2021-02-21T11:03:00+00:00</updated><content type="html"><![CDATA[<p>After my <a href="/2021/01/05/first-steps-with-nixops/">initial post about NixOps</a> I gave it an in-depth try by migrating one of my servers that hosts a little private blog, a commenting system and some static website over to NixOps.</p>
+<h2 id="nixos-on-scaleway-machine">NixOS on Scaleway machine</h2>
+<p>First I needed to get NixOS running on my <a href="https://www.scaleway.com/">Scaleway</a> VPS. It&rsquo;s not supported out of the box but in the NixOps wiki there is a <a href="https://nixos.wiki/wiki/Install_NixOS_on_Scaleway_X86_Virtual_Cloud_Server">handy guide</a> to accomplish this. It basically boils down to place a file <code>/etc/nixos/host.nix</code> with the NixOS configuration and then use the <a href="https://github.com/elitak/nixos-infect">nixos-infext</a> script to transform the Ubuntu VM into an NixOS one by running following command:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">curl https://raw.githubusercontent.com/elitak/nixos-infect/master/nixos-infect |  NIXOS_IMPORT<span style="color:#f92672">=</span>./host.nix NIX_CHANNEL<span style="color:#f92672">=</span>nixos-20.09 bash 2&gt;&amp;<span style="color:#ae81ff">1</span> | tee /tmp/infect.log
+</code></pre></div><p>The machine then reboots and you have a running NixOS system.</p>
+<h2 id="bootstrap-nixops">Bootstrap NixOps</h2>
+<p>After that I copied the configuration in <code>/etc/nixos</code> over to the machine that runs NixOps, because it overwrites the server completely. That should be three files: <code>hardware-configuration.nix</code>, <code>host.nix</code> and <code>configuration.nix</code>. I transfered them into one file and it looks like this:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-nix" data-lang="nix">{
+  network <span style="color:#f92672">=</span> {
+    description <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;Blog&#34;</span>;
+    enableRollback <span style="color:#f92672">=</span> <span style="color:#66d9ef">true</span>;
+  };
+
+  webserver <span style="color:#f92672">=</span>
+    { config<span style="color:#f92672">,</span> pkgs<span style="color:#f92672">,</span> modulesPath<span style="color:#f92672">,</span> <span style="color:#f92672">...</span> }:
+    { nixpkgs<span style="color:#f92672">.</span>localSystem<span style="color:#f92672">.</span>system <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;x86_64-linux&#34;</span>;
+      deployment<span style="color:#f92672">.</span>targetHost <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;IP-ADDRESS&#34;</span>;
+
+      <span style="color:#75715e"># hardware-configuration.nix</span>
+      imports <span style="color:#f92672">=</span> [ (modulesPath <span style="color:#f92672">+</span> <span style="color:#e6db74">&#34;/profiles/qemu-guest.nix&#34;</span>) ];
+      boot<span style="color:#f92672">.</span>loader<span style="color:#f92672">.</span>grub<span style="color:#f92672">.</span>device <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;/dev/vda&#34;</span>;
+      fileSystems<span style="color:#f92672">.</span><span style="color:#e6db74">&#34;/&#34;</span> <span style="color:#f92672">=</span> { device <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;/dev/vda1&#34;</span>; fsType <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;ext4&#34;</span>; };
+
+      <span style="color:#75715e"># configuration.nix</span>
+      boot<span style="color:#f92672">.</span>cleanTmpDir <span style="color:#f92672">=</span> <span style="color:#66d9ef">true</span>;
+      networking<span style="color:#f92672">.</span>hostName <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;scw-practical-euler&#34;</span>;
+      networking<span style="color:#f92672">.</span>firewall<span style="color:#f92672">.</span>allowPing <span style="color:#f92672">=</span> <span style="color:#66d9ef">true</span>;
+      services<span style="color:#f92672">.</span>openssh<span style="color:#f92672">.</span>enable <span style="color:#f92672">=</span> <span style="color:#66d9ef">true</span>;
+      users<span style="color:#f92672">.</span>users<span style="color:#f92672">.</span>root<span style="color:#f92672">.</span>openssh<span style="color:#f92672">.</span>authorizedKeys<span style="color:#f92672">.</span>keys <span style="color:#f92672">=</span> [
+        <span style="color:#e6db74">&#34;ssh-ed25519 PUBLIC-KEY morris@laptop.local&#34;</span>
+      ];
+
+      <span style="color:#75715e"># host.nix</span>
+      services<span style="color:#f92672">.</span>caddy <span style="color:#f92672">=</span> {
+        enable <span style="color:#f92672">=</span> <span style="color:#66d9ef">true</span>;
+        email <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;EMAIL-ADDRESS&#34;</span>;
+        config <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;&#39;
+</span><span style="color:#e6db74">          (common) {
+</span><span style="color:#e6db74">            encode gzip
+</span><span style="color:#e6db74">            header / -Server
+</span><span style="color:#e6db74">            header / -X-Powered-By
+</span><span style="color:#e6db74">          }
+</span><span style="color:#e6db74">          a.test.morrisjobke.de {
+</span><span style="color:#e6db74">            reverse_proxy 127.0.0.1:2368
+</span><span style="color:#e6db74">          }
+</span><span style="color:#e6db74">          b.test.morrisjobke.de {
+</span><span style="color:#e6db74">            root * /data/http
+</span><span style="color:#e6db74">            import common
+</span><span style="color:#e6db74">            file_server browse
+</span><span style="color:#e6db74">          }
+</span><span style="color:#e6db74">        &#39;&#39;</span>;
+      };
+
+      virtualisation<span style="color:#f92672">.</span>oci-containers <span style="color:#f92672">=</span> {
+        backend <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;podman&#34;</span>;
+        containers <span style="color:#f92672">=</span> {
+          ghost <span style="color:#f92672">=</span> {
+            image <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;ghost:3-alpine&#34;</span>;
+            ports <span style="color:#f92672">=</span> [<span style="color:#e6db74">&#34;127.0.0.1:2368:2368&#34;</span>];
+            volumes <span style="color:#f92672">=</span> [
+              <span style="color:#e6db74">&#34;/data/blog:/var/lib/ghost/content&#34;</span>
+            ];
+            environment <span style="color:#f92672">=</span> {
+              url <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;https://a.test.morrisjobke.de&#34;</span>;
+            };
+          };
+        };
+      };
+
+      <span style="color:#75715e"># ... further config ...</span>
+    };
+}
+</code></pre></div><h2 id="initial-deploy">Initial deploy</h2>
+<p>Then one can create the server inside NixOps and deploy it:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">nixops create ./scaleway-setup.nix -d scaleway-staging
+nixops deploy -d scaleway-staging
+</code></pre></div><h3 id="potential-deployment-problems">Potential deployment problems</h3>
+<p>On my initial deployment it had problems to build the system. That is because it does a ssh connection on the server to itself. Usually it places a public ssh key in the server configuration, but in my case it failed with something like this:</p>
+<pre><code>cannot build on 'ssh://root@12.34.56.78': cannot connect to 'root@12.34.56.78': Permission denied, please try again.
+Received disconnect from 12.34.56.78 port 22:2: Too many authentication failures
+Disconnected from 12.34.56.78 port 22
+error: a 'x86_64-linux' with features {} is required to build '/nix/store/ir75vkqa6jz7scjgvn1bb7lm1p2z0wl5-kernel-modules.drv', but I am a 'x86_64-darwin' with features {benchmark, big-parallel, nixos-test}
+</code></pre><p>I looked on my NixOps host into the SQLite db at <code>~/.nixops/deployments.nixops</code> and extracted the public key (attribute with the name <code>none.sshPublicKey</code> inside the table <code>ResourceAttrs</code>) and placed it as public key for the user root (see <code>users.users.root.openssh.authorizedKeys.keys</code>).</p>
+<h2 id="rollbacks">Rollbacks</h2>
+<p>The option <code>network.enableRollback = true</code> allows rollbacks from within NixOps.</p>
+<pre><code>$ nixops list-generations -d scaleway-staging
+   1   2021-02-19 20:56:40   
+   2   2021-02-19 20:58:00   (current)
+</code></pre><p>Those can be selected via <code>nixops-rollback</code>:</p>
+<p><img src="/images/2021-02-21-nixops-rollback.png" alt=""></p>
+<h2 id="drawbacks-of-nixops">Drawbacks of Nixops</h2>
+<h3 id="secrets">Secrets</h3>
+<p>If one places secrets inside the Nix configuration those will result in specific builds of those on the server itself in <code>/nix/store</code> (like <code>/nix/store/7i9f023yvfm3b03kq2khl1djh8wrpb5z-caddy-config.json</code>). All of the files in there are readable on the server by any user.</p>
+<p><a href="https://releases.nixos.org/nixops/nixops-1.7/manual/manual.html#idm140737322342384">The NixOps manual also highlights</a> this and provides a way (<code>deployment.keys.&lt;name&gt;</code>) to store secrets inside a temporary file system that has proper access rights and is bundled with systemd services that indicate that those files are there so that the actual service can rely on that properly and allows tracing back why a service fails. Unfortunately that also means that a reboot of the server that is not invoked via <code>nixops</code> will result in the secrets not being available and need to be deployed again via <code>nixops</code>.</p>
+<h3 id="nixpkgs-channel">Nixpkgs channel</h3>
+<p>NixOps itself deploys the packages based on a channel, but it does not use the channel configured on the server, but the channel configured on the machine where NixOps runs. So you need to be careful what you run there. I configured my laptop to use the latest release, because I noticed that on MacOS by default it uses the unstable channel that then also got deployed to the server, which is most likely not wanted. I changed it from</p>
+<pre><code>nixpkgs https://nixos.org/channels/nixpkgs-unstable
+</code></pre><p>to</p>
+<pre><code>nixpkgs https://nixos.org/channels/nixpkgs-20.09-darwin
+</code></pre><p>via the <code>nix-channels</code> command.</p>
+<p>There is an <a href="https://github.com/NixOS/nixops/issues/736">open issue on GitHub</a> about this to properly distinguish between the channels on the server and the nixops machine.</p>
+<h3 id="automaticunattended-upgrades">Automatic/unattended upgrades</h3>
+<p>The configuration of the system is not copied over to the server itself and therefore one cannot run <code>nixos-rebuild switch --upgrade</code> on the server. Also the <code>system.autoUpgrade.enable</code> option does not work, because it uses this command. There is an <a href="https://github.com/NixOS/nixops/issues/842">open issue on GitHub</a> about this as well.</p>
+<h2 id="conclusion">Conclusion</h2>
+<p>I really like to be able to quickly bootstrap a system. It allows to easily setup a staging environment that is really the same as the production one (or vice versa). Due to the drawbacks of NixOps I will look into an easier approach of managing remote machines as I barely need the majority of the features of NixOps and an <code>rsync</code> of the configuration to the server combined with an <code>nixos-rebuild</code> via <code>ssh</code> should solve 2 of the 3 drawbacks I ran into.</p>
+<h2 id="useful-resources">Useful resources</h2>
+<ul>
+<li><a href="https://search.nixos.org/options?channel=20.09&amp;from=0&amp;size=50&amp;sort=relevance&amp;query=systemd.services.%3Cname%3E">NixOS options search</a></li>
+<li><a href="https://noqqe.de/sammelsurium/nixos/">NixOS Sammelsurium by noqqe</a></li>
+<li><a href="https://noqqe.de/blog/2021/02/06/nextcloud-mit-nixos-containers/">Example of using Podman (as Docker runtime alternative) by noqqe</a></li>
+</ul>
+]]></content></entry><entry><title type="html">Collection #2</title><link href="https://morrisjobke.de/2021/01/10/collection-2/"/><id>https://morrisjobke.de/2021/01/10/collection-2/</id><published>2021-01-10T13:01:00+00:00</published><updated>2021-01-10T13:01:00+00:00</updated><content type="html"><![CDATA[<h1 id="apple-tv-screensavers">Apple TV screensavers</h1>
 <p>As the Apple TV screensavers are really beautiful I hecked how to get them to have them also on other devices. The website below provides all of them with options to download them.</p>
 <p><a href="https://bzamayo.com/watch-all-the-apple-tv-aerial-video-screensavers">https://bzamayo.com/watch-all-the-apple-tv-aerial-video-screensavers</a></p>
 <h1 id="undoing-a-git-bisect-mistake">Undoing a git bisect mistake</h1>
