@@ -93,6 +93,7 @@ Letztes Update: September 2020
 ## Laden
 
 * [Allgemeine FAQ Seite rund um das Thema Laden (ladefragen.de)](https://ladefragen.de/)
+* [So wenig Strom brauchen Elektroautos (golem.de)](https://www.golem.de/news/testprojekt-in-tiefgarage-so-wenig-strom-brauchen-elektroautos-2104-155934.html)
 
 `<Ironie>`
 
