@@ -975,9 +975,9 @@ Turned off maintenance mode
 <h2 id="example-settings">Example settings</h2>
 <p>To setup conditional logging the following config parameter needs to be set in <code>config.php</code>:</p>
 <pre><code>'log.condition' =&gt; [
-    'shared_secret' =&gt; '57b58edb6637fe3059b3595cf9c41b9',
-    'users' =&gt; ['sample-user'],
-    'apps' =&gt; ['files'],
+	'shared_secret' =&gt; '57b58edb6637fe3059b3595cf9c41b9',
+	'users' =&gt; ['sample-user'],
+	'apps' =&gt; ['files'],
 ],
 </code></pre>
 <p>By default <code>log.condition</code> is set to an empty array. All array entries are optional. This means that it is also allowed to only specify the list of apps.</p>
@@ -1109,7 +1109,7 @@ SUSPEND_USB_SCRIPT=path/to/suspend-usb-device.sh
 
 # create directory if needed
 if [ ! -d &quot;$MNT_NAME&quot; ]; then
-    mkdir &quot;$MNT_NAME&quot;
+	mkdir &quot;$MNT_NAME&quot;
 fi
 
 # mount
@@ -1118,27 +1118,27 @@ mount -t auto &quot;$DEV_NAME&quot; &quot;$MNT_NAME&quot;
 logger &quot;rsnapshot started&quot;
 
 if [ ! -d &quot;${BACKUP_FOLDER}/daily.0&quot; ] || [ $(find ${BACKUP_FOLDER}/daily.0
-    -maxdepth 0 -type d -mtime +1 | grep daily) ]; then
-    # if no daily backup is available or daily backup is older than 1 day
-    # then run daily
-    logger &quot;rsnapshot daily&quot;
-    rsnapshot daily
+	-maxdepth 0 -type d -mtime +1 | grep daily) ]; then
+	# if no daily backup is available or daily backup is older than 1 day
+	# then run daily
+	logger &quot;rsnapshot daily&quot;
+	rsnapshot daily
 fi
 
 if [ ! -d &quot;${BACKUP_FOLDER}/weekly.0&quot; ] || [ $(find ${BACKUP_FOLDER}/weekly.0
-    -maxdepth 0 -type d -mtime +7 | grep weekly) ]; then
-    # if no weekly backup is available or weekly backup is older than 7 days
-    # then run weekly
-    logger &quot;rsnapshot weekly&quot;
-    rsnapshot weekly
+	-maxdepth 0 -type d -mtime +7 | grep weekly) ]; then
+	# if no weekly backup is available or weekly backup is older than 7 days
+	# then run weekly
+	logger &quot;rsnapshot weekly&quot;
+	rsnapshot weekly
 fi
 
 if [ ! -d &quot;${BACKUP_FOLDER}/monthly.0&quot; ] || [ $(find ${BACKUP_FOLDER}/monthly.0
-    -maxdepth 0 -type d -mtime +30 | grep monthly) ]; then
-    # if no monthly backup is available or monthly backup is older than 30 days
-    # then run monthly
-    logger &quot;rsnapshot monthly&quot;
-    rsnapshot monthly
+	-maxdepth 0 -type d -mtime +30 | grep monthly) ]; then
+	# if no monthly backup is available or monthly backup is older than 30 days
+	# then run monthly
+	logger &quot;rsnapshot monthly&quot;
+	rsnapshot monthly
 fi
 
 logger &quot;rsnapshot finished&quot;
@@ -1600,27 +1600,27 @@ $ sudo apt-get -f install
 </code></pre>
 <p>Nun kann nginx konfiguriert werden.</p>
 <pre><code>server {
-    listen			80;
-    server_name		cgit.example;
+	listen			80;
+	server_name		cgit.example;
 
-    access_log		/var/log/nginx/cgit.log;
-    error_log		/var/log/nginx/cgit.error;
+	access_log		/var/log/nginx/cgit.log;
+	error_log		/var/log/nginx/cgit.error;
 
-    root			/var/www/cgit/;
-    proxy_redirect	off;
+	root			/var/www/cgit/;
+	proxy_redirect	off;
 
-    location ~* ^.+\.(css|png|ico)$ {
+	location ~* ^.+\.(css|png|ico)$ {
         expires 30d;
-    }
+	}
 
-    location / {
+	location / {
         include			fastcgi_params;
         fastcgi_pass	unix:/var/run/fcgiwrap.socket;
         fastcgi_param	SCRIPT_FILENAME /usr/lib/cgit/cgit.cgi;
         fastcgi_param	PATH_INFO $uri;
         fastcgi_param	QUERY_STRING $args;
         fastcgi_param	REPOLIST /home/git/cgit.public.list;
-    }
+	}
 }
 </code></pre>
 <p>Abschließend fügen wir dem Benutzer <code>www-data</code>, unter dem der Webserver und somit auch das CGit-Skript läuft, die Zugehörigkeit für die Gruppe <code>git</code> hinzu, damit dieser die Repositories lesen kann.</p>

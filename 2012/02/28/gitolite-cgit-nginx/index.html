@@ -1,6 +1,6 @@
-<!doctype html><html lang=en-us><head><meta charset=utf-8><meta http-equiv=x-ua-compatible content="chrome=1"><meta name=viewport content="width=device-width,initial-scale=1"><title>Morris Jobke</title><link rel=stylesheet href=/css/pygment_trac.css?1614113956><link rel=alternate type=application/atom+xml title="Atom feed" href=/feed.xml><link rel=stylesheet href=/css/webfonts.css?1614113956><link rel=stylesheet href=/css/base.css?1614113956><meta property="og:title" content="gitolite + cgit + nginx"><meta property="og:description" content="Ziel dieser Anleitung soll es sein einen einfach zu wartenden Git-Server einzurichten, der ein einfaches Web-Frontend bietet. Dazu wird gitolite zur Git-Repository-Administration und cgit als Webfrontend verwendet. Das ganze soll unter Ubuntu 10.04 laufen.
+<!doctype html><html lang=en-us><head><meta charset=utf-8><meta http-equiv=x-ua-compatible content="chrome=1"><meta name=viewport content="width=device-width,initial-scale=1"><title>Morris Jobke</title><link rel=stylesheet href=/css/pygment_trac.css?1619177492><link rel=alternate type=application/atom+xml title="Atom feed" href=/feed.xml><link rel=stylesheet href=/css/webfonts.css?1619177492><link rel=stylesheet href=/css/base.css?1619177492><meta property="og:title" content="gitolite + cgit + nginx"><meta property="og:description" content="Ziel dieser Anleitung soll es sein einen einfach zu wartenden Git-Server einzurichten, der ein einfaches Web-Frontend bietet. Dazu wird gitolite zur Git-Repository-Administration und cgit als Webfrontend verwendet. Das ganze soll unter Ubuntu 10.04 laufen.
 Vorbereitung Der Git-Server soll unter dem Benutzer git laufen und die Repositories in dessen Home-Verzeichnis zu finden sein.
-Gitolite Gitolite ist eine Skriptsammlung, um den Zugriff auf Git-Repositories auf einem Server komfortabel und sehr genau einzurichten. Für Ubuntu 10."><meta property="og:type" content="article"><meta property="og:url" content="https://morrisjobke.de/2012/02/28/gitolite-cgit-nginx/"><meta property="article:published_time" content="2012-02-28T18:00:00+00:00"><meta property="article:modified_time" content="2012-02-28T18:00:00+00:00"><meta name=twitter:card content="summary"><meta name=twitter:title content="gitolite + cgit + nginx"><meta name=twitter:description content="Ziel dieser Anleitung soll es sein einen einfach zu wartenden Git-Server einzurichten, der ein einfaches Web-Frontend bietet. Dazu wird gitolite zur Git-Repository-Administration und cgit als Webfrontend verwendet. Das ganze soll unter Ubuntu 10.04 laufen.
+Gitolite Gitolite ist eine Skriptsammlung, um den Zugriff auf Git-Repositories auf einem Server komfortabel und sehr genau einzurichten. Für Ubuntu 10."><meta property="og:type" content="article"><meta property="og:url" content="https://morrisjobke.de/2012/02/28/gitolite-cgit-nginx/"><meta property="article:section" content="posts"><meta property="article:published_time" content="2012-02-28T18:00:00+00:00"><meta property="article:modified_time" content="2012-02-28T18:00:00+00:00"><meta name=twitter:card content="summary"><meta name=twitter:title content="gitolite + cgit + nginx"><meta name=twitter:description content="Ziel dieser Anleitung soll es sein einen einfach zu wartenden Git-Server einzurichten, der ein einfaches Web-Frontend bietet. Dazu wird gitolite zur Git-Repository-Administration und cgit als Webfrontend verwendet. Das ganze soll unter Ubuntu 10.04 laufen.
 Vorbereitung Der Git-Server soll unter dem Benutzer git laufen und die Repositories in dessen Home-Verzeichnis zu finden sein.
 Gitolite Gitolite ist eine Skriptsammlung, um den Zugriff auf Git-Repositories auf einem Server komfortabel und sehr genau einzurichten. Für Ubuntu 10."><meta name=twitter:site content="@MorrisJobke"><meta itemprop=name content="gitolite + cgit + nginx"><meta itemprop=description content="Ziel dieser Anleitung soll es sein einen einfach zu wartenden Git-Server einzurichten, der ein einfaches Web-Frontend bietet. Dazu wird gitolite zur Git-Repository-Administration und cgit als Webfrontend verwendet. Das ganze soll unter Ubuntu 10.04 laufen.
 Vorbereitung Der Git-Server soll unter dem Benutzer git laufen und die Repositories in dessen Home-Verzeichnis zu finden sein.
@@ -52,27 +52,27 @@ python /home/git/cgit-update.py /home/git/repositories /home/git
 </code></pre><p>Er wird in CGit unter der Section <code>Config</code> aufgeführt und enthält die Beschreibung <code>Gitolite Administration</code>. Er ist lediglich in der Liste <code>private</code> zu finden, die vom Skript unter <strong>/home/git/cgit.private.list</strong> abgelegt wird.</p><h2 id=nginx>Nginx</h2><p>Um CGit als CGI-Skript mit Nginx zum Laufen zu bekommen, benötigt man noch das <a href=http://packages.ubuntu.com/precise/fcgiwrap>fcgiwrap-Paket</a>. Dieses ist jedoch nicht in Ubuntu 10.04 enthalten, weshalb wir wieder das Paket aus der kommenden Ubuntu-Version 12.04 entnehmen und installieren.</p><pre><code>$ sudo dpkg -i fcgiwrap_1.0.3-3_amd64deb
 $ sudo apt-get -f install
 </code></pre><p>Nun kann nginx konfiguriert werden.</p><pre><code>server {
-    listen			80;
-    server_name		cgit.example;
+	listen			80;
+	server_name		cgit.example;
 
-    access_log		/var/log/nginx/cgit.log;
-    error_log		/var/log/nginx/cgit.error;
+	access_log		/var/log/nginx/cgit.log;
+	error_log		/var/log/nginx/cgit.error;
 
-    root			/var/www/cgit/;
-    proxy_redirect	off;
+	root			/var/www/cgit/;
+	proxy_redirect	off;
 
-    location ~* ^.+\.(css|png|ico)$ {
+	location ~* ^.+\.(css|png|ico)$ {
         expires 30d;
-    }
+	}
 
-    location / {
+	location / {
         include			fastcgi_params;
         fastcgi_pass	unix:/var/run/fcgiwrap.socket;
         fastcgi_param	SCRIPT_FILENAME /usr/lib/cgit/cgit.cgi;
         fastcgi_param	PATH_INFO $uri;
         fastcgi_param	QUERY_STRING $args;
         fastcgi_param	REPOLIST /home/git/cgit.public.list;
-    }
+	}
 }
 </code></pre><p>Abschließend fügen wir dem Benutzer <code>www-data</code>, unter dem der Webserver und somit auch das CGit-Skript läuft, die Zugehörigkeit für die Gruppe <code>git</code> hinzu, damit dieser die Repositories lesen kann.</p><pre><code>$ sudo usermod -aG git www-data
 </code></pre><h2 id=neustart-der-daemons>Neustart der Daemons</h2><p>Abschließend starten wir noch <code>fcgiwrap</code> und <code>nginx</code> neu, damit sämtliche geänderten Konfigurationen übernommen werden.</p><pre><code>$ sudo service fcgiwrap restart
