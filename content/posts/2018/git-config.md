@@ -19,6 +19,7 @@ Because I get quite often asked about my git config I will post it here and leav
 [alias]
 	lg = log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit
 	cu = "!git branch --merged | grep -v '\\*' | grep -v master | xargs -n 1 git branch -d"
+	recent = branch --sort=-committerdate --format=\"%(committerdate:relative)%09%(refname:short)\"
 [color]
 	ui = true
 	branch = auto
@@ -54,6 +55,10 @@ I have two aliases - `git lg` gives a nice and simple overview of the git histor
 ![git lg](/images/2018-03-03-git-lg.png)
 
 The second alias - `git cu` - cleans up the git repository from branches that are fully merged in the current branch. Usually you call this on your master and stable branches to cleanup merged feature or backport branches.
+
+The third alias - `git recent` - shows the local branches sorted by commit date. (Thx to [Aaron Patterson](https://twitter.com/tenderlove/status/1392957802163802112))
+
+![git recent](/images/2021-07-08-git-recent.png)
 
 The default colors in git are quite boring so I use basically green (staged), yellow (changed) and red (untracked) as indicator for different sections in the git status and git branch outputs.
 
