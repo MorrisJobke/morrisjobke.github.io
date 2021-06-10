@@ -5,7 +5,7 @@ date: "2020-08-25T19:37:00Z"
 title: Mini PV-Anlage - Balkonkraftwerk - Steckerfertige PV-Anlage
 ---
 
-Update Juni 2021: Mittlerweile gibt es auch eine Seite der [Verbraucherzentrale zu dem Thema](https://www.verbraucherzentrale.de/wissen/energie/erneuerbare-energien/steckersolar-solarstrom-vom-balkon-direkt-in-die-steckdose-44715).
+**Update Juni 2021:** Mittlerweile gibt es auch eine Seite der [Verbraucherzentrale zu dem Thema](https://www.verbraucherzentrale.de/wissen/energie/erneuerbare-energien/steckersolar-solarstrom-vom-balkon-direkt-in-die-steckdose-44715).
 
 Eine kleine Notizsammlung hinsichtlich Mini PV-Anlage:
 
