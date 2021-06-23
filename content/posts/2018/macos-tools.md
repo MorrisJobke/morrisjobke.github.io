@@ -55,6 +55,7 @@ Following apps can be installed via `brew cask install NAME`:
 * `docker` - [Docker](https://www.docker.com) - container management
 * `foldingtext` - [FoldingText](http://www.foldingtext.com) - simple text editor with outline features
 * `little-snitch` - [Little Snitch](https://obdev.at/products/littlesnitch/index.html) - firewall and network monitor
+* `imageoptim` - [ImageOptim](https://imageoptim.com/mac) - image optimizer (compression, metadata removal)
 * `insomnia` - [Insomnia](https://insomnia.rest) - tool to organize HTTP API requests (mainly for testing/debugging)
 * `moneymoney` - [MoneyMoney](https://moneymoney-app.com) - awesome banking tool
 * `phpstorm` - [PhpStorm](https://www.jetbrains.com/phpstorm/) - awesome PHP IDE
