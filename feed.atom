@@ -548,6 +548,7 @@ pecl install memprof
 <li><code>docker</code> - <a href="https://www.docker.com">Docker</a> - container management</li>
 <li><code>foldingtext</code> - <a href="http://www.foldingtext.com">FoldingText</a> - simple text editor with outline features</li>
 <li><code>little-snitch</code> - <a href="https://obdev.at/products/littlesnitch/index.html">Little Snitch</a> - firewall and network monitor</li>
+<li><code>imageoptim</code> - <a href="https://imageoptim.com/mac">ImageOptim</a> - image optimizer (compression, metadata removal)</li>
 <li><code>insomnia</code> - <a href="https://insomnia.rest">Insomnia</a> - tool to organize HTTP API requests (mainly for testing/debugging)</li>
 <li><code>moneymoney</code> - <a href="https://moneymoney-app.com">MoneyMoney</a> - awesome banking tool</li>
 <li><code>phpstorm</code> - <a href="https://www.jetbrains.com/phpstorm/">PhpStorm</a> - awesome PHP IDE</li>
