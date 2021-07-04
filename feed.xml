@@ -546,10 +546,12 @@ pecl install memprof
 <li><code>caffeine</code> - <a href="http://lightheadsw.com/caffeine/">Caffeine</a> - don&rsquo;t let your mac fall asleep</li>
 <li><code>dash</code> - <a href="https://kapeli.com/dash">Dash</a> - offline documentation for programming languages, libraries, APIs and RFCs that is easily searchable</li>
 <li><code>docker</code> - <a href="https://www.docker.com">Docker</a> - container management</li>
+<li><code>dozer</code> - <a href="https://github.com/Mortennn/Dozer">Dozer</a> - hide menu bar items</li>
 <li><code>foldingtext</code> - <a href="http://www.foldingtext.com">FoldingText</a> - simple text editor with outline features</li>
 <li><code>little-snitch</code> - <a href="https://obdev.at/products/littlesnitch/index.html">Little Snitch</a> - firewall and network monitor</li>
 <li><code>imageoptim</code> - <a href="https://imageoptim.com/mac">ImageOptim</a> - image optimizer (compression, metadata removal)</li>
 <li><code>insomnia</code> - <a href="https://insomnia.rest">Insomnia</a> - tool to organize HTTP API requests (mainly for testing/debugging)</li>
+<li><code>jetbrains-toolbox</code> - <a href="https://www.jetbrains.com/toolbox-app/">Jetbrains Toolbox</a> - Toolbox to install and update Jetbrains IDEs</li>
 <li><code>moneymoney</code> - <a href="https://moneymoney-app.com">MoneyMoney</a> - awesome banking tool</li>
 <li><code>phpstorm</code> - <a href="https://www.jetbrains.com/phpstorm/">PhpStorm</a> - awesome PHP IDE</li>
 <li><code>sublime-text</code> - <a href="https://www.sublimetext.com">Sublime Text</a> - a fast and reliable editor with nice features (keeps all unsafed documents, multi cursor editing, &hellip;) for everything where I don&rsquo;t use PhpStorm
@@ -560,6 +562,7 @@ pecl install memprof
 <li><a href="https://github.com/jrnewell/predawn-twilight-theme">Predawn Twilight Theme</a></li>
 </ul>
 </li>
+<li><code>timeular</code> - <a href="https://timeular.com">Timeular</a> - time tracking with a physical device</li>
 <li><code>tunnelblick</code> - <a href="https://tunnelblick.net">Tunnelblick</a> - easy to use OpenVPN client</li>
 <li><code>tuxera-ntfs</code> <a href="https://www.tuxera.com/products/tuxera-ntfs-for-mac/">Tuxera NTFS</a> - driver to write to NTFS disks</li>
 <li><code>virtualbox</code> - <a href="https://www.virtualbox.org">Virtual Box</a> - for running virtual machines (like the ones from <a href="http://modern.ie">modern.ie</a> to test Internet Explorer and Edge)</li>
