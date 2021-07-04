@@ -53,10 +53,12 @@ Following apps can be installed via `brew cask install NAME`:
 * `caffeine` - [Caffeine](http://lightheadsw.com/caffeine/) - don't let your mac fall asleep
 * `dash` - [Dash](https://kapeli.com/dash) - offline documentation for programming languages, libraries, APIs and RFCs that is easily searchable
 * `docker` - [Docker](https://www.docker.com) - container management
+* `dozer` - [Dozer](https://github.com/Mortennn/Dozer) - hide menu bar items
 * `foldingtext` - [FoldingText](http://www.foldingtext.com) - simple text editor with outline features
 * `little-snitch` - [Little Snitch](https://obdev.at/products/littlesnitch/index.html) - firewall and network monitor
 * `imageoptim` - [ImageOptim](https://imageoptim.com/mac) - image optimizer (compression, metadata removal)
 * `insomnia` - [Insomnia](https://insomnia.rest) - tool to organize HTTP API requests (mainly for testing/debugging)
+* `jetbrains-toolbox` - [Jetbrains Toolbox](https://www.jetbrains.com/toolbox-app/) - Toolbox to install and update Jetbrains IDEs
 * `moneymoney` - [MoneyMoney](https://moneymoney-app.com) - awesome banking tool
 * `phpstorm` - [PhpStorm](https://www.jetbrains.com/phpstorm/) - awesome PHP IDE
 * `sublime-text` - [Sublime Text](https://www.sublimetext.com) - a fast and reliable editor with nice features (keeps all unsafed documents, multi cursor editing, ...) for everything where I don't use PhpStorm
@@ -64,6 +66,7 @@ Following apps can be installed via `brew cask install NAME`:
 	* [DashDoc](https://github.com/farcaller/DashDoc) - dash integration
 	* [JSON Reindent](https://github.com/ThomasKliszowski/json_reindent)
 	* [Predawn Twilight Theme](https://github.com/jrnewell/predawn-twilight-theme)
+* `timeular` - [Timeular](https://timeular.com) - time tracking with a physical device
 * `tunnelblick` - [Tunnelblick](https://tunnelblick.net) - easy to use OpenVPN client
 * `tuxera-ntfs` [Tuxera NTFS](https://www.tuxera.com/products/tuxera-ntfs-for-mac/) - driver to write to NTFS disks
 * `virtualbox` - [Virtual Box](https://www.virtualbox.org) - for running virtual machines (like the ones from [modern.ie](http://modern.ie) to test Internet Explorer and Edge)
