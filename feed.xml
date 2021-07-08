@@ -632,6 +632,8 @@ pecl install memprof
 	fsckObjects = true
 [gpg]
 	program = gpg
+[pull]
+	ff = only
 </code></pre><p>In the <code>core</code> section there is one config to use <a href="https://en.wikipedia.org/wiki/Carriage_return">Carriage return</a> for all line endings, the <code>diff-so-fancy</code> diff highlighter (see brew install section) and a global ignore list for git.</p>
 <p>The <code>user</code> section holds the information that all my commits should contain.</p>
 <p>I have two aliases - <code>git lg</code> gives a nice and simple overview of the git history:</p>
