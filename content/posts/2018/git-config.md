@@ -44,6 +44,8 @@ Because I get quite often asked about my git config I will post it here and leav
 	fsckObjects = true
 [gpg]
 	program = gpg
+[pull]
+	ff = only
 ```
 
 In the `core` section there is one config to use [Carriage return](https://en.wikipedia.org/wiki/Carriage_return) for all line endings, the `diff-so-fancy` diff highlighter (see brew install section) and a global ignore list for git.
