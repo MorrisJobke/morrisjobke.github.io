@@ -1,29 +1,108 @@
-<!doctype html><html lang=en-us><head><meta charset=utf-8><meta http-equiv=x-ua-compatible content="chrome=1"><meta name=viewport content="width=device-width,initial-scale=1"><title>Morris Jobke</title><link rel=stylesheet href=/css/pygment_trac.css?1625749779><link rel=alternate type=application/atom+xml title="Atom feed" href=/feed.xml><link rel=stylesheet href=/css/webfonts.css?1625749779><link rel=stylesheet href=/css/base.css?1625749779><meta property="og:title" content="gitolite + cgit + nginx"><meta property="og:description" content="Ziel dieser Anleitung soll es sein einen einfach zu wartenden Git-Server einzurichten, der ein einfaches Web-Frontend bietet. Dazu wird gitolite zur Git-Repository-Administration und cgit als Webfrontend verwendet. Das ganze soll unter Ubuntu 10.04 laufen.
+<!doctype html><html lang=en-us>
+<head>
+<meta charset=utf-8>
+<meta http-equiv=x-ua-compatible content="chrome=1">
+<meta name=viewport content="width=device-width,initial-scale=1">
+<title>Morris Jobke</title>
+<link rel=stylesheet href=/css/pygment_trac.css?1627656469>
+<link rel=alternate type=application/atom+xml title="Atom feed" href=/feed.xml>
+<link rel=stylesheet href=/css/webfonts.css?1627656469>
+<link rel=stylesheet href=/css/base.css?1627656469>
+<meta property="og:title" content="gitolite + cgit + nginx">
+<meta property="og:description" content="Ziel dieser Anleitung soll es sein einen einfach zu wartenden Git-Server einzurichten, der ein einfaches Web-Frontend bietet. Dazu wird gitolite zur Git-Repository-Administration und cgit als Webfrontend verwendet. Das ganze soll unter Ubuntu 10.04 laufen.
 Vorbereitung Der Git-Server soll unter dem Benutzer git laufen und die Repositories in dessen Home-Verzeichnis zu finden sein.
-Gitolite Gitolite ist eine Skriptsammlung, um den Zugriff auf Git-Repositories auf einem Server komfortabel und sehr genau einzurichten. Für Ubuntu 10."><meta property="og:type" content="article"><meta property="og:url" content="https://morrisjobke.de/2012/02/28/gitolite-cgit-nginx/"><meta property="article:section" content="posts"><meta property="article:published_time" content="2012-02-28T18:00:00+00:00"><meta property="article:modified_time" content="2012-02-28T18:00:00+00:00"><meta name=twitter:card content="summary"><meta name=twitter:title content="gitolite + cgit + nginx"><meta name=twitter:description content="Ziel dieser Anleitung soll es sein einen einfach zu wartenden Git-Server einzurichten, der ein einfaches Web-Frontend bietet. Dazu wird gitolite zur Git-Repository-Administration und cgit als Webfrontend verwendet. Das ganze soll unter Ubuntu 10.04 laufen.
+Gitolite Gitolite ist eine Skriptsammlung, um den Zugriff auf Git-Repositories auf einem Server komfortabel und sehr genau einzurichten. Für Ubuntu 10.">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://morrisjobke.de/2012/02/28/gitolite-cgit-nginx/"><meta property="article:section" content="posts">
+<meta property="article:published_time" content="2012-02-28T18:00:00+00:00">
+<meta property="article:modified_time" content="2012-02-28T18:00:00+00:00">
+<meta name=twitter:card content="summary">
+<meta name=twitter:title content="gitolite + cgit + nginx">
+<meta name=twitter:description content="Ziel dieser Anleitung soll es sein einen einfach zu wartenden Git-Server einzurichten, der ein einfaches Web-Frontend bietet. Dazu wird gitolite zur Git-Repository-Administration und cgit als Webfrontend verwendet. Das ganze soll unter Ubuntu 10.04 laufen.
 Vorbereitung Der Git-Server soll unter dem Benutzer git laufen und die Repositories in dessen Home-Verzeichnis zu finden sein.
-Gitolite Gitolite ist eine Skriptsammlung, um den Zugriff auf Git-Repositories auf einem Server komfortabel und sehr genau einzurichten. Für Ubuntu 10."><meta name=twitter:site content="@MorrisJobke"><meta itemprop=name content="gitolite + cgit + nginx"><meta itemprop=description content="Ziel dieser Anleitung soll es sein einen einfach zu wartenden Git-Server einzurichten, der ein einfaches Web-Frontend bietet. Dazu wird gitolite zur Git-Repository-Administration und cgit als Webfrontend verwendet. Das ganze soll unter Ubuntu 10.04 laufen.
+Gitolite Gitolite ist eine Skriptsammlung, um den Zugriff auf Git-Repositories auf einem Server komfortabel und sehr genau einzurichten. Für Ubuntu 10.">
+<meta name=twitter:site content="@MorrisJobke">
+<meta itemprop=name content="gitolite + cgit + nginx">
+<meta itemprop=description content="Ziel dieser Anleitung soll es sein einen einfach zu wartenden Git-Server einzurichten, der ein einfaches Web-Frontend bietet. Dazu wird gitolite zur Git-Repository-Administration und cgit als Webfrontend verwendet. Das ganze soll unter Ubuntu 10.04 laufen.
 Vorbereitung Der Git-Server soll unter dem Benutzer git laufen und die Repositories in dessen Home-Verzeichnis zu finden sein.
-Gitolite Gitolite ist eine Skriptsammlung, um den Zugriff auf Git-Repositories auf einem Server komfortabel und sehr genau einzurichten. Für Ubuntu 10."><meta itemprop=datePublished content="2012-02-28T18:00:00+00:00"><meta itemprop=dateModified content="2012-02-28T18:00:00+00:00"><meta itemprop=wordCount content="888"><meta itemprop=keywords content></head><body><div class=header><div class=container><span class=name>Morris<b>Jobke</b></span><ul class=menu><li><a href=/>Articles</a></wli> /<li><a href=/talks>Talks</a></li>/<li><a href=/links>Links</a></li><li class=item-right><a href=/feed.xml><svg width="20" height="20" viewBox="0 0 1792 1792" xmlns="http://www.w3.org/2000/svg"><path d="M576 1344q0 80-56 136t-136 56-136-56-56-136 56-136 136-56 136 56 56 136zm512 123q2 28-17 48-18 21-47 21H889q-25 0-43-16.5t-20-41.5q-22-229-184.5-391.5T250 902q-25-2-41.5-20T192 839V704q0-29 21-47 17-17 43-17h5q160 13 306 80.5T826 902q114 113 181.5 259t80.5 306zm512 2q2 27-18 47-18 20-46 20h-143q-26 0-44.5-17.5T1329 1476q-12-215-101-408.5t-231.5-336-336-231.5T252 398q-25-1-42.5-19.5T192 335V192q0-28 20-46 18-18 44-18h3q262 13 501.5 120T1186 542q187 186 294 425.5t120 501.5z" fill="#fff"/></svg></a></li><li class=item-right><a href=https://twitter.com/MorrisJobke><svg width="20" height="20" viewBox="0 0 1792 1792" xmlns="http://www.w3.org/2000/svg"><path d="M1684 408q-67 98-162 167 1 14 1 42 0 130-38 259.5T1369.5 1125 1185 1335.5t-258 146-323 54.5q-271 0-496-145 35 4 78 4 225 0 401-138-105-2-188-64.5T285 1033q33 5 61 5 43 0 85-11-112-23-185.5-111.5T172 710v-4q68 38 146 41-66-44-105-115t-39-154q0-88 44-163 121 149 294.5 238.5T884 653q-8-38-8-74 0-134 94.5-228.5T1199 256q140 0 236 102 109-21 205-78-37 115-142 178 93-10 186-50z" fill="#fff"/></svg></a></li><li class=item-right><a href=https://github.com/MorrisJobke><svg width="20" height="20" viewBox="0 0 1792 1792" xmlns="http://www.w3.org/2000/svg"><path d="M1664 896q0 251-146.5 451.5T1139 1625q-27 5-39.5-7t-12.5-30v-211q0-97-52-142 57-6 102.5-18t94-39 81-66.5 53-105T1386 856q0-121-79-206 37-91-8-204-28-9-81 11t-92 44l-38 24q-93-26-192-26t-192 26q-16-11-42.5-27T578 459.5 492 446q-44 113-7 204-79 85-79 206 0 85 20.5 150t52.5 105 80.5 67 94 39 102.5 18q-40 36-49 103-21 10-45 15t-57 5-65.5-21.5T484 1274q-19-32-48.5-52t-49.5-24l-20-3q-21 0-29 4.5t-5 11.5 9 14 13 12l7 5q22 10 43.5 38t31.5 51l10 23q13 38 44 61.5t67 30 69.5 7 55.5-3.5l23-4q0 38 .5 89t.5 54q0 18-13 30t-40 7q-232-77-378.5-277.5T128 896q0-209 103-385.5T510.5 231 896 128t385.5 103T1561 510.5 1664 896z" fill="#fff"/></svg></a></li></ul></div></div><div class=container><h1>gitolite + cgit + nginx <span class=meta>28 Feb 2012</span></h1><div id=post><p>Ziel dieser Anleitung soll es sein einen einfach zu wartenden Git-Server einzurichten, der ein einfaches Web-Frontend bietet. Dazu wird gitolite zur Git-Repository-Administration und cgit als Webfrontend verwendet. Das ganze soll unter Ubuntu 10.04 laufen.</p><h2 id=vorbereitung>Vorbereitung</h2><p>Der Git-Server soll unter dem Benutzer <em>git</em> laufen und die Repositories in dessen Home-Verzeichnis zu finden sein.</p><h2 id=gitolite>Gitolite</h2><p><a href=https://github.com/sitaramc/gitolite>Gitolite</a> ist eine Skriptsammlung, um den Zugriff auf Git-Repositories auf einem Server komfortabel und sehr genau einzurichten. Für Ubuntu 10.04 gibt es noch kein Paket, also benutzen wir ein Paket aus einer neueren Ubuntu-Version. Dies hat den Vorteil, dass bei einem Upgrade auf Ubuntu 12.04, theoretisch keine Schwierigkeiten auftreten sollten. <a href=http://packages.ubuntu.com/precise/gitolite>Gitolite-Paket</a> für Ubuntu 12.04</p><p>Installiert wird das Paket folgendermaßen:</p><pre><code>$ sudo dpkg -i gitolite_2.2-1_all.deb
-</code></pre><p>Bei fehlenden Abhängigkeiten werden diese mit folgendem Befehl nachinstalliert.</p><pre><code>$ sudo apt-get install -f
-</code></pre><p>Anschließend wird der eigene SSH-Schlüssel auf den Server geladen und die Konfiguration von gitolite erneut gestartet.</p><pre><code>$ sudo dpkg-reconfigure gitolite
-</code></pre><p>Hierbei sind folgende Angaben zu machen. In Klammern stehen die Werte, die ich benutzt habe.</p><ul><li>Benutzername (git)</li><li>Repository-Pfad (/home/git)</li><li>SSH-Schlüssel des Administrators (ebenjener, der vorher auf den Server kopiert wurde)</li></ul><p>Für die Konfiguration wird ein spezielles Repository mit dem Namen <code>gitolite-admin</code> benutzt.</p><pre><code>$ git clone GIT-USER@GIT-SERVER:gitolite-admin
-</code></pre><p>Dort werden Zugriffsberechtigungen und Public-Keys der Benutzer hinterlegt. Um auf ein beliebiges Repository des Servers zuzugreifen, kann man folgenden Befehl verwenden.</p><pre><code>$ git clone GIT-USER@GIT-SERVER:GIT-REPO
-</code></pre><p>Damit später CGit auf die Repositories zugreifen kann, muss noch die Berechtigung für die Ordner angepasst werden. Dies geschieht in der Datei <strong>~/.gitolite.rc</strong> des Gitolite-Benutzers - in meinem Fall ist dies <strong>/home/git/.gitolite.rc</strong>. Hier muss die Zeile</p><pre><code>$REPO_UMASK = 0077;
-</code></pre><p>in folgende abgewandelt werden:</p><pre><code>$REPO_UMASK = 0027;
-</code></pre><p>Dadurch erhält die Gruppe Leserechte auf den Repository-Ordner. Da das nur Einfluss auf zukünftig erstellte Ordner und somit Repositories hat, müssen noch die aktuellen Berechtigungen angepasst werden.</p><pre><code>$ chmod -R g+rX /home/git
-</code></pre><h2 id=cgit>CGit</h2><p>Für <a href=http://hjemli.net/git/cgit/>CGit</a> gibt es keinerlei Ubuntu-Paket, weshalb es kompiliert werden muss. Dafür sind folgende Paket erforderlich:</p><pre><code>$ sudo apt-get install build-essential git-core libssl-dev
-</code></pre><p>Nun wird der Quellcode bezogen, die letzte als stabil markierte Version ausgecheckt und kompiliert:</p><pre><code>$ git clone git://hjemli.net/pub/git/cgit
+Gitolite Gitolite ist eine Skriptsammlung, um den Zugriff auf Git-Repositories auf einem Server komfortabel und sehr genau einzurichten. Für Ubuntu 10."><meta itemprop=datePublished content="2012-02-28T18:00:00+00:00">
+<meta itemprop=dateModified content="2012-02-28T18:00:00+00:00">
+<meta itemprop=wordCount content="888">
+<meta itemprop=keywords content>
+</head>
+<body>
+<div class=header>
+<div class=container>
+<span class=name>Morris<b>Jobke</b></span>
+<ul class=menu>
+<li><a href=/>Articles</a></li> /
+<li><a href=/emobility>E-mobility</a></li> /
+<li><a href=/talks>Talks</a></li> /
+<li><a href=/links>Links</a></li>
+<li class=item-right><a href=/feed.xml><svg width="20" height="20" viewBox="0 0 1792 1792" xmlns="http://www.w3.org/2000/svg"><path d="M576 1344q0 80-56 136t-136 56-136-56-56-136 56-136 136-56 136 56 56 136zm512 123q2 28-17 48-18 21-47 21H889q-25 0-43-16.5t-20-41.5q-22-229-184.5-391.5T250 902q-25-2-41.5-20T192 839V704q0-29 21-47 17-17 43-17h5q160 13 306 80.5T826 902q114 113 181.5 259t80.5 306zm512 2q2 27-18 47-18 20-46 20h-143q-26 0-44.5-17.5T1329 1476q-12-215-101-408.5t-231.5-336-336-231.5T252 398q-25-1-42.5-19.5T192 335V192q0-28 20-46 18-18 44-18h3q262 13 501.5 120T1186 542q187 186 294 425.5t120 501.5z" fill="#fff"/></svg></a></li>
+<li class=item-right><a href=https://twitter.com/MorrisJobke><svg width="20" height="20" viewBox="0 0 1792 1792" xmlns="http://www.w3.org/2000/svg"><path d="M1684 408q-67 98-162 167 1 14 1 42 0 130-38 259.5T1369.5 1125 1185 1335.5t-258 146-323 54.5q-271 0-496-145 35 4 78 4 225 0 401-138-105-2-188-64.5T285 1033q33 5 61 5 43 0 85-11-112-23-185.5-111.5T172 710v-4q68 38 146 41-66-44-105-115t-39-154q0-88 44-163 121 149 294.5 238.5T884 653q-8-38-8-74 0-134 94.5-228.5T1199 256q140 0 236 102 109-21 205-78-37 115-142 178 93-10 186-50z" fill="#fff"/></svg></a></li>
+<li class=item-right><a href=https://github.com/MorrisJobke><svg width="20" height="20" viewBox="0 0 1792 1792" xmlns="http://www.w3.org/2000/svg"><path d="M1664 896q0 251-146.5 451.5T1139 1625q-27 5-39.5-7t-12.5-30v-211q0-97-52-142 57-6 102.5-18t94-39 81-66.5 53-105T1386 856q0-121-79-206 37-91-8-204-28-9-81 11t-92 44l-38 24q-93-26-192-26t-192 26q-16-11-42.5-27T578 459.5 492 446q-44 113-7 204-79 85-79 206 0 85 20.5 150t52.5 105 80.5 67 94 39 102.5 18q-40 36-49 103-21 10-45 15t-57 5-65.5-21.5T484 1274q-19-32-48.5-52t-49.5-24l-20-3q-21 0-29 4.5t-5 11.5 9 14 13 12l7 5q22 10 43.5 38t31.5 51l10 23q13 38 44 61.5t67 30 69.5 7 55.5-3.5l23-4q0 38 .5 89t.5 54q0 18-13 30t-40 7q-232-77-378.5-277.5T128 896q0-209 103-385.5T510.5 231 896 128t385.5 103T1561 510.5 1664 896z" fill="#fff"/></svg></a></li>
+</ul>
+</div>
+</div>
+<div class=container>
+<h1>gitolite + cgit + nginx <span class=meta>28 Feb 2012</span></h1>
+<div id=post>
+<p>Ziel dieser Anleitung soll es sein einen einfach zu wartenden Git-Server einzurichten, der ein einfaches Web-Frontend bietet. Dazu wird gitolite zur Git-Repository-Administration und cgit als Webfrontend verwendet. Das ganze soll unter Ubuntu 10.04 laufen.</p>
+<h2 id=vorbereitung>Vorbereitung</h2>
+<p>Der Git-Server soll unter dem Benutzer <em>git</em> laufen und die Repositories in dessen Home-Verzeichnis zu finden sein.</p>
+<h2 id=gitolite>Gitolite</h2>
+<p><a href=https://github.com/sitaramc/gitolite>Gitolite</a> ist eine Skriptsammlung, um den Zugriff auf Git-Repositories auf einem Server komfortabel und sehr genau einzurichten. Für Ubuntu 10.04 gibt es noch kein Paket, also benutzen wir ein Paket aus einer neueren Ubuntu-Version. Dies hat den Vorteil, dass bei einem Upgrade auf Ubuntu 12.04, theoretisch keine Schwierigkeiten auftreten sollten. <a href=http://packages.ubuntu.com/precise/gitolite>Gitolite-Paket</a> für Ubuntu 12.04</p>
+<p>Installiert wird das Paket folgendermaßen:</p>
+<pre><code>$ sudo dpkg -i gitolite_2.2-1_all.deb
+</code></pre>
+<p>Bei fehlenden Abhängigkeiten werden diese mit folgendem Befehl nachinstalliert.</p>
+<pre><code>$ sudo apt-get install -f
+</code></pre>
+<p>Anschließend wird der eigene SSH-Schlüssel auf den Server geladen und die Konfiguration von gitolite erneut gestartet.</p>
+<pre><code>$ sudo dpkg-reconfigure gitolite
+</code></pre>
+<p>Hierbei sind folgende Angaben zu machen. In Klammern stehen die Werte, die ich benutzt habe.</p>
+<ul>
+<li>Benutzername (git)</li>
+<li>Repository-Pfad (/home/git)</li>
+<li>SSH-Schlüssel des Administrators (ebenjener, der vorher auf den Server kopiert wurde)</li>
+</ul>
+<p>Für die Konfiguration wird ein spezielles Repository mit dem Namen <code>gitolite-admin</code> benutzt.</p>
+<pre><code>$ git clone GIT-USER@GIT-SERVER:gitolite-admin
+</code></pre>
+<p>Dort werden Zugriffsberechtigungen und Public-Keys der Benutzer hinterlegt. Um auf ein beliebiges Repository des Servers zuzugreifen, kann man folgenden Befehl verwenden.</p>
+<pre><code>$ git clone GIT-USER@GIT-SERVER:GIT-REPO
+</code></pre>
+<p>Damit später CGit auf die Repositories zugreifen kann, muss noch die Berechtigung für die Ordner angepasst werden. Dies geschieht in der Datei <strong>~/.gitolite.rc</strong> des Gitolite-Benutzers - in meinem Fall ist dies <strong>/home/git/.gitolite.rc</strong>. Hier muss die Zeile</p>
+<pre><code>$REPO_UMASK = 0077;
+</code></pre>
+<p>in folgende abgewandelt werden:</p>
+<pre><code>$REPO_UMASK = 0027;
+</code></pre>
+<p>Dadurch erhält die Gruppe Leserechte auf den Repository-Ordner. Da das nur Einfluss auf zukünftig erstellte Ordner und somit Repositories hat, müssen noch die aktuellen Berechtigungen angepasst werden.</p>
+<pre><code>$ chmod -R g+rX /home/git
+</code></pre>
+<h2 id=cgit>CGit</h2>
+<p>Für <a href=http://hjemli.net/git/cgit/>CGit</a> gibt es keinerlei Ubuntu-Paket, weshalb es kompiliert werden muss. Dafür sind folgende Paket erforderlich:</p>
+<pre><code>$ sudo apt-get install build-essential git-core libssl-dev
+</code></pre>
+<p>Nun wird der Quellcode bezogen, die letzte als stabil markierte Version ausgecheckt und kompiliert:</p>
+<pre><code>$ git clone git://hjemli.net/pub/git/cgit
 $ cd cgit/
 $ git submodule init git submodule update
 $ git checkout stable
 $ make
-</code></pre><p>Nun könnte CGit mit <code>make install</code> ins System installiert werden, jedoch sollen die Dateien an anderer Stelle ins Dateisystem eingepflegt werden, weshalb die benötigten Dateien dahin kopiert werden.</p><pre><code>$ sudo mkdir /usr/lib/cgit/
+</code></pre>
+<p>Nun könnte CGit mit <code>make install</code> ins System installiert werden, jedoch sollen die Dateien an anderer Stelle ins Dateisystem eingepflegt werden, weshalb die benötigten Dateien dahin kopiert werden.</p>
+<pre><code>$ sudo mkdir /usr/lib/cgit/
 $ sudo cp cgit /usr/lib/cgit/cgit.cgi
 $ sudo cp -r filters/ /usr/lib/cgit/
 $ sudo mkdir /var/www/cgit/
 $ sudo cp cgit.css cgit.png /var/www/cgit/
-</code></pre><p>Jetzt wird CGit noch konfiguriert. Die Umgebungsvariable $REPOLIST wird vom Webserver gesetzt. Dies bietet die Möglichkeit mit einer CGit-Konfiguration unterschiedliche Listen von Repositories anzuzeigen. Ein Anwendungsfall ist hier zum Beispiel die Trennung von privaten und öffentlichen Repositories in zwei vHosts, die die Variable $REPOLIST unterschiedlich setzen. Anschließend kann man den &ldquo;privaten&rdquo; vHost mit einer Benutzer-Authentifikation versehen.</p><pre><code>root-title=My private cgit server
+</code></pre>
+<p>Jetzt wird CGit noch konfiguriert. Die Umgebungsvariable $REPOLIST wird vom Webserver gesetzt. Dies bietet die Möglichkeit mit einer CGit-Konfiguration unterschiedliche Listen von Repositories anzuzeigen. Ein Anwendungsfall ist hier zum Beispiel die Trennung von privaten und öffentlichen Repositories in zwei vHosts, die die Variable $REPOLIST unterschiedlich setzen. Anschließend kann man den &ldquo;privaten&rdquo; vHost mit einer Benutzer-Authentifikation versehen.</p>
+<pre><code>root-title=My private cgit server
 root-desc=Private git repositories
 css=/cgit.css
 logo=/cgit.png
@@ -38,20 +117,38 @@ enable-log-linecount=1
 enable-commit-graph=1
 
 include=$REPOLIST
-</code></pre><p>Damit das Syntaxhighlighting in CGit funktioniert muss noch <code>highlight</code> (siehe <a href=http://hjemli.net/git/cgit/tree/filters/syntax-highlighting.sh>syntax-highlighting.sh</a>) installiert sein.</p><pre><code>$ sudo apt-get install highlight
-</code></pre><h2 id=cgit-gitolite-und-verschiedene-repository-listen>CGit, Gitolite und verschiedene Repository-Listen</h2><p>Um die Zugehörigkeit der Repositories zu einer Liste einzustellen, wird die Gitolite-Konfiguration erweitert, um das Setzen diverser Variablen pro Repo zu ermöglichen. Dazu muss der Wert für <code>$GL_GITCONFIG_KEYS</code> in der Datei <strong>/home/git/.gitolite.rc</strong> angepasst werden.</p><pre><code>$GL_GITCONFIG_KEYS = &quot;cgit\..*&quot;
-</code></pre><p>Nun kann man Git-Config-Variablen nach dem Muster <code>cgit.VARIABLENNAME</code> einstellen. Diese werden von einem Skript ausgewertet, was von <a href=http://www.yhjz.de/www/linux/prog/gitolite-cgit.html>Yasin Zähringer</a> erstellt wurde. Ich habe es um einige Attribute erweitert - all diese und ihre Zuordnung zur CGit-Option sind in den ersten Zeilen des Skripts zu finden.</p><p>Dieses Skript laden wir nun herunter und installieren einen Hook, damit es bei jedem Update des Repositories <code>gitolite-admin</code> ausgeführt wird und somit die Listen für CGit aktualisiert werden.</p><pre><code>$ wget http://cgit.mjbk.de/cgit-helper.git/plain/cgit-update.py /home/git/cgit-update.py
+</code></pre>
+<p>Damit das Syntaxhighlighting in CGit funktioniert muss noch <code>highlight</code> (siehe <a href=http://hjemli.net/git/cgit/tree/filters/syntax-highlighting.sh>syntax-highlighting.sh</a>) installiert sein.</p>
+<pre><code>$ sudo apt-get install highlight
+</code></pre>
+<h2 id=cgit-gitolite-und-verschiedene-repository-listen>CGit, Gitolite und verschiedene Repository-Listen</h2>
+<p>Um die Zugehörigkeit der Repositories zu einer Liste einzustellen, wird die Gitolite-Konfiguration erweitert, um das Setzen diverser Variablen pro Repo zu ermöglichen. Dazu muss der Wert für <code>$GL_GITCONFIG_KEYS</code> in der Datei <strong>/home/git/.gitolite.rc</strong> angepasst werden.</p>
+<pre><code>$GL_GITCONFIG_KEYS = &quot;cgit\..*&quot;
+</code></pre>
+<p>Nun kann man Git-Config-Variablen nach dem Muster <code>cgit.VARIABLENNAME</code> einstellen. Diese werden von einem Skript ausgewertet, was von <a href=http://www.yhjz.de/www/linux/prog/gitolite-cgit.html>Yasin Zähringer</a> erstellt wurde. Ich habe es um einige Attribute erweitert - all diese und ihre Zuordnung zur CGit-Option sind in den ersten Zeilen des Skripts zu finden.</p>
+<p>Dieses Skript laden wir nun herunter und installieren einen Hook, damit es bei jedem Update des Repositories <code>gitolite-admin</code> ausgeführt wird und somit die Listen für CGit aktualisiert werden.</p>
+<pre><code>$ wget http://cgit.mjbk.de/cgit-helper.git/plain/cgit-update.py /home/git/cgit-update.py
 $ chmod +x /home/git/cgit-update.py
-</code></pre><p>Die Datei <strong>/home/git/repositories/gitolite-admin.git/hooks/post-update.secondary</strong> ist (mit den entsprechenden Rechten) zu erstellen und wie folgt zu füllen.</p><pre><code>#!/bin/bash
+</code></pre>
+<p>Die Datei <strong>/home/git/repositories/gitolite-admin.git/hooks/post-update.secondary</strong> ist (mit den entsprechenden Rechten) zu erstellen und wie folgt zu füllen.</p>
+<pre><code>#!/bin/bash
 python /home/git/cgit-update.py /home/git/repositories /home/git
-</code></pre><p>Ein Konfigurationseintrag für ein Repository sieht nun folgendermaßen aus.</p><pre><code>repo    gitolite-admin
+</code></pre>
+<p>Ein Konfigurationseintrag für ein Repository sieht nun folgendermaßen aus.</p>
+<pre><code>repo    gitolite-admin
         RW+                     = kabum
         config cgit.listname    = &quot;private&quot;
         config cgit.section     = &quot;Config&quot;
         config cgit.desc        = &quot;Gitolite Administration&quot;
-</code></pre><p>Er wird in CGit unter der Section <code>Config</code> aufgeführt und enthält die Beschreibung <code>Gitolite Administration</code>. Er ist lediglich in der Liste <code>private</code> zu finden, die vom Skript unter <strong>/home/git/cgit.private.list</strong> abgelegt wird.</p><h2 id=nginx>Nginx</h2><p>Um CGit als CGI-Skript mit Nginx zum Laufen zu bekommen, benötigt man noch das <a href=http://packages.ubuntu.com/precise/fcgiwrap>fcgiwrap-Paket</a>. Dieses ist jedoch nicht in Ubuntu 10.04 enthalten, weshalb wir wieder das Paket aus der kommenden Ubuntu-Version 12.04 entnehmen und installieren.</p><pre><code>$ sudo dpkg -i fcgiwrap_1.0.3-3_amd64deb
+</code></pre>
+<p>Er wird in CGit unter der Section <code>Config</code> aufgeführt und enthält die Beschreibung <code>Gitolite Administration</code>. Er ist lediglich in der Liste <code>private</code> zu finden, die vom Skript unter <strong>/home/git/cgit.private.list</strong> abgelegt wird.</p>
+<h2 id=nginx>Nginx</h2>
+<p>Um CGit als CGI-Skript mit Nginx zum Laufen zu bekommen, benötigt man noch das <a href=http://packages.ubuntu.com/precise/fcgiwrap>fcgiwrap-Paket</a>. Dieses ist jedoch nicht in Ubuntu 10.04 enthalten, weshalb wir wieder das Paket aus der kommenden Ubuntu-Version 12.04 entnehmen und installieren.</p>
+<pre><code>$ sudo dpkg -i fcgiwrap_1.0.3-3_amd64deb
 $ sudo apt-get -f install
-</code></pre><p>Nun kann nginx konfiguriert werden.</p><pre><code>server {
+</code></pre>
+<p>Nun kann nginx konfiguriert werden.</p>
+<pre><code>server {
 	listen			80;
 	server_name		cgit.example;
 
@@ -74,7 +171,30 @@ $ sudo apt-get -f install
         fastcgi_param	REPOLIST /home/git/cgit.public.list;
 	}
 }
-</code></pre><p>Abschließend fügen wir dem Benutzer <code>www-data</code>, unter dem der Webserver und somit auch das CGit-Skript läuft, die Zugehörigkeit für die Gruppe <code>git</code> hinzu, damit dieser die Repositories lesen kann.</p><pre><code>$ sudo usermod -aG git www-data
-</code></pre><h2 id=neustart-der-daemons>Neustart der Daemons</h2><p>Abschließend starten wir noch <code>fcgiwrap</code> und <code>nginx</code> neu, damit sämtliche geänderten Konfigurationen übernommen werden.</p><pre><code>$ sudo service fcgiwrap restart
+</code></pre>
+<p>Abschließend fügen wir dem Benutzer <code>www-data</code>, unter dem der Webserver und somit auch das CGit-Skript läuft, die Zugehörigkeit für die Gruppe <code>git</code> hinzu, damit dieser die Repositories lesen kann.</p>
+<pre><code>$ sudo usermod -aG git www-data
+</code></pre>
+<h2 id=neustart-der-daemons>Neustart der Daemons</h2>
+<p>Abschließend starten wir noch <code>fcgiwrap</code> und <code>nginx</code> neu, damit sämtliche geänderten Konfigurationen übernommen werden.</p>
+<pre><code>$ sudo service fcgiwrap restart
 $ sudo service nginx restart
-</code></pre><h2 id=links>Links</h2><ul><li>gitolite: <a href=https://github.com/sitaramc/gitolite>https://github.com/sitaramc/gitolite</a></li><li>Gitolite-Paket: <a href=http://packages.ubuntu.com/precise/gitolite>http://packages.ubuntu.com/precise/gitolite</a></li><li>CGit: <a href=http://hjemli.net/git/cgit/>http://hjemli.net/git/cgit/</a></li><li>syntax-highlighting.sh: <a href=http://hjemli.net/git/cgit/tree/filters/syntax-highlighting.sh>http://hjemli.net/git/cgit/tree/filters/syntax-highlighting.sh</a></li><li>Yasin Zähringer: <a href=http://www.yhjz.de/www/linux/prog/gitolite-cgit.html>http://www.yhjz.de/www/linux/prog/gitolite-cgit.html</a></li><li>fcgiwrap-Paket: <a href=http://packages.ubuntu.com/precise/fcgiwrap>http://packages.ubuntu.com/precise/fcgiwrap</a></li><li>Gitolite - Artikel auf Dinotools.de: <a href=http://blog.dinotools.de/2012/01/28/gitolite-mehrbenutzer-git-server-uber-ssh>http://blog.dinotools.de/2012/01/28/gitolite-mehrbenutzer-git-server-uber-ssh</a></li><li>CGit und Nginx - Artikel auf Dinotools.de: <a href=http://blog.dinotools.de/2012/01/24/cgit-mit-nginx>http://blog.dinotools.de/2012/01/24/cgit-mit-nginx</a></li></ul></div></div><div class="container footer">Morris Jobke - <a rel=license href=http://creativecommons.org/licenses/by/4.0/>Creative Commons Attribution 4.0 International License</a></div></body></html>
+</code></pre>
+<h2 id=links>Links</h2>
+<ul>
+<li>gitolite: <a href=https://github.com/sitaramc/gitolite>https://github.com/sitaramc/gitolite</a></li>
+<li>Gitolite-Paket: <a href=http://packages.ubuntu.com/precise/gitolite>http://packages.ubuntu.com/precise/gitolite</a></li>
+<li>CGit: <a href=http://hjemli.net/git/cgit/>http://hjemli.net/git/cgit/</a></li>
+<li>syntax-highlighting.sh: <a href=http://hjemli.net/git/cgit/tree/filters/syntax-highlighting.sh>http://hjemli.net/git/cgit/tree/filters/syntax-highlighting.sh</a></li>
+<li>Yasin Zähringer: <a href=http://www.yhjz.de/www/linux/prog/gitolite-cgit.html>http://www.yhjz.de/www/linux/prog/gitolite-cgit.html</a></li>
+<li>fcgiwrap-Paket: <a href=http://packages.ubuntu.com/precise/fcgiwrap>http://packages.ubuntu.com/precise/fcgiwrap</a></li>
+<li>Gitolite - Artikel auf Dinotools.de: <a href=http://blog.dinotools.de/2012/01/28/gitolite-mehrbenutzer-git-server-uber-ssh>http://blog.dinotools.de/2012/01/28/gitolite-mehrbenutzer-git-server-uber-ssh</a></li>
+<li>CGit und Nginx - Artikel auf Dinotools.de: <a href=http://blog.dinotools.de/2012/01/24/cgit-mit-nginx>http://blog.dinotools.de/2012/01/24/cgit-mit-nginx</a></li>
+</ul>
+</div>
+</div>
+<div class="container footer">
+Morris Jobke - <a rel=license href=http://creativecommons.org/licenses/by/4.0/>Creative Commons Attribution 4.0 International License</a>
+</div>
+</body>
+</html>

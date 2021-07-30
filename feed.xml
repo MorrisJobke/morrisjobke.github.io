@@ -1,11 +1,11 @@
 <feed xmlns="http://www.w3.org/2005/Atom"><title>Morris Jobke</title><link href="https://morrisjobke.de/feed.xml" rel="self"/><link href="https://morrisjobke.de/"/><updated>2021-02-21T11:03:00+00:00</updated><id>https://morrisjobke.de/</id><author><name>Morris Jobke</name></author><generator>Hugo -- gohugo.io</generator><entry><title type="html">My experience with NixOps</title><link href="https://morrisjobke.de/2021/02/21/my-experience-with-nixops/"/><id>https://morrisjobke.de/2021/02/21/my-experience-with-nixops/</id><published>2021-02-21T11:03:00+00:00</published><updated>2021-02-21T11:03:00+00:00</updated><content type="html"><![CDATA[<p>After my <a href="/2021/01/05/first-steps-with-nixops/">initial post about NixOps</a> I gave it an in-depth try by migrating one of my servers that hosts a little private blog, a commenting system and some static website over to NixOps.</p>
 <h2 id="nixos-on-scaleway-machine">NixOS on Scaleway machine</h2>
 <p>First I needed to get NixOS running on my <a href="https://www.scaleway.com/">Scaleway</a> VPS. It&rsquo;s not supported out of the box but in the NixOps wiki there is a <a href="https://nixos.wiki/wiki/Install_NixOS_on_Scaleway_X86_Virtual_Cloud_Server">handy guide</a> to accomplish this. It basically boils down to place a file <code>/etc/nixos/host.nix</code> with the NixOS configuration and then use the <a href="https://github.com/elitak/nixos-infect">nixos-infext</a> script to transform the Ubuntu VM into an NixOS one by running following command:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">curl https://raw.githubusercontent.com/elitak/nixos-infect/master/nixos-infect |  NIXOS_IMPORT<span style="color:#f92672">=</span>./host.nix NIX_CHANNEL<span style="color:#f92672">=</span>nixos-20.09 bash 2&gt;&amp;<span style="color:#ae81ff">1</span> | tee /tmp/infect.log
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">curl https://raw.githubusercontent.com/elitak/nixos-infect/master/nixos-infect |  NIXOS_IMPORT<span style="color:#f92672">=</span>./host.nix NIX_CHANNEL<span style="color:#f92672">=</span>nixos-20.09 bash 2&gt;&amp;<span style="color:#ae81ff">1</span> | tee /tmp/infect.log
 </code></pre></div><p>The machine then reboots and you have a running NixOS system.</p>
 <h2 id="bootstrap-nixops">Bootstrap NixOps</h2>
 <p>After that I copied the configuration in <code>/etc/nixos</code> over to the machine that runs NixOps, because it overwrites the server completely. That should be three files: <code>hardware-configuration.nix</code>, <code>host.nix</code> and <code>configuration.nix</code>. I transfered them into one file and it looks like this:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-nix" data-lang="nix">{
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-nix" data-lang="nix">{
   network <span style="color:#f92672">=</span> {
     description <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;Blog&#34;</span>;
     enableRollback <span style="color:#f92672">=</span> <span style="color:#66d9ef">true</span>;
@@ -72,7 +72,7 @@
 }
 </code></pre></div><h2 id="initial-deploy">Initial deploy</h2>
 <p>Then one can create the server inside NixOps and deploy it:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">nixops create ./scaleway-setup.nix -d scaleway-staging
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">nixops create ./scaleway-setup.nix -d scaleway-staging
 nixops deploy -d scaleway-staging
 </code></pre></div><h3 id="potential-deployment-problems">Potential deployment problems</h3>
 <p>On my initial deployment it had problems to build the system. That is because it does a ssh connection on the server to itself. Usually it places a public ssh key in the server configuration, but in my case it failed with something like this:</p>
@@ -117,7 +117,7 @@ error: a 'x86_64-linux' with features {} is required to build '/nix/store/ir75vk
 <p>Basically this boils down to dumping the history of the bisect with <code>git bisect log</code>, then edit the wrong bisect marking, reset it with <code>git bisect reset</code> and finally replay the log via <code>git bisect replay FILE</code>.</p>
 <p><a href="https://stackoverflow.com/questions/8594758/undoing-a-git-bisect-mistake#8594800">https://stackoverflow.com/questions/8594758/undoing-a-git-bisect-mistake#8594800</a></p>
 <p>The log itself looks like this:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ git bisect log
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ git bisect log
 git bisect start
 <span style="color:#75715e"># good: [73c2ad293bc2ad12126fe42e8c3f3dd137bab2ab] Merge pull request #23998 from nextcloud/backport/23937/stable20</span>
 git bisect good 73c2ad293bc2ad12126fe42e8c3f3dd137bab2ab
@@ -241,14 +241,14 @@ Non machines resources state:
 <p>php-memprof is a fast and accurate memory profiling extension for PHP that can be used to find the cause of memory leaks.</p>
 </blockquote>
 <p><a href="https://github.com/arnaud-lb/php-memory-profiler">https://github.com/arnaud-lb/php-memory-profiler</a></p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">brew install traildb/judy/judy
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">brew install traildb/judy/judy
 pecl install memprof
-</code></pre></div><div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php"><span style="color:#f92672">&lt;?</span><span style="color:#a6e22e">php</span>
+</code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php"><span style="color:#f92672">&lt;?</span><span style="color:#a6e22e">php</span>
 
 <span style="color:#66d9ef">if</span> (<span style="color:#a6e22e">function_exists</span>(<span style="color:#e6db74">&#39;memprof_enabled&#39;</span>) <span style="color:#f92672">&amp;&amp;</span> <span style="color:#a6e22e">memprof_enabled</span>()) {
 	<span style="color:#a6e22e">memprof_dump_callgrind</span>(<span style="color:#a6e22e">fopen</span>(<span style="color:#e6db74">&#34;/tmp/callgrind.out&#34;</span>, <span style="color:#e6db74">&#34;w&#34;</span>));
 }
-</code></pre></div><div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">MEMPROF_PROFILE<span style="color:#f92672">=</span><span style="color:#ae81ff">1</span> php script.php
+</code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">MEMPROF_PROFILE<span style="color:#f92672">=</span><span style="color:#ae81ff">1</span> php script.php
 </code></pre></div>]]></content></entry><entry><title type="html">Mini PV-Anlage - Balkonkraftwerk - Steckerfertige PV-Anlage</title><link href="https://morrisjobke.de/2020/08/25/mini-photovoltaik-anlage/"/><id>https://morrisjobke.de/2020/08/25/mini-photovoltaik-anlage/</id><published>2020-08-25T19:37:00+00:00</published><updated>2020-08-25T19:37:00+00:00</updated><content type="html"><![CDATA[<p><strong>Update Juni 2021:</strong> Mittlerweile gibt es auch eine Seite der <a href="https://www.verbraucherzentrale.de/wissen/energie/erneuerbare-energien/steckersolar-solarstrom-vom-balkon-direkt-in-die-steckdose-44715">Verbraucherzentrale zu dem Thema</a>.</p>
 <p>Eine kleine Notizsammlung hinsichtlich Mini PV-Anlage:</p>
 <h3 id="idee">Idee</h3>
@@ -467,24 +467,24 @@ pecl install memprof
 <p>I used capital cased names where specific names need to be placed - if there is the same placeholder it needs to be the same name.</p>
 <p>The goal is to replicate <code>SOURCE_DATABASE</code> to <code>TARGET_DATABASE</code> while applying a filter function that is named <code>DESIGNDOCUMENT/NAME</code>. The filter function in the example checks if the attribute <code>_id</code> starts with <code>abc</code>.</p>
 <p>First we create a document that describes the filter. This document is a design document and needs to be placed in the source database under <code>/SOURCE_DATABASE/_design/DESIGNDOCUMENT</code>:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-json" data-lang="json">{
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-json" data-lang="json">{
   <span style="color:#f92672">&#34;_id&#34;</span>: <span style="color:#e6db74">&#34;_design/DESIGNDOCUMENT&#34;</span>,
   <span style="color:#f92672">&#34;filters&#34;</span>: {
     <span style="color:#f92672">&#34;NAME&#34;</span>: <span style="color:#e6db74">&#34;function(doc, req) { if (doc._id.substr(0, 3) === &#39;abc&#39;) { return true; } return false; }&#34;</span>
   }
 }
 </code></pre></div><p>To actually test the filter I used a query against the <code>/_changes</code> endpoint of the database:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ curl <span style="color:#e6db74">&#34;http://DOMAIN:5984/SOURCE_DATABASE/_changes?filter=DESIGNDOCUMENT%2FNAME&amp;feed=normal&amp;style=all_docs&amp;since=0&amp;timeout=10000&#34;</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ curl <span style="color:#e6db74">&#34;http://DOMAIN:5984/SOURCE_DATABASE/_changes?filter=DESIGNDOCUMENT%2FNAME&amp;feed=normal&amp;style=all_docs&amp;since=0&amp;timeout=10000&#34;</span>
 </code></pre></div><p>This shows the output and potential errors in the JavaScript code of the filter.</p>
 <p>For the actual replication you need to create following documents in the <code>_replicator</code> database for the one time replication of existing documents:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-json" data-lang="json">{
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-json" data-lang="json">{
   <span style="color:#f92672">&#34;_id&#34;</span>: <span style="color:#e6db74">&#34;ID&#34;</span>,
   <span style="color:#f92672">&#34;source&#34;</span>: <span style="color:#e6db74">&#34;http://DOMAIN:5984/SOURCE_DATABASE&#34;</span>,
   <span style="color:#f92672">&#34;target&#34;</span>: <span style="color:#e6db74">&#34;http://DOMAIN:5984/TARGET_DATABASE&#34;</span>,
   <span style="color:#f92672">&#34;filter&#34;</span>: <span style="color:#e6db74">&#34;DESIGNDOCUMENT/NAME&#34;</span>
 }
 </code></pre></div><p>And I created a continuous replication document as well:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-json" data-lang="json">{
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-json" data-lang="json">{
   <span style="color:#f92672">&#34;_id&#34;</span>: <span style="color:#e6db74">&#34;ID-continuous&#34;</span>,
   <span style="color:#f92672">&#34;source&#34;</span>: <span style="color:#e6db74">&#34;http://DOMAIN:5984/SOURCE_DATABASE&#34;</span>,
   <span style="color:#f92672">&#34;target&#34;</span>: <span style="color:#e6db74">&#34;http://DOMAIN:5984/TARGET_DATABASE&#34;</span>,
@@ -507,6 +507,7 @@ pecl install memprof
 <li><code>ack</code> - <a href="https://beyondgrep.com">ack!</a> - nicer looking version of a recursive search on the command line - <code>grep -Rni TERM</code></li>
 <li><code>diff-so-fancy</code> - <a href="https://github.com/so-fancy/diff-so-fancy">diff-so-fancy</a> - nicer to read diffs on the command line - I use it as the default pager for git: <code>git config --global core.pager &quot;diff-so-fancy | less --tabs=4 -RFX&quot;</code></li>
 <li><code>ffmpeg</code> - <a href="https://ffmpeg.org">ffmpeg</a> - convert multimedia</li>
+<li><code>fzf</code> - <a href="https://github.com/junegunn/fzf">fzf</a> - command-line fuzzy finder</li>
 <li><code>gpg</code> - <a href="https://gnupg.org">GnuPG</a> - mostly for signing git commits</li>
 <li><code>hub</code> - <a href="https://hub.github.com">hub</a> - command line wrapper around git to integrate GitHub (like <code>git checkout URL-TO-PULL-REQUEST</code>)</li>
 <li><code>hugo</code> - <a href="https://gohugo.io">hugo</a> - static website generator</li>
@@ -539,8 +540,8 @@ pecl install memprof
 <li><code>brew tap homebrew/homebrew-php</code></li>
 <li><code>brew install php71 php71-imagick composer</code> - installs PHP 7.1, the <a href="https://secure.php.net/manual/en/book.imagick.php">Imagick</a> extension and <a href="https://getcomposer.org">Composer</a> - remaining stuff is usually executed within docker containers to not clutter my main system</li>
 </ul>
-<h2 id="brew-cask-installs">brew cask installs</h2>
-<p>Following apps can be installed via <code>brew cask install NAME</code>:</p>
+<h2 id="brew-casks">brew casks</h2>
+<p>Following apps can be installed via <code>brew install --cask NAME</code>:</p>
 <ul>
 <li><code>1password</code> - <a href="https://1password.com">1Password</a> - password manager for macOS, Windows, iOS and Android</li>
 <li><code>caffeine</code> - <a href="http://lightheadsw.com/caffeine/">Caffeine</a> - don&rsquo;t let your mac fall asleep</li>
@@ -654,7 +655,7 @@ pecl install memprof
 <p><strong>Warning:</strong> This should not be executed if you don&rsquo;t know what is done here - don&rsquo;t blindly execute this, because it could lead to data loss if you already changed calendar events after the upgrade to 9.0. The best is to execute this only on a test system.</p>
 <p>This post should cover how one could debug the calendar migration that has failed or was aborted. If your migration worked fine then you don&rsquo;t need to read this. ;)</p>
 <h2 id="checking-if-migration-went-well">Checking if migration went well</h2>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sql" data-lang="sql"><span style="color:#75715e">/* show old calendars and count */</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sql" data-lang="sql"><span style="color:#75715e">/* show old calendars and count */</span>
 <span style="color:#66d9ef">SELECT</span> o.calendarid, <span style="color:#66d9ef">c</span>.userid, <span style="color:#66d9ef">c</span>.displayname, <span style="color:#66d9ef">c</span>.uri, <span style="color:#66d9ef">COUNT</span>(o.calendarid)
 <span style="color:#66d9ef">FROM</span> oc_clndr_objects o
 <span style="color:#66d9ef">JOIN</span> oc_clndr_calendars <span style="color:#66d9ef">c</span> <span style="color:#66d9ef">ON</span> o.calendarid <span style="color:#f92672">=</span> <span style="color:#66d9ef">c</span>.id
@@ -669,7 +670,7 @@ pecl install memprof
 <span style="color:#66d9ef">ORDER</span> <span style="color:#66d9ef">BY</span> <span style="color:#66d9ef">c</span>.principaluri, <span style="color:#66d9ef">c</span>.displayname;</code></pre></div>
 <p>The above two statements will show the old calendars with a count of events in the calendars and the same for the new calendar.</p>
 <p>Ideally this should look like this - the count of the old calendars should be the same as the new ones:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sql" data-lang="sql">MariaDB [owncloud_stable]<span style="color:#f92672">&gt;</span> <span style="color:#66d9ef">SELECT</span> o.calendarid, <span style="color:#66d9ef">c</span>.userid, <span style="color:#66d9ef">c</span>.displayname, <span style="color:#66d9ef">c</span>.uri, <span style="color:#66d9ef">COUNT</span>(o.calendarid)
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sql" data-lang="sql">MariaDB [owncloud_stable]<span style="color:#f92672">&gt;</span> <span style="color:#66d9ef">SELECT</span> o.calendarid, <span style="color:#66d9ef">c</span>.userid, <span style="color:#66d9ef">c</span>.displayname, <span style="color:#66d9ef">c</span>.uri, <span style="color:#66d9ef">COUNT</span>(o.calendarid)
     <span style="color:#f92672">-&gt;</span> <span style="color:#66d9ef">FROM</span> oc_clndr_objects o
     <span style="color:#f92672">-&gt;</span> <span style="color:#66d9ef">JOIN</span> oc_clndr_calendars <span style="color:#66d9ef">c</span> <span style="color:#66d9ef">ON</span> o.calendarid <span style="color:#f92672">=</span> <span style="color:#66d9ef">c</span>.id
     <span style="color:#f92672">-&gt;</span> <span style="color:#66d9ef">GROUP</span> <span style="color:#66d9ef">BY</span> calendarid
@@ -699,7 +700,7 @@ MariaDB [owncloud_stable]<span style="color:#f92672">&gt;</span> <span style="co
 <span style="color:#f92672">+</span><span style="color:#75715e">------------+-----------------------+------------------+-----------------+---------------------+</span></code></pre></div>
 <p>If this is the case: Stop reading and be happy that everything worked well. :)</p>
 <p>If the count is not the same it looks like this (the calendar <code>Morris</code> holds 1019 entries in the old table but only 267 in the new table):</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sql" data-lang="sql"><span style="color:#f92672">+</span><span style="color:#75715e">------------+--------+------------------+-----------------+---------------------+
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sql" data-lang="sql"><span style="color:#f92672">+</span><span style="color:#75715e">------------+--------+------------------+-----------------+---------------------+
 </span><span style="color:#75715e"></span><span style="color:#f92672">|</span> calendarid <span style="color:#f92672">|</span> userid <span style="color:#f92672">|</span> displayname      <span style="color:#f92672">|</span> uri             <span style="color:#f92672">|</span> <span style="color:#66d9ef">COUNT</span>(o.calendarid) <span style="color:#f92672">|</span>
 <span style="color:#f92672">+</span><span style="color:#75715e">------------+--------+------------------+-----------------+---------------------+
 </span><span style="color:#75715e"></span><span style="color:#f92672">|</span>          <span style="color:#ae81ff">8</span> <span style="color:#f92672">|</span> mjob   <span style="color:#f92672">|</span> Example <span style="color:#ae81ff">1</span>        <span style="color:#f92672">|</span> example1        <span style="color:#f92672">|</span>                 <span style="color:#ae81ff">143</span> <span style="color:#f92672">|</span>
@@ -725,7 +726,7 @@ MariaDB [owncloud_stable]<span style="color:#f92672">&gt;</span> <span style="co
 <p>Nevertheless you maybe want to retrigger this. <!-- raw HTML omitted -->Those commands are only available in debug mode. <strong>Note:</strong> be aware that debug mode should not be used on production instances because it could leak informations in the debug messages once an error occurs.<!-- raw HTML omitted --> <strong>Edit:</strong> The debug mode is not needed anymore with 9.0.0 RC4. (I added comments to those <code>config:system:set</code> commands)</p>
 <p>The migration steps will only run for not yet migrated calendars. Therefore you need to delete the new calendar that was not fully migrated, because the migration step will check if the calendar only exists. If the calendar exists it will handle it as an already migrated calendar. <strong>Note:</strong> This will delete all data that was added after the upgrade from 8.2 to 9.0 to this calendar. <strong>Only do this if you didn&rsquo;t added any event to this calendar after the upgrade to 9.0!</strong></p>
 <p>Replace <code>USER</code> with your database user, <code>DATABASENAME</code> with the database name of your ownCloud and <code>CALENDARID</code> with the id of the calendar in <code>oc_calendars</code> (new calendar). <code>USERNAME</code> in the migrate command needs to be replaced with the ownCloud username of which the migration step should be run.</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ <span style="color:#75715e"># ./occ config:system:set debug --value true --type boolean</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ <span style="color:#75715e"># ./occ config:system:set debug --value true --type boolean</span>
 $ mysql -u USER -p DATABASENAME --exec <span style="color:#e6db74">&#34;DELETE FROM oc_calendarobjects WHERE calendarid = CALENDARID; DELETE FROM oc_calendars WHERE id = CALENDARID;&#34;</span>
 $ ./occ dav:migrate-calendars USERNAME -v
 $ <span style="color:#75715e"># ./occ config:system:set debug --value false --type boolean</span></code></pre></div>
