@@ -7,7 +7,7 @@ Bei Diskussionen rund um Elektromobilität stößt man immer wieder auf gewisse 
 
 Ich versuche von Zeit zu Zeit Neuigkeiten nachzupflegen. Anmerkungen, Verbesserungen, Korrekturen und sonstiges kann gerne über das entsprechende [Github Repository](https://github.com/MorrisJobke/morrisjobke.github.io) eingereicht werden.
 
-Letztes Update: April 2021
+Letztes Update: Juli 2021
 
 ---
 
@@ -77,6 +77,7 @@ Letztes Update: April 2021
 
 * [Akku vs Kraftstoff (emobicon.de)](https://emobicon.de/news-kraftstoff-keine-alternative-zum-akku/)
 * [E-Autos, Kobalt und Kinderarbeit (emobicon.de)](https://emobicon.de/weniger-e-autos-sind-auch-keine-loesung/)
+* [Akkutechnik: CATL stellt erste Natrium-Ionen-Akkus für Autos vor (golem.de) - Juli 2021](https://www.golem.de/news/akkutechnik-catl-stellt-erste-natrium-ionen-akkus-fuer-autos-vor-2107-158529.html)
 
 ### Recycling
 
@@ -175,6 +176,9 @@ Siehe "CO2 Emisionen 1990-2017 Deutschland.jpg"
 > Bis auf eine Ausnahme darin: Der Verkehr als einziger liegt heute sogar über den Werten von 1990
 > Das zeigt nochmal sehr deutlich, was der VDA zusammen mit den jeweiligen Regierungen getrieben hat. Schlicht unfassbar
 
+## Unfälle
+
+* [Unwetter: Wie viel Hochwasser verträgt ein Elektroauto? (golem.de)](https://www.golem.de/news/unwetter-wie-viel-hochwasser-vertraegt-ein-elektroauto-2107-158427.html)
 
 ## Feedback zu allgemeinen Dingen
 
