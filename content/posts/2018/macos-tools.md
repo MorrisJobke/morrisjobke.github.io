@@ -18,6 +18,7 @@ The following is installed via `brew install NAME`.
 * `ack` - [ack!](https://beyondgrep.com) - nicer looking version of a recursive search on the command line - `grep -Rni TERM`
 * `diff-so-fancy` - [diff-so-fancy](https://github.com/so-fancy/diff-so-fancy) - nicer to read diffs on the command line - I use it as the default pager for git: `git config --global core.pager "diff-so-fancy | less --tabs=4 -RFX"`
 * `ffmpeg` - [ffmpeg](https://ffmpeg.org) - convert multimedia
+* `fzf` - [fzf](https://github.com/junegunn/fzf) - command-line fuzzy finder
 * `gpg` - [GnuPG](https://gnupg.org) - mostly for signing git commits
 * `hub` - [hub](https://hub.github.com) - command line wrapper around git to integrate GitHub (like `git checkout URL-TO-PULL-REQUEST`)
 * `hugo` - [hugo](https://gohugo.io) - static website generator
@@ -45,9 +46,9 @@ The following is installed via `brew install NAME`.
 * `brew tap homebrew/homebrew-php`
 * `brew install php71 php71-imagick composer` - installs PHP 7.1, the [Imagick](https://secure.php.net/manual/en/book.imagick.php) extension and [Composer](https://getcomposer.org) - remaining stuff is usually executed within docker containers to not clutter my main system
 
-## brew cask installs
+## brew casks
 
-Following apps can be installed via `brew cask install NAME`:
+Following apps can be installed via `brew install --cask NAME`:
 
 * `1password` - [1Password](https://1password.com) - password manager for macOS, Windows, iOS and Android
 * `caffeine` - [Caffeine](http://lightheadsw.com/caffeine/) - don't let your mac fall asleep
