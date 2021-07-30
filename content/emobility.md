@@ -180,6 +180,10 @@ Siehe "CO2 Emisionen 1990-2017 Deutschland.jpg"
 
 * [Unwetter: Wie viel Hochwasser verträgt ein Elektroauto? (golem.de)](https://www.golem.de/news/unwetter-wie-viel-hochwasser-vertraegt-ein-elektroauto-2107-158427.html)
 
+## Zulassungszahlen
+
+* [Open EV charts](https://open-ev-charts.org/#electric-ratio:DE:year:all-time)
+
 ## Feedback zu allgemeinen Dingen
 
 von Karsten Jung auf Facebook:
