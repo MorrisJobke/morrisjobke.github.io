@@ -78,6 +78,7 @@ Letztes Update: Juli 2021
 * [Akku vs Kraftstoff (emobicon.de)](https://emobicon.de/news-kraftstoff-keine-alternative-zum-akku/)
 * [E-Autos, Kobalt und Kinderarbeit (emobicon.de)](https://emobicon.de/weniger-e-autos-sind-auch-keine-loesung/)
 * [Akkutechnik: CATL stellt erste Natrium-Ionen-Akkus für Autos vor (golem.de) - Juli 2021](https://www.golem.de/news/akkutechnik-catl-stellt-erste-natrium-ionen-akkus-fuer-autos-vor-2107-158529.html)
+* [Batteriezellen-Fertigung in Deutschland und Europa - Wo Elektroauto-Akkus entstehen (sollen) (auto-motor-und-sport.de)](https://www.auto-motor-und-sport.de/tech-zukunft/alternative-antriebe/batteriezellen-fertigung-deutschland-wo-elektroauto-akkus-entstehen/)
 
 ### Recycling
 
