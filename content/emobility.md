@@ -57,6 +57,8 @@ Letztes Update: Juli 2021
 > Ich habe mal durch Zufall eine Trainerin für Raucherentwöhnung kennengelernt. Die hat mir erklärt, dass man Menschen überhaupt nicht über Negatives (Rauchen = Lungenkrebs, Raucherbein etc.) bekommt, sondern nur über Positives (ich kann wieder fein schmecken, ich habe wieder mehr Geld, ich bin wieder sportlicher und kann wieder frei durchpusten etc.pp. - also ganze Bilder imaginieren, was dann tolles passiert) kriegt  - und sie hatte eine beeindruckende Erfolgsquote.
 > Also spreche ich über die Dinge, die mich an der eMobilität begeistern. Auf den Quark gehe ich nicht mehr ein
 
+* [BNEF: Elektrofahrzeuge bis 2027 in allen Fahrzeugklassen preisweiter als Benziner (transportenvironment.org)](https://www.transportenvironment.org/press/bnef-elektrofahrzeuge-bis-2027-allen-fahrzeugklassen-preisweiter-als-benziner)
+
 ### Strompreis
 
 * [Studie des Fraunhofer ISI zur Entwicklung von Haushaltsstrompreisen durch Elektromobilität (isi.fraunhofer.de)](https://www.isi.fraunhofer.de/de/presse/2018/presseinfo-36-2018-elektrofahrzeuge-haushaltsstrompreise.html)
@@ -141,6 +143,7 @@ Wieso bricht eigentlich das Stromnetz nicht durch den Beleuchtungswahn zusammen?
 * braucht auch Akku
 * siehe Seite 26 in [Mythbuster E-Mobilität von Martin Rotta (pdf) (mythbuster.ch)](http://www.mythbuster.ch/Mythbuster-Elektroauto-Rotta.pdf)
 * anschauliche Grafik zu verschiedenen Antriebsarten und deren Energieeffizienz (via Nextmove Twitter)(https://twitter.com/nextmove_de/status/1361716310980329474) (Quelle: ["Electrofuels? Yes, we can ... if we’re efficient" by "Transport & Environment"](https://www.transportenvironment.org/sites/te/files/publications/2020_12_Briefing_feasibility_study_renewables_decarbonisation.pdf) Seite 29)
+* [Wasserstoff statt Elektrifizierung? Chancen und Risiken für Klimaziele (pik-potsdam.de)](https://www.pik-potsdam.de/de/aktuelles/nachrichten/wasserstoff-statt-elektrifizierung-chancen-und-risiken-fuer-klimaziele)
 
 ## Rohstoffe
 
