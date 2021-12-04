@@ -76,14 +76,14 @@
 nixops deploy -d scaleway-staging
 </code></pre></div><h3 id="potential-deployment-problems">Potential deployment problems</h3>
 <p>On my initial deployment it had problems to build the system. That is because it does a ssh connection on the server to itself. Usually it places a public ssh key in the server configuration, but in my case it failed with something like this:</p>
-<pre><code>cannot build on 'ssh://root@12.34.56.78': cannot connect to 'root@12.34.56.78': Permission denied, please try again.
+<pre tabindex="0"><code>cannot build on 'ssh://root@12.34.56.78': cannot connect to 'root@12.34.56.78': Permission denied, please try again.
 Received disconnect from 12.34.56.78 port 22:2: Too many authentication failures
 Disconnected from 12.34.56.78 port 22
 error: a 'x86_64-linux' with features {} is required to build '/nix/store/ir75vkqa6jz7scjgvn1bb7lm1p2z0wl5-kernel-modules.drv', but I am a 'x86_64-darwin' with features {benchmark, big-parallel, nixos-test}
 </code></pre><p>I looked on my NixOps host into the SQLite db at <code>~/.nixops/deployments.nixops</code> and extracted the public key (attribute with the name <code>none.sshPublicKey</code> inside the table <code>ResourceAttrs</code>) and placed it as public key for the user root (see <code>users.users.root.openssh.authorizedKeys.keys</code>).</p>
 <h2 id="rollbacks">Rollbacks</h2>
 <p>The option <code>network.enableRollback = true</code> allows rollbacks from within NixOps.</p>
-<pre><code>$ nixops list-generations -d scaleway-staging
+<pre tabindex="0"><code>$ nixops list-generations -d scaleway-staging
    1   2021-02-19 20:56:40   
    2   2021-02-19 20:58:00   (current)
 </code></pre><p>Those can be selected via <code>nixops-rollback</code>:</p>
@@ -94,9 +94,9 @@ error: a 'x86_64-linux' with features {} is required to build '/nix/store/ir75vk
 <p><a href="https://releases.nixos.org/nixops/nixops-1.7/manual/manual.html#idm140737322342384">The NixOps manual also highlights</a> this and provides a way (<code>deployment.keys.&lt;name&gt;</code>) to store secrets inside a temporary file system that has proper access rights and is bundled with systemd services that indicate that those files are there so that the actual service can rely on that properly and allows tracing back why a service fails. Unfortunately that also means that a reboot of the server that is not invoked via <code>nixops</code> will result in the secrets not being available and need to be deployed again via <code>nixops</code>.</p>
 <h3 id="nixpkgs-channel">Nixpkgs channel</h3>
 <p>NixOps itself deploys the packages based on a channel, but it does not use the channel configured on the server, but the channel configured on the machine where NixOps runs. So you need to be careful what you run there. I configured my laptop to use the latest release, because I noticed that on MacOS by default it uses the unstable channel that then also got deployed to the server, which is most likely not wanted. I changed it from</p>
-<pre><code>nixpkgs https://nixos.org/channels/nixpkgs-unstable
+<pre tabindex="0"><code>nixpkgs https://nixos.org/channels/nixpkgs-unstable
 </code></pre><p>to</p>
-<pre><code>nixpkgs https://nixos.org/channels/nixpkgs-20.09-darwin
+<pre tabindex="0"><code>nixpkgs https://nixos.org/channels/nixpkgs-20.09-darwin
 </code></pre><p>via the <code>nix-channels</code> command.</p>
 <p>There is an <a href="https://github.com/NixOS/nixops/issues/736">open issue on GitHub</a> about this to properly distinguish between the channels on the server and the nixops machine.</p>
 <h3 id="automaticunattended-upgrades">Automatic/unattended upgrades</h3>
@@ -144,7 +144,7 @@ git bisect good 020ba0847ba4fd8af39e9a730e3d8460cc56c9e3
 <h2 id="configuration-files">Configuration files</h2>
 <p>The following two configuration files are needed for a first simple <a href="https://nixos.org/nixops">NixOps</a> setup.</p>
 <p><code>trivial.nix</code></p>
-<pre><code>{
+<pre tabindex="0"><code>{
   network.description = &quot;Web server&quot;;
 
   webserver =
@@ -162,7 +162,7 @@ git bisect good 020ba0847ba4fd8af39e9a730e3d8460cc56c9e3
     };
 }
 </code></pre><p><code>trivial-vbox.nix</code></p>
-<pre><code>{
+<pre tabindex="0"><code>{
   webserver =
     { config, pkgs, ... }:
     { deployment.targetEnv = &quot;virtualbox&quot;;
@@ -173,9 +173,9 @@ git bisect good 020ba0847ba4fd8af39e9a730e3d8460cc56c9e3
 }
 </code></pre><h2 id="deploying-it">Deploying it</h2>
 <p>Create deployment:</p>
-<pre><code>$ nixops create ./trivial.nix ./trivial-vbox.nix -d trivial
+<pre tabindex="0"><code>$ nixops create ./trivial.nix ./trivial-vbox.nix -d trivial
 </code></pre><p>Show deployment state:</p>
-<pre><code>$ nixops info -d trivial
+<pre tabindex="0"><code>$ nixops info -d trivial
 Network name: trivial
 Network UUID: 89dbba3d-4f9c-11eb-b54e-acbc32a44755
 Network description: Web server
@@ -187,7 +187,7 @@ Nix expressions: /Users/morris/Projects/nixops-machines/trivial.nix /Users/morri
 | webserver | Missing | virtualbox |             |            |
 +-----------+---------+------------+-------------+------------+
 </code></pre><p>Deploy machine (that creates the VM and deploys the NixOS configuration):</p>
-<pre><code>$ nixops deploy -d trivial
+<pre tabindex="0"><code>$ nixops deploy -d trivial
 webserver&gt; creating VirtualBox VM...
 webserver&gt; Virtual machine 'nixops-89dbba3d-4f9c-11eb-b54e-acbc32a44755-webserver' is created and registered.
 webserver&gt; UUID: db550623-f02f-4e8c-a0c8-e79ec7dee325
@@ -203,7 +203,7 @@ webserver&gt;   /nix/store/301q4qwn3rvl9b8l0c5296bgrf9hb914-curl-7.74.0-bin
 webserver&gt;   /nix/store/48mk2wkwhrhpcfzsr23kbh25lkirhwih-openssl-1.1.1i-bin
 ...
 </code></pre><p>Check the machine state:</p>
-<pre><code>$ nixops check -d trivial
+<pre tabindex="0"><code>$ nixops check -d trivial
 Machines state:
 +-----------+--------+-----+-----------+----------+----------------+------------------------------------------+-------+
 | Name      | Exists | Up  | Reachable | Disks OK | Load avg.      | Units                                    | Notes |
@@ -380,7 +380,7 @@ pecl install memprof
 </ul>
 <h3 id="fallstricke">Fallstricke</h3>
 <p>Es gibt noch zwei Fallstricke, die es zu beachten gibt. Einerseits bin ich anfangs über folgenden Fehler in FastLED gestolpert:</p>
-<pre><code>error: 'boolean' has a previous declaration as 'typedef bool boolean'
+<pre tabindex="0"><code>error: 'boolean' has a previous declaration as 'typedef bool boolean'
  typedef bool boolean;
               ^
 </code></pre><p>Diesen habe ich behoben, indem in die FastLED Bibliothek entsprechend angepasst habe. Die heruntergeladenen Bibliotheken finden sich normalerweise im &ldquo;Dokumente/Arduino/libraries&rdquo; Ordner des aktuellen Nutzers. Dort musste ich die Zeile 15 in <code>FastLED/platforms/esp/8266/led_sysdefs_esp8266.h</code> auskommentieren. Diese Zeile enthält <code>typedef uint8_t boolean;</code>. Danach war der Fehler gelöst. Das ganze habe ich <a href="https://github.com/FastLED/FastLED/issues/733#issuecomment-491634606">hier</a> gefunden.</p>
@@ -597,7 +597,7 @@ pecl install memprof
 <li>Tunnelblick config - <code>~/Library/Application\ Support/Tunnelblick/Users/</code></li>
 </ul>
 ]]></content></entry><entry><title type="html">My git config</title><link href="https://morrisjobke.de/2018/03/03/git-config/"/><id>https://morrisjobke.de/2018/03/03/git-config/</id><published>2018-03-03T12:30:00+00:00</published><updated>2018-03-03T12:30:00+00:00</updated><content type="html"><![CDATA[<p>Because I get quite often asked about my git config I will post it here and leave some notes.</p>
-<pre><code>[core]
+<pre tabindex="0"><code>[core]
 	whitespace = cr-at-eol
 	pager = diff-so-fancy | less --tabs=4 -RFX
 	excludesfile = ~/.gitignore
@@ -1621,16 +1621,16 @@ $ sudo apt-get -f install
 	proxy_redirect	off;
 
 	location ~* ^.+\.(css|png|ico)$ {
-        expires 30d;
+		expires 30d;
 	}
 
 	location / {
-        include			fastcgi_params;
-        fastcgi_pass	unix:/var/run/fcgiwrap.socket;
-        fastcgi_param	SCRIPT_FILENAME /usr/lib/cgit/cgit.cgi;
-        fastcgi_param	PATH_INFO $uri;
-        fastcgi_param	QUERY_STRING $args;
-        fastcgi_param	REPOLIST /home/git/cgit.public.list;
+		include			fastcgi_params;
+		fastcgi_pass	unix:/var/run/fcgiwrap.socket;
+		fastcgi_param	SCRIPT_FILENAME /usr/lib/cgit/cgit.cgi;
+		fastcgi_param	PATH_INFO $uri;
+		fastcgi_param	QUERY_STRING $args;
+		fastcgi_param	REPOLIST /home/git/cgit.public.list;
 	}
 }
 </code></pre>

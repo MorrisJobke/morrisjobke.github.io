@@ -4,10 +4,10 @@
 <meta http-equiv=x-ua-compatible content="chrome=1">
 <meta name=viewport content="width=device-width,initial-scale=1">
 <title>Morris Jobke</title>
-<link rel=stylesheet href=/css/pygment_trac.css?1628252514>
+<link rel=stylesheet href=/css/pygment_trac.css?1638652368>
 <link rel=alternate type=application/atom+xml title="Atom feed" href=/feed.xml>
-<link rel=stylesheet href=/css/webfonts.css?1628252514>
-<link rel=stylesheet href=/css/base.css?1628252514>
+<link rel=stylesheet href=/css/webfonts.css?1638652368>
+<link rel=stylesheet href=/css/base.css?1638652368>
 <meta property="og:title" content="Word Clock - Software">
 <meta property="og:description" content="Dies ist die Fortsetzung der Anleitung für die Word Clock. Den Hardwareteil habe ich hier beschrieben.
 In diesem Beitrag möchte ich auf die Software-Komponente eingehen. Der komplette Quellcode lässt sich auf Github finden und ist unter MIT lizensiert.
@@ -86,7 +86,7 @@ Features Ich habe einige Features im Kopf, die ich gerne in der Uhr umgesetzt ha
 </ul>
 <h3 id=fallstricke>Fallstricke</h3>
 <p>Es gibt noch zwei Fallstricke, die es zu beachten gibt. Einerseits bin ich anfangs über folgenden Fehler in FastLED gestolpert:</p>
-<pre><code>error: 'boolean' has a previous declaration as 'typedef bool boolean'
+<pre tabindex=0><code>error: 'boolean' has a previous declaration as 'typedef bool boolean'
  typedef bool boolean;
               ^
 </code></pre><p>Diesen habe ich behoben, indem in die FastLED Bibliothek entsprechend angepasst habe. Die heruntergeladenen Bibliotheken finden sich normalerweise im &ldquo;Dokumente/Arduino/libraries&rdquo; Ordner des aktuellen Nutzers. Dort musste ich die Zeile 15 in <code>FastLED/platforms/esp/8266/led_sysdefs_esp8266.h</code> auskommentieren. Diese Zeile enthält <code>typedef uint8_t boolean;</code>. Danach war der Fehler gelöst. Das ganze habe ich <a href=https://github.com/FastLED/FastLED/issues/733#issuecomment-491634606>hier</a> gefunden.</p>

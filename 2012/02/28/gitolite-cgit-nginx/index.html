@@ -4,10 +4,10 @@
 <meta http-equiv=x-ua-compatible content="chrome=1">
 <meta name=viewport content="width=device-width,initial-scale=1">
 <title>Morris Jobke</title>
-<link rel=stylesheet href=/css/pygment_trac.css?1628252514>
+<link rel=stylesheet href=/css/pygment_trac.css?1638652368>
 <link rel=alternate type=application/atom+xml title="Atom feed" href=/feed.xml>
-<link rel=stylesheet href=/css/webfonts.css?1628252514>
-<link rel=stylesheet href=/css/base.css?1628252514>
+<link rel=stylesheet href=/css/webfonts.css?1638652368>
+<link rel=stylesheet href=/css/base.css?1638652368>
 <meta property="og:title" content="gitolite + cgit + nginx">
 <meta property="og:description" content="Ziel dieser Anleitung soll es sein einen einfach zu wartenden Git-Server einzurichten, der ein einfaches Web-Frontend bietet. Dazu wird gitolite zur Git-Repository-Administration und cgit als Webfrontend verwendet. Das ganze soll unter Ubuntu 10.04 laufen.
 Vorbereitung Der Git-Server soll unter dem Benutzer git laufen und die Repositories in dessen Home-Verzeichnis zu finden sein.
@@ -159,16 +159,16 @@ $ sudo apt-get -f install
 	proxy_redirect	off;
 
 	location ~* ^.+\.(css|png|ico)$ {
-        expires 30d;
+		expires 30d;
 	}
 
 	location / {
-        include			fastcgi_params;
-        fastcgi_pass	unix:/var/run/fcgiwrap.socket;
-        fastcgi_param	SCRIPT_FILENAME /usr/lib/cgit/cgit.cgi;
-        fastcgi_param	PATH_INFO $uri;
-        fastcgi_param	QUERY_STRING $args;
-        fastcgi_param	REPOLIST /home/git/cgit.public.list;
+		include			fastcgi_params;
+		fastcgi_pass	unix:/var/run/fcgiwrap.socket;
+		fastcgi_param	SCRIPT_FILENAME /usr/lib/cgit/cgit.cgi;
+		fastcgi_param	PATH_INFO $uri;
+		fastcgi_param	QUERY_STRING $args;
+		fastcgi_param	REPOLIST /home/git/cgit.public.list;
 	}
 }
 </code></pre>

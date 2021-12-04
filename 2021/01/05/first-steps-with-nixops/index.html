@@ -4,10 +4,10 @@
 <meta http-equiv=x-ua-compatible content="chrome=1">
 <meta name=viewport content="width=device-width,initial-scale=1">
 <title>Morris Jobke</title>
-<link rel=stylesheet href=/css/pygment_trac.css?1628252514>
+<link rel=stylesheet href=/css/pygment_trac.css?1638652368>
 <link rel=alternate type=application/atom+xml title="Atom feed" href=/feed.xml>
-<link rel=stylesheet href=/css/webfonts.css?1628252514>
-<link rel=stylesheet href=/css/base.css?1628252514>
+<link rel=stylesheet href=/css/webfonts.css?1638652368>
+<link rel=stylesheet href=/css/base.css?1638652368>
 <meta property="og:title" content="First steps with NixOps">
 <meta property="og:description" content="I wanted to play around a bit with NixOS and NixOps. Those are the notes on how I got started with it on macOS and an VM inside VirtualBox.
 Requirements You need to have nixops installed locally. I installed nix on macOS Big Sur via the tutorial on Philipps blog post and then ran nix-env -i nixops.
@@ -54,7 +54,7 @@ Configuration files The following two configuration files are needed for a first
 <h2 id=configuration-files>Configuration files</h2>
 <p>The following two configuration files are needed for a first simple <a href=https://nixos.org/nixops>NixOps</a> setup.</p>
 <p><code>trivial.nix</code></p>
-<pre><code>{
+<pre tabindex=0><code>{
   network.description = &quot;Web server&quot;;
 
   webserver =
@@ -72,7 +72,7 @@ Configuration files The following two configuration files are needed for a first
     };
 }
 </code></pre><p><code>trivial-vbox.nix</code></p>
-<pre><code>{
+<pre tabindex=0><code>{
   webserver =
     { config, pkgs, ... }:
     { deployment.targetEnv = &quot;virtualbox&quot;;
@@ -83,9 +83,9 @@ Configuration files The following two configuration files are needed for a first
 }
 </code></pre><h2 id=deploying-it>Deploying it</h2>
 <p>Create deployment:</p>
-<pre><code>$ nixops create ./trivial.nix ./trivial-vbox.nix -d trivial
+<pre tabindex=0><code>$ nixops create ./trivial.nix ./trivial-vbox.nix -d trivial
 </code></pre><p>Show deployment state:</p>
-<pre><code>$ nixops info -d trivial
+<pre tabindex=0><code>$ nixops info -d trivial
 Network name: trivial
 Network UUID: 89dbba3d-4f9c-11eb-b54e-acbc32a44755
 Network description: Web server
@@ -97,7 +97,7 @@ Nix expressions: /Users/morris/Projects/nixops-machines/trivial.nix /Users/morri
 | webserver | Missing | virtualbox |             |            |
 +-----------+---------+------------+-------------+------------+
 </code></pre><p>Deploy machine (that creates the VM and deploys the NixOS configuration):</p>
-<pre><code>$ nixops deploy -d trivial
+<pre tabindex=0><code>$ nixops deploy -d trivial
 webserver&gt; creating VirtualBox VM...
 webserver&gt; Virtual machine 'nixops-89dbba3d-4f9c-11eb-b54e-acbc32a44755-webserver' is created and registered.
 webserver&gt; UUID: db550623-f02f-4e8c-a0c8-e79ec7dee325
@@ -113,7 +113,7 @@ webserver&gt;   /nix/store/301q4qwn3rvl9b8l0c5296bgrf9hb914-curl-7.74.0-bin
 webserver&gt;   /nix/store/48mk2wkwhrhpcfzsr23kbh25lkirhwih-openssl-1.1.1i-bin
 ...
 </code></pre><p>Check the machine state:</p>
-<pre><code>$ nixops check -d trivial
+<pre tabindex=0><code>$ nixops check -d trivial
 Machines state:
 +-----------+--------+-----+-----------+----------+----------------+------------------------------------------+-------+
 | Name      | Exists | Up  | Reachable | Disks OK | Load avg.      | Units                                    | Notes |
