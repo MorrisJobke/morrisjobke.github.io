@@ -4,10 +4,10 @@
 <meta http-equiv=x-ua-compatible content="chrome=1">
 <meta name=viewport content="width=device-width,initial-scale=1">
 <title>Morris Jobke</title>
-<link rel=stylesheet href=/css/pygment_trac.css?1638652368>
+<link rel=stylesheet href=/css/pygment_trac.css?1638652453>
 <link rel=alternate type=application/atom+xml title="Atom feed" href=/feed.xml>
-<link rel=stylesheet href=/css/webfonts.css?1638652368>
-<link rel=stylesheet href=/css/base.css?1638652368>
+<link rel=stylesheet href=/css/webfonts.css?1638652453>
+<link rel=stylesheet href=/css/base.css?1638652453>
 <meta property="og:title" content="My git config">
 <meta property="og:description" content="Because I get quite often asked about my git config I will post it here and leave some notes.
 [core] whitespace = cr-at-eol pager = diff-so-fancy | less --tabs=4 -RFX excludesfile = ~/.gitignore [user] name = Morris Jobke email = ... signingkey = FE03C3A163FEDE68 [alias] lg = log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit cu = &#34;!git branch --merged | grep -v '\\*' | grep -v master | xargs -n 1 git branch -d&#34; recent = branch --sort=-committerdate --format=\&#34;%(committerdate:relative)%09%(refname:short)\&#34; [color] ui = true branch = auto diff = auto interactive = auto status = auto pager = true ui = true [push] default = simple [color &#34;status&#34;] added = green changed = yellow untracked = red [color &#34;branch&#34;] current = green reverse local = green remote = red [commit] gpgsign = true [receive] fsckObjects = true [gpg] program = gpg [pull] ff = only In the core section there is one config to use Carriage return for all line endings, the diff-so-fancy diff highlighter (see brew install section) and a global ignore list for git.">
