@@ -46,6 +46,10 @@ Because I get quite often asked about my git config I will post it here and leav
 	program = gpg
 [pull]
 	ff = only
+[init]
+	defaultBranch = main
+[branch]
+	sort = -committerdate
 ```
 
 In the `core` section there is one config to use [Carriage return](https://en.wikipedia.org/wiki/Carriage_return) for all line endings, the `diff-so-fancy` diff highlighter (see brew install section) and a global ignore list for git.
@@ -66,4 +70,4 @@ The default colors in git are quite boring so I use basically green (staged), ye
 
 ![git status](/images/2018-03-03-git-status.png)
 
-The remaining sections are just for push behaviour and that commits should be signed by default.
+The remaining sections are just for push behaviour, that commits should be signed by default, the default branch name is `main` and that `git branch` command sorts descending by commit date.
