@@ -1,85 +1,85 @@
 <feed xmlns="http://www.w3.org/2005/Atom"><title>Morris Jobke</title><link href="https://morrisjobke.de/feed.xml" rel="self"/><link href="https://morrisjobke.de/"/><updated>2021-02-21T11:03:00+00:00</updated><id>https://morrisjobke.de/</id><author><name>Morris Jobke</name></author><generator>Hugo -- gohugo.io</generator><entry><title type="html">My experience with NixOps</title><link href="https://morrisjobke.de/2021/02/21/my-experience-with-nixops/"/><id>https://morrisjobke.de/2021/02/21/my-experience-with-nixops/</id><published>2021-02-21T11:03:00+00:00</published><updated>2021-02-21T11:03:00+00:00</updated><content type="html"><![CDATA[<p>After my <a href="/2021/01/05/first-steps-with-nixops/">initial post about NixOps</a> I gave it an in-depth try by migrating one of my servers that hosts a little private blog, a commenting system and some static website over to NixOps.</p>
 <h2 id="nixos-on-scaleway-machine">NixOS on Scaleway machine</h2>
 <p>First I needed to get NixOS running on my <a href="https://www.scaleway.com/">Scaleway</a> VPS. It&rsquo;s not supported out of the box but in the NixOps wiki there is a <a href="https://nixos.wiki/wiki/Install_NixOS_on_Scaleway_X86_Virtual_Cloud_Server">handy guide</a> to accomplish this. It basically boils down to place a file <code>/etc/nixos/host.nix</code> with the NixOS configuration and then use the <a href="https://github.com/elitak/nixos-infect">nixos-infext</a> script to transform the Ubuntu VM into an NixOS one by running following command:</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">curl https://raw.githubusercontent.com/elitak/nixos-infect/master/nixos-infect |  NIXOS_IMPORT<span style="color:#f92672">=</span>./host.nix NIX_CHANNEL<span style="color:#f92672">=</span>nixos-20.09 bash 2&gt;&amp;<span style="color:#ae81ff">1</span> | tee /tmp/infect.log
-</code></pre></div><p>The machine then reboots and you have a running NixOS system.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>curl https://raw.githubusercontent.com/elitak/nixos-infect/master/nixos-infect |  NIXOS_IMPORT<span style="color:#f92672">=</span>./host.nix NIX_CHANNEL<span style="color:#f92672">=</span>nixos-20.09 bash 2&gt;&amp;<span style="color:#ae81ff">1</span> | tee /tmp/infect.log
+</span></span></code></pre></div><p>The machine then reboots and you have a running NixOS system.</p>
 <h2 id="bootstrap-nixops">Bootstrap NixOps</h2>
 <p>After that I copied the configuration in <code>/etc/nixos</code> over to the machine that runs NixOps, because it overwrites the server completely. That should be three files: <code>hardware-configuration.nix</code>, <code>host.nix</code> and <code>configuration.nix</code>. I transfered them into one file and it looks like this:</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-nix" data-lang="nix">{
-  network <span style="color:#f92672">=</span> {
-    description <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;Blog&#34;</span>;
-    enableRollback <span style="color:#f92672">=</span> <span style="color:#66d9ef">true</span>;
-  };
-
-  webserver <span style="color:#f92672">=</span>
-    { config<span style="color:#f92672">,</span> pkgs<span style="color:#f92672">,</span> modulesPath<span style="color:#f92672">,</span> <span style="color:#f92672">...</span> }:
-    { nixpkgs<span style="color:#f92672">.</span>localSystem<span style="color:#f92672">.</span>system <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;x86_64-linux&#34;</span>;
-      deployment<span style="color:#f92672">.</span>targetHost <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;IP-ADDRESS&#34;</span>;
-
-      <span style="color:#75715e"># hardware-configuration.nix</span>
-      imports <span style="color:#f92672">=</span> [ (modulesPath <span style="color:#f92672">+</span> <span style="color:#e6db74">&#34;/profiles/qemu-guest.nix&#34;</span>) ];
-      boot<span style="color:#f92672">.</span>loader<span style="color:#f92672">.</span>grub<span style="color:#f92672">.</span>device <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;/dev/vda&#34;</span>;
-      fileSystems<span style="color:#f92672">.</span><span style="color:#e6db74">&#34;/&#34;</span> <span style="color:#f92672">=</span> { device <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;/dev/vda1&#34;</span>; fsType <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;ext4&#34;</span>; };
-
-      <span style="color:#75715e"># configuration.nix</span>
-      boot<span style="color:#f92672">.</span>cleanTmpDir <span style="color:#f92672">=</span> <span style="color:#66d9ef">true</span>;
-      networking<span style="color:#f92672">.</span>hostName <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;scw-practical-euler&#34;</span>;
-      networking<span style="color:#f92672">.</span>firewall<span style="color:#f92672">.</span>allowPing <span style="color:#f92672">=</span> <span style="color:#66d9ef">true</span>;
-      services<span style="color:#f92672">.</span>openssh<span style="color:#f92672">.</span>enable <span style="color:#f92672">=</span> <span style="color:#66d9ef">true</span>;
-      users<span style="color:#f92672">.</span>users<span style="color:#f92672">.</span>root<span style="color:#f92672">.</span>openssh<span style="color:#f92672">.</span>authorizedKeys<span style="color:#f92672">.</span>keys <span style="color:#f92672">=</span> [
-        <span style="color:#e6db74">&#34;ssh-ed25519 PUBLIC-KEY morris@laptop.local&#34;</span>
-      ];
-
-      <span style="color:#75715e"># host.nix</span>
-      services<span style="color:#f92672">.</span>caddy <span style="color:#f92672">=</span> {
-        enable <span style="color:#f92672">=</span> <span style="color:#66d9ef">true</span>;
-        email <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;EMAIL-ADDRESS&#34;</span>;
-        config <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;&#39;
-</span><span style="color:#e6db74">          (common) {
-</span><span style="color:#e6db74">            encode gzip
-</span><span style="color:#e6db74">            header / -Server
-</span><span style="color:#e6db74">            header / -X-Powered-By
-</span><span style="color:#e6db74">          }
-</span><span style="color:#e6db74">          a.test.morrisjobke.de {
-</span><span style="color:#e6db74">            reverse_proxy 127.0.0.1:2368
-</span><span style="color:#e6db74">          }
-</span><span style="color:#e6db74">          b.test.morrisjobke.de {
-</span><span style="color:#e6db74">            root * /data/http
-</span><span style="color:#e6db74">            import common
-</span><span style="color:#e6db74">            file_server browse
-</span><span style="color:#e6db74">          }
-</span><span style="color:#e6db74">        &#39;&#39;</span>;
-      };
-
-      virtualisation<span style="color:#f92672">.</span>oci-containers <span style="color:#f92672">=</span> {
-        backend <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;podman&#34;</span>;
-        containers <span style="color:#f92672">=</span> {
-          ghost <span style="color:#f92672">=</span> {
-            image <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;ghost:3-alpine&#34;</span>;
-            ports <span style="color:#f92672">=</span> [<span style="color:#e6db74">&#34;127.0.0.1:2368:2368&#34;</span>];
-            volumes <span style="color:#f92672">=</span> [
-              <span style="color:#e6db74">&#34;/data/blog:/var/lib/ghost/content&#34;</span>
-            ];
-            environment <span style="color:#f92672">=</span> {
-              url <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;https://a.test.morrisjobke.de&#34;</span>;
-            };
-          };
-        };
-      };
-
-      <span style="color:#75715e"># ... further config ...</span>
-    };
-}
-</code></pre></div><h2 id="initial-deploy">Initial deploy</h2>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-nix" data-lang="nix"><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>  network <span style="color:#f92672">=</span> {
+</span></span><span style="display:flex;"><span>    description <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;Blog&#34;</span>;
+</span></span><span style="display:flex;"><span>    enableRollback <span style="color:#f92672">=</span> <span style="color:#66d9ef">true</span>;
+</span></span><span style="display:flex;"><span>  };
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  webserver <span style="color:#f92672">=</span>
+</span></span><span style="display:flex;"><span>    { config<span style="color:#f92672">,</span> pkgs<span style="color:#f92672">,</span> modulesPath<span style="color:#f92672">,</span> <span style="color:#f92672">...</span> }:
+</span></span><span style="display:flex;"><span>    { nixpkgs<span style="color:#f92672">.</span>localSystem<span style="color:#f92672">.</span>system <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;x86_64-linux&#34;</span>;
+</span></span><span style="display:flex;"><span>      deployment<span style="color:#f92672">.</span>targetHost <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;IP-ADDRESS&#34;</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>      <span style="color:#75715e"># hardware-configuration.nix</span>
+</span></span><span style="display:flex;"><span>      imports <span style="color:#f92672">=</span> [ (modulesPath <span style="color:#f92672">+</span> <span style="color:#e6db74">&#34;/profiles/qemu-guest.nix&#34;</span>) ];
+</span></span><span style="display:flex;"><span>      boot<span style="color:#f92672">.</span>loader<span style="color:#f92672">.</span>grub<span style="color:#f92672">.</span>device <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;/dev/vda&#34;</span>;
+</span></span><span style="display:flex;"><span>      fileSystems<span style="color:#f92672">.</span><span style="color:#e6db74">&#34;/&#34;</span> <span style="color:#f92672">=</span> { device <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;/dev/vda1&#34;</span>; fsType <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;ext4&#34;</span>; };
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>      <span style="color:#75715e"># configuration.nix</span>
+</span></span><span style="display:flex;"><span>      boot<span style="color:#f92672">.</span>cleanTmpDir <span style="color:#f92672">=</span> <span style="color:#66d9ef">true</span>;
+</span></span><span style="display:flex;"><span>      networking<span style="color:#f92672">.</span>hostName <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;scw-practical-euler&#34;</span>;
+</span></span><span style="display:flex;"><span>      networking<span style="color:#f92672">.</span>firewall<span style="color:#f92672">.</span>allowPing <span style="color:#f92672">=</span> <span style="color:#66d9ef">true</span>;
+</span></span><span style="display:flex;"><span>      services<span style="color:#f92672">.</span>openssh<span style="color:#f92672">.</span>enable <span style="color:#f92672">=</span> <span style="color:#66d9ef">true</span>;
+</span></span><span style="display:flex;"><span>      users<span style="color:#f92672">.</span>users<span style="color:#f92672">.</span>root<span style="color:#f92672">.</span>openssh<span style="color:#f92672">.</span>authorizedKeys<span style="color:#f92672">.</span>keys <span style="color:#f92672">=</span> [
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;ssh-ed25519 PUBLIC-KEY morris@laptop.local&#34;</span>
+</span></span><span style="display:flex;"><span>      ];
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>      <span style="color:#75715e"># host.nix</span>
+</span></span><span style="display:flex;"><span>      services<span style="color:#f92672">.</span>caddy <span style="color:#f92672">=</span> {
+</span></span><span style="display:flex;"><span>        enable <span style="color:#f92672">=</span> <span style="color:#66d9ef">true</span>;
+</span></span><span style="display:flex;"><span>        email <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;EMAIL-ADDRESS&#34;</span>;
+</span></span><span style="display:flex;"><span>        config <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;&#39;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">          (common) {
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">            encode gzip
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">            header / -Server
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">            header / -X-Powered-By
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">          }
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">          a.test.morrisjobke.de {
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">            reverse_proxy 127.0.0.1:2368
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">          }
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">          b.test.morrisjobke.de {
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">            root * /data/http
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">            import common
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">            file_server browse
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">          }
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">        &#39;&#39;</span>;
+</span></span><span style="display:flex;"><span>      };
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>      virtualisation<span style="color:#f92672">.</span>oci-containers <span style="color:#f92672">=</span> {
+</span></span><span style="display:flex;"><span>        backend <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;podman&#34;</span>;
+</span></span><span style="display:flex;"><span>        containers <span style="color:#f92672">=</span> {
+</span></span><span style="display:flex;"><span>          ghost <span style="color:#f92672">=</span> {
+</span></span><span style="display:flex;"><span>            image <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;ghost:3-alpine&#34;</span>;
+</span></span><span style="display:flex;"><span>            ports <span style="color:#f92672">=</span> [<span style="color:#e6db74">&#34;127.0.0.1:2368:2368&#34;</span>];
+</span></span><span style="display:flex;"><span>            volumes <span style="color:#f92672">=</span> [
+</span></span><span style="display:flex;"><span>              <span style="color:#e6db74">&#34;/data/blog:/var/lib/ghost/content&#34;</span>
+</span></span><span style="display:flex;"><span>            ];
+</span></span><span style="display:flex;"><span>            environment <span style="color:#f92672">=</span> {
+</span></span><span style="display:flex;"><span>              url <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;https://a.test.morrisjobke.de&#34;</span>;
+</span></span><span style="display:flex;"><span>            };
+</span></span><span style="display:flex;"><span>          };
+</span></span><span style="display:flex;"><span>        };
+</span></span><span style="display:flex;"><span>      };
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>      <span style="color:#75715e"># ... further config ...</span>
+</span></span><span style="display:flex;"><span>    };
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><h2 id="initial-deploy">Initial deploy</h2>
 <p>Then one can create the server inside NixOps and deploy it:</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">nixops create ./scaleway-setup.nix -d scaleway-staging
-nixops deploy -d scaleway-staging
-</code></pre></div><h3 id="potential-deployment-problems">Potential deployment problems</h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>nixops create ./scaleway-setup.nix -d scaleway-staging
+</span></span><span style="display:flex;"><span>nixops deploy -d scaleway-staging
+</span></span></code></pre></div><h3 id="potential-deployment-problems">Potential deployment problems</h3>
 <p>On my initial deployment it had problems to build the system. That is because it does a ssh connection on the server to itself. Usually it places a public ssh key in the server configuration, but in my case it failed with something like this:</p>
-<pre tabindex="0"><code>cannot build on 'ssh://root@12.34.56.78': cannot connect to 'root@12.34.56.78': Permission denied, please try again.
+<pre tabindex="0"><code>cannot build on &#39;ssh://root@12.34.56.78&#39;: cannot connect to &#39;root@12.34.56.78&#39;: Permission denied, please try again.
 Received disconnect from 12.34.56.78 port 22:2: Too many authentication failures
 Disconnected from 12.34.56.78 port 22
-error: a 'x86_64-linux' with features {} is required to build '/nix/store/ir75vkqa6jz7scjgvn1bb7lm1p2z0wl5-kernel-modules.drv', but I am a 'x86_64-darwin' with features {benchmark, big-parallel, nixos-test}
+error: a &#39;x86_64-linux&#39; with features {} is required to build &#39;/nix/store/ir75vkqa6jz7scjgvn1bb7lm1p2z0wl5-kernel-modules.drv&#39;, but I am a &#39;x86_64-darwin&#39; with features {benchmark, big-parallel, nixos-test}
 </code></pre><p>I looked on my NixOps host into the SQLite db at <code>~/.nixops/deployments.nixops</code> and extracted the public key (attribute with the name <code>none.sshPublicKey</code> inside the table <code>ResourceAttrs</code>) and placed it as public key for the user root (see <code>users.users.root.openssh.authorizedKeys.keys</code>).</p>
 <h2 id="rollbacks">Rollbacks</h2>
 <p>The option <code>network.enableRollback = true</code> allows rollbacks from within NixOps.</p>
@@ -117,21 +117,21 @@ error: a 'x86_64-linux' with features {} is required to build '/nix/store/ir75vk
 <p>Basically this boils down to dumping the history of the bisect with <code>git bisect log</code>, then edit the wrong bisect marking, reset it with <code>git bisect reset</code> and finally replay the log via <code>git bisect replay FILE</code>.</p>
 <p><a href="https://stackoverflow.com/questions/8594758/undoing-a-git-bisect-mistake#8594800">https://stackoverflow.com/questions/8594758/undoing-a-git-bisect-mistake#8594800</a></p>
 <p>The log itself looks like this:</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ git bisect log
-git bisect start
-<span style="color:#75715e"># good: [73c2ad293bc2ad12126fe42e8c3f3dd137bab2ab] Merge pull request #23998 from nextcloud/backport/23937/stable20</span>
-git bisect good 73c2ad293bc2ad12126fe42e8c3f3dd137bab2ab
-<span style="color:#75715e"># bad: [785029d69332d83773a19c75077f25779fabd55a] Merge pull request #24424 from nextcloud/dependabot/npm_and_yarn/css-vars-ponyfill-2.4.2</span>
-git bisect bad 785029d69332d83773a19c75077f25779fabd55a
-<span style="color:#75715e"># good: [e14ba58b6d2fec3702e4ad1f8445ccc74d922beb] Merge pull request #22794 from nextcloud/version/20.0.0/rc1</span>
-git bisect good e14ba58b6d2fec3702e4ad1f8445ccc74d922beb
-<span style="color:#75715e"># bad: [3076eb4e9bb4006a5670aa08a2b35d2cfa42cd6c] Merge pull request #23767 from nextcloud/techdebt/noid/add-deprecated-tag-to-all-methods</span>
-git bisect bad 3076eb4e9bb4006a5670aa08a2b35d2cfa42cd6c
-<span style="color:#75715e"># bad: [d51da5714b20544673aec6be3ff7fec1f67cb20b] Merge pull request #23371 from nextcloud/enhancement/psalm-typed-bootstrap-registration-context</span>
-git bisect bad d51da5714b20544673aec6be3ff7fec1f67cb20b
-<span style="color:#75715e"># good: [020ba0847ba4fd8af39e9a730e3d8460cc56c9e3] Bump moment from 2.27.0 to 2.29.0</span>
-git bisect good 020ba0847ba4fd8af39e9a730e3d8460cc56c9e3
-</code></pre></div><h1 id="sql-for-csvexcel-files">SQL for CSV/Excel files</h1>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>$ git bisect log
+</span></span><span style="display:flex;"><span>git bisect start
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># good: [73c2ad293bc2ad12126fe42e8c3f3dd137bab2ab] Merge pull request #23998 from nextcloud/backport/23937/stable20</span>
+</span></span><span style="display:flex;"><span>git bisect good 73c2ad293bc2ad12126fe42e8c3f3dd137bab2ab
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># bad: [785029d69332d83773a19c75077f25779fabd55a] Merge pull request #24424 from nextcloud/dependabot/npm_and_yarn/css-vars-ponyfill-2.4.2</span>
+</span></span><span style="display:flex;"><span>git bisect bad 785029d69332d83773a19c75077f25779fabd55a
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># good: [e14ba58b6d2fec3702e4ad1f8445ccc74d922beb] Merge pull request #22794 from nextcloud/version/20.0.0/rc1</span>
+</span></span><span style="display:flex;"><span>git bisect good e14ba58b6d2fec3702e4ad1f8445ccc74d922beb
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># bad: [3076eb4e9bb4006a5670aa08a2b35d2cfa42cd6c] Merge pull request #23767 from nextcloud/techdebt/noid/add-deprecated-tag-to-all-methods</span>
+</span></span><span style="display:flex;"><span>git bisect bad 3076eb4e9bb4006a5670aa08a2b35d2cfa42cd6c
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># bad: [d51da5714b20544673aec6be3ff7fec1f67cb20b] Merge pull request #23371 from nextcloud/enhancement/psalm-typed-bootstrap-registration-context</span>
+</span></span><span style="display:flex;"><span>git bisect bad d51da5714b20544673aec6be3ff7fec1f67cb20b
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># good: [020ba0847ba4fd8af39e9a730e3d8460cc56c9e3] Bump moment from 2.27.0 to 2.29.0</span>
+</span></span><span style="display:flex;"><span>git bisect good 020ba0847ba4fd8af39e9a730e3d8460cc56c9e3
+</span></span></code></pre></div><h1 id="sql-for-csvexcel-files">SQL for CSV/Excel files</h1>
 <p><code>q</code> is a handy tool to run SQL-like queries on CSV or TSV files. (via <a href="https://twitter.com/danimo/status/1337363460280217604">@danimo</a>)</p>
 <p><a href="https://harelba.github.io/q/">https://harelba.github.io/q/</a></p>
 <h1 id="minimal-viable-search-using-postgres">Minimal Viable Search using Postgres</h1>
@@ -145,18 +145,18 @@ git bisect good 020ba0847ba4fd8af39e9a730e3d8460cc56c9e3
 <p>The following two configuration files are needed for a first simple <a href="https://nixos.org/nixops">NixOps</a> setup.</p>
 <p><code>trivial.nix</code></p>
 <pre tabindex="0"><code>{
-  network.description = &quot;Web server&quot;;
+  network.description = &#34;Web server&#34;;
 
   webserver =
     { config, pkgs, ... }:
     { services.httpd.enable = true;
-      services.httpd.adminAddr = &quot;alice@example.org&quot;;
+      services.httpd.adminAddr = &#34;alice@example.org&#34;;
       networking.firewall.allowedTCPPorts = [ 80 ];
 
-      services.httpd.logFormat = &quot;combined&quot;;
+      services.httpd.logFormat = &#34;combined&#34;;
       services.httpd.virtualHosts = {
-        &quot;main&quot; = {
-          documentRoot = &quot;/tmp&quot;;
+        &#34;main&#34; = {
+          documentRoot = &#34;/tmp&#34;;
         };
       };
     };
@@ -165,7 +165,7 @@ git bisect good 020ba0847ba4fd8af39e9a730e3d8460cc56c9e3
 <pre tabindex="0"><code>{
   webserver =
     { config, pkgs, ... }:
-    { deployment.targetEnv = &quot;virtualbox&quot;;
+    { deployment.targetEnv = &#34;virtualbox&#34;;
       deployment.virtualbox.memorySize = 1024; # megabytes
       deployment.virtualbox.vcpu = 2; # number of cpus
       deployment.virtualbox.headless = true;
@@ -189,9 +189,9 @@ Nix expressions: /Users/morris/Projects/nixops-machines/trivial.nix /Users/morri
 </code></pre><p>Deploy machine (that creates the VM and deploys the NixOS configuration):</p>
 <pre tabindex="0"><code>$ nixops deploy -d trivial
 webserver&gt; creating VirtualBox VM...
-webserver&gt; Virtual machine 'nixops-89dbba3d-4f9c-11eb-b54e-acbc32a44755-webserver' is created and registered.
+webserver&gt; Virtual machine &#39;nixops-89dbba3d-4f9c-11eb-b54e-acbc32a44755-webserver&#39; is created and registered.
 webserver&gt; UUID: db550623-f02f-4e8c-a0c8-e79ec7dee325
-webserver&gt; Settings file: '/Users/morris/VirtualBox VMs/nixops-89dbba3d-4f9c-11eb-b54e-acbc32a44755-webserver/nixops-89dbba3d-4f9c-11eb-b54e-acbc32a44755-webserver.vbox'
+webserver&gt; Settings file: &#39;/Users/morris/VirtualBox VMs/nixops-89dbba3d-4f9c-11eb-b54e-acbc32a44755-webserver/nixops-89dbba3d-4f9c-11eb-b54e-acbc32a44755-webserver.vbox&#39;
 webserver&gt; creating disk ‘disk1’...
 webserver&gt; these derivations will be built:
 webserver&gt;   /nix/store/rr7p21npwab33dyf0aph8vlkqqhvkxlk-virtualbox-nixops-19.03.172205.ea497998e4b.vmdk.xz.drv
@@ -241,15 +241,15 @@ Non machines resources state:
 <p>php-memprof is a fast and accurate memory profiling extension for PHP that can be used to find the cause of memory leaks.</p>
 </blockquote>
 <p><a href="https://github.com/arnaud-lb/php-memory-profiler">https://github.com/arnaud-lb/php-memory-profiler</a></p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">brew install traildb/judy/judy
-pecl install memprof
-</code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php"><span style="color:#f92672">&lt;?</span><span style="color:#a6e22e">php</span>
-
-<span style="color:#66d9ef">if</span> (<span style="color:#a6e22e">function_exists</span>(<span style="color:#e6db74">&#39;memprof_enabled&#39;</span>) <span style="color:#f92672">&amp;&amp;</span> <span style="color:#a6e22e">memprof_enabled</span>()) {
-	<span style="color:#a6e22e">memprof_dump_callgrind</span>(<span style="color:#a6e22e">fopen</span>(<span style="color:#e6db74">&#34;/tmp/callgrind.out&#34;</span>, <span style="color:#e6db74">&#34;w&#34;</span>));
-}
-</code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">MEMPROF_PROFILE<span style="color:#f92672">=</span><span style="color:#ae81ff">1</span> php script.php
-</code></pre></div>]]></content></entry><entry><title type="html">Mini PV-Anlage - Balkonkraftwerk - Steckerfertige PV-Anlage</title><link href="https://morrisjobke.de/2020/08/25/mini-photovoltaik-anlage/"/><id>https://morrisjobke.de/2020/08/25/mini-photovoltaik-anlage/</id><published>2020-08-25T19:37:00+00:00</published><updated>2020-08-25T19:37:00+00:00</updated><content type="html"><![CDATA[<p><strong>Update Juni 2021:</strong> Mittlerweile gibt es auch eine Seite der <a href="https://www.verbraucherzentrale.de/wissen/energie/erneuerbare-energien/steckersolar-solarstrom-vom-balkon-direkt-in-die-steckdose-44715">Verbraucherzentrale zu dem Thema</a>.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>brew install traildb/judy/judy
+</span></span><span style="display:flex;"><span>pecl install memprof
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-php" data-lang="php"><span style="display:flex;"><span><span style="color:#f92672">&lt;?</span><span style="color:#a6e22e">php</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">if</span> (<span style="color:#a6e22e">function_exists</span>(<span style="color:#e6db74">&#39;memprof_enabled&#39;</span>) <span style="color:#f92672">&amp;&amp;</span> <span style="color:#a6e22e">memprof_enabled</span>()) {
+</span></span><span style="display:flex;"><span>	<span style="color:#a6e22e">memprof_dump_callgrind</span>(<span style="color:#a6e22e">fopen</span>(<span style="color:#e6db74">&#34;/tmp/callgrind.out&#34;</span>, <span style="color:#e6db74">&#34;w&#34;</span>));
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>MEMPROF_PROFILE<span style="color:#f92672">=</span><span style="color:#ae81ff">1</span> php script.php
+</span></span></code></pre></div>]]></content></entry><entry><title type="html">Mini PV-Anlage - Balkonkraftwerk - Steckerfertige PV-Anlage</title><link href="https://morrisjobke.de/2020/08/25/mini-photovoltaik-anlage/"/><id>https://morrisjobke.de/2020/08/25/mini-photovoltaik-anlage/</id><published>2020-08-25T19:37:00+00:00</published><updated>2020-08-25T19:37:00+00:00</updated><content type="html"><![CDATA[<p><strong>Update Juni 2021:</strong> Mittlerweile gibt es auch eine Seite der <a href="https://www.verbraucherzentrale.de/wissen/energie/erneuerbare-energien/steckersolar-solarstrom-vom-balkon-direkt-in-die-steckdose-44715">Verbraucherzentrale zu dem Thema</a>.</p>
 <p>Eine kleine Notizsammlung hinsichtlich Mini PV-Anlage:</p>
 <h3 id="idee">Idee</h3>
 <ul>
@@ -380,7 +380,7 @@ pecl install memprof
 </ul>
 <h3 id="fallstricke">Fallstricke</h3>
 <p>Es gibt noch zwei Fallstricke, die es zu beachten gibt. Einerseits bin ich anfangs über folgenden Fehler in FastLED gestolpert:</p>
-<pre tabindex="0"><code>error: 'boolean' has a previous declaration as 'typedef bool boolean'
+<pre tabindex="0"><code>error: &#39;boolean&#39; has a previous declaration as &#39;typedef bool boolean&#39;
  typedef bool boolean;
               ^
 </code></pre><p>Diesen habe ich behoben, indem in die FastLED Bibliothek entsprechend angepasst habe. Die heruntergeladenen Bibliotheken finden sich normalerweise im &ldquo;Dokumente/Arduino/libraries&rdquo; Ordner des aktuellen Nutzers. Dort musste ich die Zeile 15 in <code>FastLED/platforms/esp/8266/led_sysdefs_esp8266.h</code> auskommentieren. Diese Zeile enthält <code>typedef uint8_t boolean;</code>. Danach war der Fehler gelöst. Das ganze habe ich <a href="https://github.com/FastLED/FastLED/issues/733#issuecomment-491634606">hier</a> gefunden.</p>
@@ -467,31 +467,31 @@ pecl install memprof
 <p>I used capital cased names where specific names need to be placed - if there is the same placeholder it needs to be the same name.</p>
 <p>The goal is to replicate <code>SOURCE_DATABASE</code> to <code>TARGET_DATABASE</code> while applying a filter function that is named <code>DESIGNDOCUMENT/NAME</code>. The filter function in the example checks if the attribute <code>_id</code> starts with <code>abc</code>.</p>
 <p>First we create a document that describes the filter. This document is a design document and needs to be placed in the source database under <code>/SOURCE_DATABASE/_design/DESIGNDOCUMENT</code>:</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-json" data-lang="json">{
-  <span style="color:#f92672">&#34;_id&#34;</span>: <span style="color:#e6db74">&#34;_design/DESIGNDOCUMENT&#34;</span>,
-  <span style="color:#f92672">&#34;filters&#34;</span>: {
-    <span style="color:#f92672">&#34;NAME&#34;</span>: <span style="color:#e6db74">&#34;function(doc, req) { if (doc._id.substr(0, 3) === &#39;abc&#39;) { return true; } return false; }&#34;</span>
-  }
-}
-</code></pre></div><p>To actually test the filter I used a query against the <code>/_changes</code> endpoint of the database:</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ curl <span style="color:#e6db74">&#34;http://DOMAIN:5984/SOURCE_DATABASE/_changes?filter=DESIGNDOCUMENT%2FNAME&amp;feed=normal&amp;style=all_docs&amp;since=0&amp;timeout=10000&#34;</span>
-</code></pre></div><p>This shows the output and potential errors in the JavaScript code of the filter.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-json" data-lang="json"><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&#34;_id&#34;</span>: <span style="color:#e6db74">&#34;_design/DESIGNDOCUMENT&#34;</span>,
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&#34;filters&#34;</span>: {
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&#34;NAME&#34;</span>: <span style="color:#e6db74">&#34;function(doc, req) { if (doc._id.substr(0, 3) === &#39;abc&#39;) { return true; } return false; }&#34;</span>
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>To actually test the filter I used a query against the <code>/_changes</code> endpoint of the database:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>$ curl <span style="color:#e6db74">&#34;http://DOMAIN:5984/SOURCE_DATABASE/_changes?filter=DESIGNDOCUMENT%2FNAME&amp;feed=normal&amp;style=all_docs&amp;since=0&amp;timeout=10000&#34;</span>
+</span></span></code></pre></div><p>This shows the output and potential errors in the JavaScript code of the filter.</p>
 <p>For the actual replication you need to create following documents in the <code>_replicator</code> database for the one time replication of existing documents:</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-json" data-lang="json">{
-  <span style="color:#f92672">&#34;_id&#34;</span>: <span style="color:#e6db74">&#34;ID&#34;</span>,
-  <span style="color:#f92672">&#34;source&#34;</span>: <span style="color:#e6db74">&#34;http://DOMAIN:5984/SOURCE_DATABASE&#34;</span>,
-  <span style="color:#f92672">&#34;target&#34;</span>: <span style="color:#e6db74">&#34;http://DOMAIN:5984/TARGET_DATABASE&#34;</span>,
-  <span style="color:#f92672">&#34;filter&#34;</span>: <span style="color:#e6db74">&#34;DESIGNDOCUMENT/NAME&#34;</span>
-}
-</code></pre></div><p>And I created a continuous replication document as well:</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-json" data-lang="json">{
-  <span style="color:#f92672">&#34;_id&#34;</span>: <span style="color:#e6db74">&#34;ID-continuous&#34;</span>,
-  <span style="color:#f92672">&#34;source&#34;</span>: <span style="color:#e6db74">&#34;http://DOMAIN:5984/SOURCE_DATABASE&#34;</span>,
-  <span style="color:#f92672">&#34;target&#34;</span>: <span style="color:#e6db74">&#34;http://DOMAIN:5984/TARGET_DATABASE&#34;</span>,
-  <span style="color:#f92672">&#34;filter&#34;</span>: <span style="color:#e6db74">&#34;DESIGNDOCUMENT/NAME&#34;</span>,
-  <span style="color:#f92672">&#34;continuous&#34;</span>: <span style="color:#66d9ef">true</span>
-}
-</code></pre></div><p>Following documentation pages helped me to understand how the replication works in general:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-json" data-lang="json"><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&#34;_id&#34;</span>: <span style="color:#e6db74">&#34;ID&#34;</span>,
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&#34;source&#34;</span>: <span style="color:#e6db74">&#34;http://DOMAIN:5984/SOURCE_DATABASE&#34;</span>,
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&#34;target&#34;</span>: <span style="color:#e6db74">&#34;http://DOMAIN:5984/TARGET_DATABASE&#34;</span>,
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&#34;filter&#34;</span>: <span style="color:#e6db74">&#34;DESIGNDOCUMENT/NAME&#34;</span>
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>And I created a continuous replication document as well:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-json" data-lang="json"><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&#34;_id&#34;</span>: <span style="color:#e6db74">&#34;ID-continuous&#34;</span>,
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&#34;source&#34;</span>: <span style="color:#e6db74">&#34;http://DOMAIN:5984/SOURCE_DATABASE&#34;</span>,
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&#34;target&#34;</span>: <span style="color:#e6db74">&#34;http://DOMAIN:5984/TARGET_DATABASE&#34;</span>,
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&#34;filter&#34;</span>: <span style="color:#e6db74">&#34;DESIGNDOCUMENT/NAME&#34;</span>,
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&#34;continuous&#34;</span>: <span style="color:#66d9ef">true</span>
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>Following documentation pages helped me to understand how the replication works in general:</p>
 <ul>
 <li><a href="http://docs.couchdb.org/en/stable/replication/intro.html">Introduction to Replication</a></li>
 <li><a href="http://docs.couchdb.org/en/stable/replication/replicator.html">Replicator Database</a></li>
@@ -606,9 +606,9 @@ pecl install memprof
 	email = ...
 	signingkey = FE03C3A163FEDE68
 [alias]
-	lg = log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)&lt;%an&gt;%Creset' --abbrev-commit
-	cu = &quot;!git branch --merged | grep -v '\\*' | grep -v master | xargs -n 1 git branch -d&quot;
-	recent = branch --sort=-committerdate --format=\&quot;%(committerdate:relative)%09%(refname:short)\&quot;
+	lg = log --color --graph --pretty=format:&#39;%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)&lt;%an&gt;%Creset&#39; --abbrev-commit
+	cu = &#34;!git branch --merged | grep -v &#39;\\*&#39; | grep -v master | xargs -n 1 git branch -d&#34;
+	recent = branch --sort=-committerdate --format=\&#34;%(committerdate:relative)%09%(refname:short)\&#34;
 [color]
 	ui = true
 	branch = auto
@@ -619,11 +619,11 @@ pecl install memprof
 	ui = true
 [push]
 	default = simple
-[color &quot;status&quot;]
+[color &#34;status&#34;]
 	added = green
 	changed = yellow
 	untracked = red
-[color &quot;branch&quot;]
+[color &#34;branch&#34;]
 	current = green reverse
 	local = green
 	remote = red
@@ -635,6 +635,10 @@ pecl install memprof
 	program = gpg
 [pull]
 	ff = only
+[init]
+	defaultBranch = main
+[branch]
+	sort = -committerdate
 </code></pre><p>In the <code>core</code> section there is one config to use <a href="https://en.wikipedia.org/wiki/Carriage_return">Carriage return</a> for all line endings, the <code>diff-so-fancy</code> diff highlighter (see brew install section) and a global ignore list for git.</p>
 <p>The <code>user</code> section holds the information that all my commits should contain.</p>
 <p>I have two aliases - <code>git lg</code> gives a nice and simple overview of the git history:</p>
@@ -644,7 +648,7 @@ pecl install memprof
 <p><img src="/images/2021-07-08-git-recent.png" alt="git recent"></p>
 <p>The default colors in git are quite boring so I use basically green (staged), yellow (changed) and red (untracked) as indicator for different sections in the git status and git branch outputs.</p>
 <p><img src="/images/2018-03-03-git-status.png" alt="git status"></p>
-<p>The remaining sections are just for push behaviour and that commits should be signed by default.</p>
+<p>The remaining sections are just for push behaviour, that commits should be signed by default, the default branch name is <code>main</code> and that <code>git branch</code> command sorts descending by commit date.</p>
 ]]></content></entry><entry><title type="html">Thanks for the journey, ownCloud Inc.</title><link href="https://morrisjobke.de/2016/05/31/Thanks-for-the-journey/"/><id>https://morrisjobke.de/2016/05/31/Thanks-for-the-journey/</id><published>2016-05-31T12:35:00+00:00</published><updated>2016-05-31T12:35:00+00:00</updated><content type="html"><![CDATA[<p>Some days ago was my last work day at ownCloud Inc. and I want to share my story with you. :)</p>
 <p>It was in early 2013 when I planned to apply for Google Summer of Code. I send a formal email to the mailing list. I got a nice answer that this isn&rsquo;t needed in such a formal way and that I simply should join the developers on GitHub. It was a warm welcome and I was fascinated by it. :) This was also shortly after the move from Gitorious to GitHub as hosting platform and every time GitHub shows Unicorns someone said &ldquo;That wouldn&rsquo;t have happened on Gitorious&rdquo;. ;)</p>
 <p>I got more and more involved into all the stuff that happens during the development of software. First I often worked on my own app (the music app) but started to look into the core bug tracker. I read a lot - did some first help on new issues - looked for duplicate issues - triaged issues (aka added labels for the subsystems to an issue) - stayed in contact with all the people that did the hard work. It was awesome - a really nice feeling about being part of it and being able to change how the software works. We had a lot of technical discussions about the underlying architecture but also about the user experience and how things should work. And I was really impressed about the forum folks that connected GitHub and the forums by posting &ldquo;Yes, was reported multiple times in the forums already&rdquo; or &ldquo;We found a workaround - see forums&rdquo;.</p>
@@ -655,81 +659,81 @@ pecl install memprof
 <p><strong>Warning:</strong> This should not be executed if you don&rsquo;t know what is done here - don&rsquo;t blindly execute this, because it could lead to data loss if you already changed calendar events after the upgrade to 9.0. The best is to execute this only on a test system.</p>
 <p>This post should cover how one could debug the calendar migration that has failed or was aborted. If your migration worked fine then you don&rsquo;t need to read this. ;)</p>
 <h2 id="checking-if-migration-went-well">Checking if migration went well</h2>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sql" data-lang="sql"><span style="color:#75715e">/* show old calendars and count */</span>
-<span style="color:#66d9ef">SELECT</span> o.calendarid, <span style="color:#66d9ef">c</span>.userid, <span style="color:#66d9ef">c</span>.displayname, <span style="color:#66d9ef">c</span>.uri, <span style="color:#66d9ef">COUNT</span>(o.calendarid)
-<span style="color:#66d9ef">FROM</span> oc_clndr_objects o
-<span style="color:#66d9ef">JOIN</span> oc_clndr_calendars <span style="color:#66d9ef">c</span> <span style="color:#66d9ef">ON</span> o.calendarid <span style="color:#f92672">=</span> <span style="color:#66d9ef">c</span>.id
-<span style="color:#66d9ef">GROUP</span> <span style="color:#66d9ef">BY</span> calendarid
-<span style="color:#66d9ef">ORDER</span> <span style="color:#66d9ef">BY</span> <span style="color:#66d9ef">c</span>.userid, <span style="color:#66d9ef">c</span>.displayname;
-
-<span style="color:#75715e">/* show new calendars and count */</span>
-<span style="color:#66d9ef">SELECT</span> o.calendarid, <span style="color:#66d9ef">c</span>.principaluri, <span style="color:#66d9ef">c</span>.displayname, <span style="color:#66d9ef">c</span>.uri, <span style="color:#66d9ef">COUNT</span>(o.calendarid)
-<span style="color:#66d9ef">FROM</span> oc_calendarobjects o
-<span style="color:#66d9ef">JOIN</span> oc_calendars <span style="color:#66d9ef">c</span> <span style="color:#66d9ef">ON</span> o.calendarid <span style="color:#f92672">=</span> <span style="color:#66d9ef">c</span>.id
-<span style="color:#66d9ef">GROUP</span> <span style="color:#66d9ef">BY</span> calendarid
-<span style="color:#66d9ef">ORDER</span> <span style="color:#66d9ef">BY</span> <span style="color:#66d9ef">c</span>.principaluri, <span style="color:#66d9ef">c</span>.displayname;</code></pre></div>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sql" data-lang="sql"><span style="display:flex;"><span><span style="color:#75715e">/* show old calendars and count */</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">SELECT</span> o.calendarid, <span style="color:#66d9ef">c</span>.userid, <span style="color:#66d9ef">c</span>.displayname, <span style="color:#66d9ef">c</span>.uri, <span style="color:#66d9ef">COUNT</span>(o.calendarid)
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">FROM</span> oc_clndr_objects o
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">JOIN</span> oc_clndr_calendars <span style="color:#66d9ef">c</span> <span style="color:#66d9ef">ON</span> o.calendarid <span style="color:#f92672">=</span> <span style="color:#66d9ef">c</span>.id
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">GROUP</span> <span style="color:#66d9ef">BY</span> calendarid
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">ORDER</span> <span style="color:#66d9ef">BY</span> <span style="color:#66d9ef">c</span>.userid, <span style="color:#66d9ef">c</span>.displayname;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">/* show new calendars and count */</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">SELECT</span> o.calendarid, <span style="color:#66d9ef">c</span>.principaluri, <span style="color:#66d9ef">c</span>.displayname, <span style="color:#66d9ef">c</span>.uri, <span style="color:#66d9ef">COUNT</span>(o.calendarid)
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">FROM</span> oc_calendarobjects o
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">JOIN</span> oc_calendars <span style="color:#66d9ef">c</span> <span style="color:#66d9ef">ON</span> o.calendarid <span style="color:#f92672">=</span> <span style="color:#66d9ef">c</span>.id
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">GROUP</span> <span style="color:#66d9ef">BY</span> calendarid
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">ORDER</span> <span style="color:#66d9ef">BY</span> <span style="color:#66d9ef">c</span>.principaluri, <span style="color:#66d9ef">c</span>.displayname;</span></span></code></pre></div>
 <p>The above two statements will show the old calendars with a count of events in the calendars and the same for the new calendar.</p>
 <p>Ideally this should look like this - the count of the old calendars should be the same as the new ones:</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sql" data-lang="sql">MariaDB [owncloud_stable]<span style="color:#f92672">&gt;</span> <span style="color:#66d9ef">SELECT</span> o.calendarid, <span style="color:#66d9ef">c</span>.userid, <span style="color:#66d9ef">c</span>.displayname, <span style="color:#66d9ef">c</span>.uri, <span style="color:#66d9ef">COUNT</span>(o.calendarid)
-    <span style="color:#f92672">-&gt;</span> <span style="color:#66d9ef">FROM</span> oc_clndr_objects o
-    <span style="color:#f92672">-&gt;</span> <span style="color:#66d9ef">JOIN</span> oc_clndr_calendars <span style="color:#66d9ef">c</span> <span style="color:#66d9ef">ON</span> o.calendarid <span style="color:#f92672">=</span> <span style="color:#66d9ef">c</span>.id
-    <span style="color:#f92672">-&gt;</span> <span style="color:#66d9ef">GROUP</span> <span style="color:#66d9ef">BY</span> calendarid
-    <span style="color:#f92672">-&gt;</span> <span style="color:#66d9ef">ORDER</span> <span style="color:#66d9ef">BY</span> <span style="color:#66d9ef">c</span>.userid, <span style="color:#66d9ef">c</span>.displayname;
-<span style="color:#f92672">+</span><span style="color:#75715e">------------+--------+------------------+-----------------+---------------------+
-</span><span style="color:#75715e"></span><span style="color:#f92672">|</span> calendarid <span style="color:#f92672">|</span> userid <span style="color:#f92672">|</span> displayname      <span style="color:#f92672">|</span> uri             <span style="color:#f92672">|</span> <span style="color:#66d9ef">COUNT</span>(o.calendarid) <span style="color:#f92672">|</span>
-<span style="color:#f92672">+</span><span style="color:#75715e">------------+--------+------------------+-----------------+---------------------+
-</span><span style="color:#75715e"></span><span style="color:#f92672">|</span>          <span style="color:#ae81ff">8</span> <span style="color:#f92672">|</span> mjob   <span style="color:#f92672">|</span> Example <span style="color:#ae81ff">1</span>        <span style="color:#f92672">|</span> example1        <span style="color:#f92672">|</span>                 <span style="color:#ae81ff">143</span> <span style="color:#f92672">|</span>
-<span style="color:#f92672">|</span>          <span style="color:#ae81ff">7</span> <span style="color:#f92672">|</span> mjob   <span style="color:#f92672">|</span> Feiertage        <span style="color:#f92672">|</span> feiertage       <span style="color:#f92672">|</span>                 <span style="color:#ae81ff">140</span> <span style="color:#f92672">|</span>
-<span style="color:#f92672">|</span>          <span style="color:#ae81ff">1</span> <span style="color:#f92672">|</span> mjob   <span style="color:#f92672">|</span> Morris           <span style="color:#f92672">|</span> defaultcalendar <span style="color:#f92672">|</span>                <span style="color:#ae81ff">1019</span> <span style="color:#f92672">|</span>
-<span style="color:#f92672">|</span>          <span style="color:#ae81ff">9</span> <span style="color:#f92672">|</span> mjob   <span style="color:#f92672">|</span> Projekte         <span style="color:#f92672">|</span> projekte        <span style="color:#f92672">|</span>                   <span style="color:#ae81ff">3</span> <span style="color:#f92672">|</span>
-<span style="color:#f92672">+</span><span style="color:#75715e">------------+--------+------------------+-----------------+---------------------+
-</span><span style="color:#75715e"></span><span style="color:#ae81ff">4</span> <span style="color:#66d9ef">rows</span> <span style="color:#66d9ef">in</span> <span style="color:#66d9ef">set</span> (<span style="color:#ae81ff">0</span>.<span style="color:#ae81ff">00</span> sec)
-
-MariaDB [owncloud_stable]<span style="color:#f92672">&gt;</span> <span style="color:#66d9ef">SELECT</span> o.calendarid, <span style="color:#66d9ef">c</span>.principaluri, <span style="color:#66d9ef">c</span>.displayname, <span style="color:#66d9ef">c</span>.uri, <span style="color:#66d9ef">COUNT</span>(o.calendarid)
-    <span style="color:#f92672">-&gt;</span> <span style="color:#66d9ef">FROM</span> oc_calendarobjects o
-    <span style="color:#f92672">-&gt;</span> <span style="color:#66d9ef">JOIN</span> oc_calendars <span style="color:#66d9ef">c</span> <span style="color:#66d9ef">ON</span> o.calendarid <span style="color:#f92672">=</span> <span style="color:#66d9ef">c</span>.id
-    <span style="color:#f92672">-&gt;</span> <span style="color:#66d9ef">GROUP</span> <span style="color:#66d9ef">BY</span> calendarid
-    <span style="color:#f92672">-&gt;</span> <span style="color:#66d9ef">ORDER</span> <span style="color:#66d9ef">BY</span> <span style="color:#66d9ef">c</span>.principaluri, <span style="color:#66d9ef">c</span>.displayname;
-<span style="color:#f92672">+</span><span style="color:#75715e">------------+-----------------------+------------------+-----------------+---------------------+
-</span><span style="color:#75715e"></span><span style="color:#f92672">|</span> calendarid <span style="color:#f92672">|</span> principaluri          <span style="color:#f92672">|</span> displayname      <span style="color:#f92672">|</span> uri             <span style="color:#f92672">|</span> <span style="color:#66d9ef">COUNT</span>(o.calendarid) <span style="color:#f92672">|</span>
-<span style="color:#f92672">+</span><span style="color:#75715e">------------+-----------------------+------------------+-----------------+---------------------+
-</span><span style="color:#75715e"></span><span style="color:#f92672">|</span>          <span style="color:#ae81ff">7</span> <span style="color:#f92672">|</span> principals<span style="color:#f92672">/</span>users<span style="color:#f92672">/</span>mjob <span style="color:#f92672">|</span> Example <span style="color:#ae81ff">1</span>        <span style="color:#f92672">|</span> example1        <span style="color:#f92672">|</span>                 <span style="color:#ae81ff">143</span> <span style="color:#f92672">|</span>
-<span style="color:#f92672">|</span>          <span style="color:#ae81ff">6</span> <span style="color:#f92672">|</span> principals<span style="color:#f92672">/</span>users<span style="color:#f92672">/</span>mjob <span style="color:#f92672">|</span> Feiertage        <span style="color:#f92672">|</span> feiertage       <span style="color:#f92672">|</span>                 <span style="color:#ae81ff">140</span> <span style="color:#f92672">|</span>
-<span style="color:#f92672">|</span>         <span style="color:#ae81ff">13</span> <span style="color:#f92672">|</span> principals<span style="color:#f92672">/</span>users<span style="color:#f92672">/</span>mjob <span style="color:#f92672">|</span> Morris           <span style="color:#f92672">|</span> defaultcalendar <span style="color:#f92672">|</span>                <span style="color:#ae81ff">1019</span> <span style="color:#f92672">|</span>
-<span style="color:#f92672">|</span>          <span style="color:#ae81ff">8</span> <span style="color:#f92672">|</span> principals<span style="color:#f92672">/</span>users<span style="color:#f92672">/</span>mjob <span style="color:#f92672">|</span> Projekte         <span style="color:#f92672">|</span> projekte        <span style="color:#f92672">|</span>                   <span style="color:#ae81ff">3</span> <span style="color:#f92672">|</span>
-<span style="color:#f92672">+</span><span style="color:#75715e">------------+-----------------------+------------------+-----------------+---------------------+</span></code></pre></div>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sql" data-lang="sql"><span style="display:flex;"><span>MariaDB [owncloud_stable]<span style="color:#f92672">&gt;</span> <span style="color:#66d9ef">SELECT</span> o.calendarid, <span style="color:#66d9ef">c</span>.userid, <span style="color:#66d9ef">c</span>.displayname, <span style="color:#66d9ef">c</span>.uri, <span style="color:#66d9ef">COUNT</span>(o.calendarid)
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">-&gt;</span> <span style="color:#66d9ef">FROM</span> oc_clndr_objects o
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">-&gt;</span> <span style="color:#66d9ef">JOIN</span> oc_clndr_calendars <span style="color:#66d9ef">c</span> <span style="color:#66d9ef">ON</span> o.calendarid <span style="color:#f92672">=</span> <span style="color:#66d9ef">c</span>.id
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">-&gt;</span> <span style="color:#66d9ef">GROUP</span> <span style="color:#66d9ef">BY</span> calendarid
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">-&gt;</span> <span style="color:#66d9ef">ORDER</span> <span style="color:#66d9ef">BY</span> <span style="color:#66d9ef">c</span>.userid, <span style="color:#66d9ef">c</span>.displayname;
+</span></span><span style="display:flex;"><span><span style="color:#f92672">+</span><span style="color:#75715e">------------+--------+------------------+-----------------+---------------------+
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#f92672">|</span> calendarid <span style="color:#f92672">|</span> userid <span style="color:#f92672">|</span> displayname      <span style="color:#f92672">|</span> uri             <span style="color:#f92672">|</span> <span style="color:#66d9ef">COUNT</span>(o.calendarid) <span style="color:#f92672">|</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">+</span><span style="color:#75715e">------------+--------+------------------+-----------------+---------------------+
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#f92672">|</span>          <span style="color:#ae81ff">8</span> <span style="color:#f92672">|</span> mjob   <span style="color:#f92672">|</span> Example <span style="color:#ae81ff">1</span>        <span style="color:#f92672">|</span> example1        <span style="color:#f92672">|</span>                 <span style="color:#ae81ff">143</span> <span style="color:#f92672">|</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">|</span>          <span style="color:#ae81ff">7</span> <span style="color:#f92672">|</span> mjob   <span style="color:#f92672">|</span> Feiertage        <span style="color:#f92672">|</span> feiertage       <span style="color:#f92672">|</span>                 <span style="color:#ae81ff">140</span> <span style="color:#f92672">|</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">|</span>          <span style="color:#ae81ff">1</span> <span style="color:#f92672">|</span> mjob   <span style="color:#f92672">|</span> Morris           <span style="color:#f92672">|</span> defaultcalendar <span style="color:#f92672">|</span>                <span style="color:#ae81ff">1019</span> <span style="color:#f92672">|</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">|</span>          <span style="color:#ae81ff">9</span> <span style="color:#f92672">|</span> mjob   <span style="color:#f92672">|</span> Projekte         <span style="color:#f92672">|</span> projekte        <span style="color:#f92672">|</span>                   <span style="color:#ae81ff">3</span> <span style="color:#f92672">|</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">+</span><span style="color:#75715e">------------+--------+------------------+-----------------+---------------------+
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#ae81ff">4</span> <span style="color:#66d9ef">rows</span> <span style="color:#66d9ef">in</span> <span style="color:#66d9ef">set</span> (<span style="color:#ae81ff">0</span>.<span style="color:#ae81ff">00</span> sec)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>MariaDB [owncloud_stable]<span style="color:#f92672">&gt;</span> <span style="color:#66d9ef">SELECT</span> o.calendarid, <span style="color:#66d9ef">c</span>.principaluri, <span style="color:#66d9ef">c</span>.displayname, <span style="color:#66d9ef">c</span>.uri, <span style="color:#66d9ef">COUNT</span>(o.calendarid)
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">-&gt;</span> <span style="color:#66d9ef">FROM</span> oc_calendarobjects o
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">-&gt;</span> <span style="color:#66d9ef">JOIN</span> oc_calendars <span style="color:#66d9ef">c</span> <span style="color:#66d9ef">ON</span> o.calendarid <span style="color:#f92672">=</span> <span style="color:#66d9ef">c</span>.id
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">-&gt;</span> <span style="color:#66d9ef">GROUP</span> <span style="color:#66d9ef">BY</span> calendarid
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">-&gt;</span> <span style="color:#66d9ef">ORDER</span> <span style="color:#66d9ef">BY</span> <span style="color:#66d9ef">c</span>.principaluri, <span style="color:#66d9ef">c</span>.displayname;
+</span></span><span style="display:flex;"><span><span style="color:#f92672">+</span><span style="color:#75715e">------------+-----------------------+------------------+-----------------+---------------------+
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#f92672">|</span> calendarid <span style="color:#f92672">|</span> principaluri          <span style="color:#f92672">|</span> displayname      <span style="color:#f92672">|</span> uri             <span style="color:#f92672">|</span> <span style="color:#66d9ef">COUNT</span>(o.calendarid) <span style="color:#f92672">|</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">+</span><span style="color:#75715e">------------+-----------------------+------------------+-----------------+---------------------+
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#f92672">|</span>          <span style="color:#ae81ff">7</span> <span style="color:#f92672">|</span> principals<span style="color:#f92672">/</span>users<span style="color:#f92672">/</span>mjob <span style="color:#f92672">|</span> Example <span style="color:#ae81ff">1</span>        <span style="color:#f92672">|</span> example1        <span style="color:#f92672">|</span>                 <span style="color:#ae81ff">143</span> <span style="color:#f92672">|</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">|</span>          <span style="color:#ae81ff">6</span> <span style="color:#f92672">|</span> principals<span style="color:#f92672">/</span>users<span style="color:#f92672">/</span>mjob <span style="color:#f92672">|</span> Feiertage        <span style="color:#f92672">|</span> feiertage       <span style="color:#f92672">|</span>                 <span style="color:#ae81ff">140</span> <span style="color:#f92672">|</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">|</span>         <span style="color:#ae81ff">13</span> <span style="color:#f92672">|</span> principals<span style="color:#f92672">/</span>users<span style="color:#f92672">/</span>mjob <span style="color:#f92672">|</span> Morris           <span style="color:#f92672">|</span> defaultcalendar <span style="color:#f92672">|</span>                <span style="color:#ae81ff">1019</span> <span style="color:#f92672">|</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">|</span>          <span style="color:#ae81ff">8</span> <span style="color:#f92672">|</span> principals<span style="color:#f92672">/</span>users<span style="color:#f92672">/</span>mjob <span style="color:#f92672">|</span> Projekte         <span style="color:#f92672">|</span> projekte        <span style="color:#f92672">|</span>                   <span style="color:#ae81ff">3</span> <span style="color:#f92672">|</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">+</span><span style="color:#75715e">------------+-----------------------+------------------+-----------------+---------------------+</span></span></span></code></pre></div>
 <p>If this is the case: Stop reading and be happy that everything worked well. :)</p>
 <p>If the count is not the same it looks like this (the calendar <code>Morris</code> holds 1019 entries in the old table but only 267 in the new table):</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sql" data-lang="sql"><span style="color:#f92672">+</span><span style="color:#75715e">------------+--------+------------------+-----------------+---------------------+
-</span><span style="color:#75715e"></span><span style="color:#f92672">|</span> calendarid <span style="color:#f92672">|</span> userid <span style="color:#f92672">|</span> displayname      <span style="color:#f92672">|</span> uri             <span style="color:#f92672">|</span> <span style="color:#66d9ef">COUNT</span>(o.calendarid) <span style="color:#f92672">|</span>
-<span style="color:#f92672">+</span><span style="color:#75715e">------------+--------+------------------+-----------------+---------------------+
-</span><span style="color:#75715e"></span><span style="color:#f92672">|</span>          <span style="color:#ae81ff">8</span> <span style="color:#f92672">|</span> mjob   <span style="color:#f92672">|</span> Example <span style="color:#ae81ff">1</span>        <span style="color:#f92672">|</span> example1        <span style="color:#f92672">|</span>                 <span style="color:#ae81ff">143</span> <span style="color:#f92672">|</span>
-<span style="color:#f92672">|</span>          <span style="color:#ae81ff">7</span> <span style="color:#f92672">|</span> mjob   <span style="color:#f92672">|</span> Feiertage        <span style="color:#f92672">|</span> feiertage       <span style="color:#f92672">|</span>                 <span style="color:#ae81ff">140</span> <span style="color:#f92672">|</span>
-<span style="color:#f92672">|</span>          <span style="color:#ae81ff">1</span> <span style="color:#f92672">|</span> mjob   <span style="color:#f92672">|</span> Morris           <span style="color:#f92672">|</span> defaultcalendar <span style="color:#f92672">|</span>                <span style="color:#ae81ff">1019</span> <span style="color:#f92672">|</span>
-<span style="color:#f92672">|</span>          <span style="color:#ae81ff">9</span> <span style="color:#f92672">|</span> mjob   <span style="color:#f92672">|</span> Projekte         <span style="color:#f92672">|</span> projekte        <span style="color:#f92672">|</span>                   <span style="color:#ae81ff">3</span> <span style="color:#f92672">|</span>
-<span style="color:#f92672">+</span><span style="color:#75715e">------------+--------+------------------+-----------------+---------------------+
-</span><span style="color:#75715e"></span><span style="color:#ae81ff">4</span> <span style="color:#66d9ef">rows</span> <span style="color:#66d9ef">in</span> <span style="color:#66d9ef">set</span> (<span style="color:#ae81ff">0</span>.<span style="color:#ae81ff">00</span> sec)
-
-...
-
-<span style="color:#f92672">+</span><span style="color:#75715e">------------+-----------------------+------------------+-----------------+---------------------+
-</span><span style="color:#75715e"></span><span style="color:#f92672">|</span> calendarid <span style="color:#f92672">|</span> principaluri          <span style="color:#f92672">|</span> displayname      <span style="color:#f92672">|</span> uri             <span style="color:#f92672">|</span> <span style="color:#66d9ef">COUNT</span>(o.calendarid) <span style="color:#f92672">|</span>
-<span style="color:#f92672">+</span><span style="color:#75715e">------------+-----------------------+------------------+-----------------+---------------------+
-</span><span style="color:#75715e"></span><span style="color:#f92672">|</span>          <span style="color:#ae81ff">7</span> <span style="color:#f92672">|</span> principals<span style="color:#f92672">/</span>users<span style="color:#f92672">/</span>mjob <span style="color:#f92672">|</span> Example <span style="color:#ae81ff">1</span>        <span style="color:#f92672">|</span> example1        <span style="color:#f92672">|</span>                 <span style="color:#ae81ff">143</span> <span style="color:#f92672">|</span>
-<span style="color:#f92672">|</span>          <span style="color:#ae81ff">6</span> <span style="color:#f92672">|</span> principals<span style="color:#f92672">/</span>users<span style="color:#f92672">/</span>mjob <span style="color:#f92672">|</span> Feiertage        <span style="color:#f92672">|</span> feiertage       <span style="color:#f92672">|</span>                 <span style="color:#ae81ff">140</span> <span style="color:#f92672">|</span>
-<span style="color:#f92672">|</span>         <span style="color:#ae81ff">13</span> <span style="color:#f92672">|</span> principals<span style="color:#f92672">/</span>users<span style="color:#f92672">/</span>mjob <span style="color:#f92672">|</span> Morris           <span style="color:#f92672">|</span> defaultcalendar <span style="color:#f92672">|</span>                 <span style="color:#ae81ff">267</span> <span style="color:#f92672">|</span>
-<span style="color:#f92672">|</span>          <span style="color:#ae81ff">8</span> <span style="color:#f92672">|</span> principals<span style="color:#f92672">/</span>users<span style="color:#f92672">/</span>mjob <span style="color:#f92672">|</span> Projekte         <span style="color:#f92672">|</span> projekte        <span style="color:#f92672">|</span>                   <span style="color:#ae81ff">3</span> <span style="color:#f92672">|</span>
-<span style="color:#f92672">+</span><span style="color:#75715e">------------+-----------------------+------------------+-----------------+---------------------+</span></code></pre></div>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sql" data-lang="sql"><span style="display:flex;"><span><span style="color:#f92672">+</span><span style="color:#75715e">------------+--------+------------------+-----------------+---------------------+
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#f92672">|</span> calendarid <span style="color:#f92672">|</span> userid <span style="color:#f92672">|</span> displayname      <span style="color:#f92672">|</span> uri             <span style="color:#f92672">|</span> <span style="color:#66d9ef">COUNT</span>(o.calendarid) <span style="color:#f92672">|</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">+</span><span style="color:#75715e">------------+--------+------------------+-----------------+---------------------+
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#f92672">|</span>          <span style="color:#ae81ff">8</span> <span style="color:#f92672">|</span> mjob   <span style="color:#f92672">|</span> Example <span style="color:#ae81ff">1</span>        <span style="color:#f92672">|</span> example1        <span style="color:#f92672">|</span>                 <span style="color:#ae81ff">143</span> <span style="color:#f92672">|</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">|</span>          <span style="color:#ae81ff">7</span> <span style="color:#f92672">|</span> mjob   <span style="color:#f92672">|</span> Feiertage        <span style="color:#f92672">|</span> feiertage       <span style="color:#f92672">|</span>                 <span style="color:#ae81ff">140</span> <span style="color:#f92672">|</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">|</span>          <span style="color:#ae81ff">1</span> <span style="color:#f92672">|</span> mjob   <span style="color:#f92672">|</span> Morris           <span style="color:#f92672">|</span> defaultcalendar <span style="color:#f92672">|</span>                <span style="color:#ae81ff">1019</span> <span style="color:#f92672">|</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">|</span>          <span style="color:#ae81ff">9</span> <span style="color:#f92672">|</span> mjob   <span style="color:#f92672">|</span> Projekte         <span style="color:#f92672">|</span> projekte        <span style="color:#f92672">|</span>                   <span style="color:#ae81ff">3</span> <span style="color:#f92672">|</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">+</span><span style="color:#75715e">------------+--------+------------------+-----------------+---------------------+
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#ae81ff">4</span> <span style="color:#66d9ef">rows</span> <span style="color:#66d9ef">in</span> <span style="color:#66d9ef">set</span> (<span style="color:#ae81ff">0</span>.<span style="color:#ae81ff">00</span> sec)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>...
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">+</span><span style="color:#75715e">------------+-----------------------+------------------+-----------------+---------------------+
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#f92672">|</span> calendarid <span style="color:#f92672">|</span> principaluri          <span style="color:#f92672">|</span> displayname      <span style="color:#f92672">|</span> uri             <span style="color:#f92672">|</span> <span style="color:#66d9ef">COUNT</span>(o.calendarid) <span style="color:#f92672">|</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">+</span><span style="color:#75715e">------------+-----------------------+------------------+-----------------+---------------------+
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#f92672">|</span>          <span style="color:#ae81ff">7</span> <span style="color:#f92672">|</span> principals<span style="color:#f92672">/</span>users<span style="color:#f92672">/</span>mjob <span style="color:#f92672">|</span> Example <span style="color:#ae81ff">1</span>        <span style="color:#f92672">|</span> example1        <span style="color:#f92672">|</span>                 <span style="color:#ae81ff">143</span> <span style="color:#f92672">|</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">|</span>          <span style="color:#ae81ff">6</span> <span style="color:#f92672">|</span> principals<span style="color:#f92672">/</span>users<span style="color:#f92672">/</span>mjob <span style="color:#f92672">|</span> Feiertage        <span style="color:#f92672">|</span> feiertage       <span style="color:#f92672">|</span>                 <span style="color:#ae81ff">140</span> <span style="color:#f92672">|</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">|</span>         <span style="color:#ae81ff">13</span> <span style="color:#f92672">|</span> principals<span style="color:#f92672">/</span>users<span style="color:#f92672">/</span>mjob <span style="color:#f92672">|</span> Morris           <span style="color:#f92672">|</span> defaultcalendar <span style="color:#f92672">|</span>                 <span style="color:#ae81ff">267</span> <span style="color:#f92672">|</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">|</span>          <span style="color:#ae81ff">8</span> <span style="color:#f92672">|</span> principals<span style="color:#f92672">/</span>users<span style="color:#f92672">/</span>mjob <span style="color:#f92672">|</span> Projekte         <span style="color:#f92672">|</span> projekte        <span style="color:#f92672">|</span>                   <span style="color:#ae81ff">3</span> <span style="color:#f92672">|</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">+</span><span style="color:#75715e">------------+-----------------------+------------------+-----------------+---------------------+</span></span></span></code></pre></div>
 <p>This means some events are not migrated and more trouble shooting is required.</p>
 <h2 id="running-the-migration-again">Running the migration again</h2>
 <p>As already written this is usually done automatically during the upgrade of ownCloud 8.2 to 9.0.</p>
 <p>Nevertheless you maybe want to retrigger this. <!-- raw HTML omitted -->Those commands are only available in debug mode. <strong>Note:</strong> be aware that debug mode should not be used on production instances because it could leak informations in the debug messages once an error occurs.<!-- raw HTML omitted --> <strong>Edit:</strong> The debug mode is not needed anymore with 9.0.0 RC4. (I added comments to those <code>config:system:set</code> commands)</p>
 <p>The migration steps will only run for not yet migrated calendars. Therefore you need to delete the new calendar that was not fully migrated, because the migration step will check if the calendar only exists. If the calendar exists it will handle it as an already migrated calendar. <strong>Note:</strong> This will delete all data that was added after the upgrade from 8.2 to 9.0 to this calendar. <strong>Only do this if you didn&rsquo;t added any event to this calendar after the upgrade to 9.0!</strong></p>
 <p>Replace <code>USER</code> with your database user, <code>DATABASENAME</code> with the database name of your ownCloud and <code>CALENDARID</code> with the id of the calendar in <code>oc_calendars</code> (new calendar). <code>USERNAME</code> in the migrate command needs to be replaced with the ownCloud username of which the migration step should be run.</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ <span style="color:#75715e"># ./occ config:system:set debug --value true --type boolean</span>
-$ mysql -u USER -p DATABASENAME --exec <span style="color:#e6db74">&#34;DELETE FROM oc_calendarobjects WHERE calendarid = CALENDARID; DELETE FROM oc_calendars WHERE id = CALENDARID;&#34;</span>
-$ ./occ dav:migrate-calendars USERNAME -v
-$ <span style="color:#75715e"># ./occ config:system:set debug --value false --type boolean</span></code></pre></div>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>$ <span style="color:#75715e"># ./occ config:system:set debug --value true --type boolean</span>
+</span></span><span style="display:flex;"><span>$ mysql -u USER -p DATABASENAME --exec <span style="color:#e6db74">&#34;DELETE FROM oc_calendarobjects WHERE calendarid = CALENDARID; DELETE FROM oc_calendars WHERE id = CALENDARID;&#34;</span>
+</span></span><span style="display:flex;"><span>$ ./occ dav:migrate-calendars USERNAME -v
+</span></span><span style="display:flex;"><span>$ <span style="color:#75715e"># ./occ config:system:set debug --value false --type boolean</span></span></span></code></pre></div>
 <p>Then check the logs and the output for error messages and maybe report this to ownCloud.</p>
 ]]></content></entry><entry><title type="html">Dokku - An easy way to deploy web apps</title><link href="https://morrisjobke.de/2016/02/21/Dokku-Easy-way-to-deploy-web-apps/"/><id>https://morrisjobke.de/2016/02/21/Dokku-Easy-way-to-deploy-web-apps/</id><published>2016-02-21T16:55:00+00:00</published><updated>2016-02-21T16:55:00+00:00</updated><content type="html"><![CDATA[<blockquote>
 <p>TL;DR Use easy-to-setup <a href="http://dokku.viewdocs.io/dokku/">Dokku</a> and push your code via git to have it deployed in a docker container without hassle. Bonus points for subdomain and Let&rsquo;s Encrypt support.</p>
