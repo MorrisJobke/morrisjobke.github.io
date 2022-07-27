@@ -5,6 +5,8 @@ date: "2020-08-25T19:37:00Z"
 title: Mini PV-Anlage - Balkonkraftwerk - Steckerfertige PV-Anlage
 ---
 
+**Update Juli 2022:** Andreas Schmitz hat ein [19-minütiges Video](https://www.youtube.com/watch?v=KmGLv12huHA) wie man an dieses Projekt ran geht, inklusive grober Kosten.
+
 **Update Juni 2021:** Mittlerweile gibt es auch eine Seite der [Verbraucherzentrale zu dem Thema](https://www.verbraucherzentrale.de/wissen/energie/erneuerbare-energien/steckersolar-solarstrom-vom-balkon-direkt-in-die-steckdose-44715).
 
 Eine kleine Notizsammlung hinsichtlich Mini PV-Anlage:
