@@ -19,11 +19,10 @@ Eine kleine Notizsammlung hinsichtlich Mini PV-Anlage:
 ### Randbedingung
 
 * Anlage mit maximal 600 W Leistung kann direkt vom Mieter (und nicht wie normalerweise vom Solarteur) beim Netzbetreiber angemeldet werden.
-* Anmeldung in Chemnitz bei inetz: [https://www.inetz.de/startseite/erzeugungsanlagen/anschluss-und-parallelbetrieb/](https://www.inetz.de/startseite/erzeugungsanlagen/anschluss-und-parallelbetrieb/)
-    * Rechts im Menü „Formular zur Anmeldung einer Kleinst-PVA bis 600 VA“
-* Formular zur Anmeldung:
-    * [https://www.inetz.de/fileadmin/dokumente/03_Erzeugeranlagen/01_Anschluss_und_Parallelbetrieb/Anmeldung_steckerfertige_PVA_022022.pdf](https://www.inetz.de/fileadmin/dokumente/03_Erzeugeranlagen/01_Anschluss_und_Parallelbetrieb/Anmeldung_steckerfertige_PVA_022022.pdf)
-* inetz Verlinkt auf die BDEW Anwendungshilfe [https://www.inetz.de/fileadmin/dokumente/04_Service/Installateure/Elektro/20181128_S_BDEW_AWH_Plug_in_PV_Anlagen.pdf](https://www.inetz.de/fileadmin/dokumente/04_Service/Installateure/Elektro/20181128_S_BDEW_AWH_Plug_in_PV_Anlagen.pdf)
+* [Anmeldung in Chemnitz bei inetz](https://www.inetz.de/startseite/erzeugungsanlagen/anschluss-und-parallelbetrieb/)
+    * Punkt „Zur Anmeldung von Photovoltaikanlagen“
+* [Formular zur Anmeldung](https://www.inetz.de/fileadmin/dokumente/03_Erzeugeranlagen/01_Anschluss_und_Parallelbetrieb/Anmeldung_steckerfertige_PVA_022022.pdf)
+* [inetz Verlinkt auf die BDEW Anwendungshilfe](https://www.inetz.de/fileadmin/dokumente/04_Service/Installateure/Elektro/20181128_S_BDEW_AWH_Plug_in_PV_Anlagen.pdf)
 
 ### Steckverbindung
 
