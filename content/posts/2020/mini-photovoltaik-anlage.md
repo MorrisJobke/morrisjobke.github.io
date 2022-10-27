@@ -22,7 +22,7 @@ Eine kleine Notizsammlung hinsichtlich Mini PV-Anlage:
 * Anmeldung in Chemnitz bei inetz: [https://www.inetz.de/startseite/erzeugungsanlagen/anschluss-und-parallelbetrieb/](https://www.inetz.de/startseite/erzeugungsanlagen/anschluss-und-parallelbetrieb/)
     * Punkt „Vereinfachtes Anmeldeverfahren für Kleinst-Photovoltaikanlagen (Plug-In)“
 * Formular zur Anmeldung:
-    * [https://www.inetz.de/fileadmin/dokumente/02_Erzeugeranlagen/01_Anschluss_und_Parallelbetrieb/GS_Formular_Anmeldung_steckerfertige_PVA_final_v2.pdf](https://www.inetz.de/fileadmin/dokumente/02_Erzeugeranlagen/01_Anschluss_und_Parallelbetrieb/GS_Formular_Anmeldung_steckerfertige_PVA_final_v2.pdf)
+    * [https://www.inetz.de/fileadmin/dokumente/03_Erzeugeranlagen/01_Anschluss_und_Parallelbetrieb/Anmeldung_steckerfertige_PVA_022022.pdf](https://www.inetz.de/fileadmin/dokumente/03_Erzeugeranlagen/01_Anschluss_und_Parallelbetrieb/Anmeldung_steckerfertige_PVA_022022.pdf)
 * inetz Verlinkt auf die BDEW Anwendungshilfe [https://www.inetz.de/fileadmin/dokumente/04_Service/Installateure/Elektro/BDEW-AWH-Plug-in-PV-Anlagen_28112018-final.pdf](https://www.inetz.de/fileadmin/dokumente/04_Service/Installateure/Elektro/BDEW-AWH-Plug-in-PV-Anlagen_28112018-final.pdf)
 
 ### Steckverbindung
