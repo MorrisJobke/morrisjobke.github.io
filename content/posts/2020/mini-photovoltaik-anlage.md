@@ -23,7 +23,7 @@ Eine kleine Notizsammlung hinsichtlich Mini PV-Anlage:
     * Punkt „Vereinfachtes Anmeldeverfahren für Kleinst-Photovoltaikanlagen (Plug-In)“
 * Formular zur Anmeldung:
     * [https://www.inetz.de/fileadmin/dokumente/03_Erzeugeranlagen/01_Anschluss_und_Parallelbetrieb/Anmeldung_steckerfertige_PVA_022022.pdf](https://www.inetz.de/fileadmin/dokumente/03_Erzeugeranlagen/01_Anschluss_und_Parallelbetrieb/Anmeldung_steckerfertige_PVA_022022.pdf)
-* inetz Verlinkt auf die BDEW Anwendungshilfe [https://www.inetz.de/fileadmin/dokumente/04_Service/Installateure/Elektro/BDEW-AWH-Plug-in-PV-Anlagen_28112018-final.pdf](https://www.inetz.de/fileadmin/dokumente/04_Service/Installateure/Elektro/BDEW-AWH-Plug-in-PV-Anlagen_28112018-final.pdf)
+* inetz Verlinkt auf die BDEW Anwendungshilfe [https://www.inetz.de/fileadmin/dokumente/04_Service/Installateure/Elektro/20181128_S_BDEW_AWH_Plug_in_PV_Anlagen.pdf](https://www.inetz.de/fileadmin/dokumente/04_Service/Installateure/Elektro/20181128_S_BDEW_AWH_Plug_in_PV_Anlagen.pdf)
 
 ### Steckverbindung
 
