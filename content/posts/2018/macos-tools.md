@@ -30,6 +30,7 @@ The following is installed via `brew install NAME`.
 * `jq` - [jq](https://stedolan.github.io/jq/) - an easy to use command line JSON processor
 	* `curl -s https://example.org/api/info/queue | jq .stats` to retrieve only the element `stats`
 * `python3` - [Python](https://www.python.org) - programming language
+* `pwgen`- [pwgen](https://sourceforge.net/projects/pwgen/) - CLI tool to easily generate secrets locally 
 * `nmap` - [NMAP](https://nmap.org) - looking around on the network
 * `tmate` - [tmate](https://tmate.io) - sharing a terminal with someone else - nice for remote debugging and "screen" sharing (at least if "screen" basically refers to the terminal ;))
 * `tmux` - [tmux](http://tmux.github.io/) - a terminal multiplexer - [an introduction how to use it](http://www.hamvocke.com/blog/a-quick-and-easy-guide-to-tmux/)
