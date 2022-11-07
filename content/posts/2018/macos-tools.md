@@ -36,7 +36,6 @@ The following is installed via `brew install NAME`.
 * `tree` - [tree](http://mama.indstate.edu/users/ice/tree/) - a directory listing command to show a folder and its subfolders in a tree
 * `watch` - [watch](https://linux.die.net/man/1/watch) - a tool to periodically execute a command and show the output - I often use it together with ls, tree, etc to check the filesystem content - `watch -n 1 -d COMMAND` to execute `COMMAND` every second and highlight the changed content
 * `wget` - [Wget](https://www.gnu.org/software/wget/) - for fetching stuff from the internet
-* `yarn` - [yarn](https://yarnpkg.com/lang/en/) - JS package manager
 * `youtube-dl` - [youtube-dl](http://rg3.github.io/youtube-dl/) - download videos from YouTube (and many other sites) - used also to archive my YouTube favorites ;)
 
 ### PHP
@@ -50,7 +49,7 @@ The following is installed via `brew install NAME`.
 
 Following apps can be installed via `brew install --cask NAME`:
 
-* `1password` - [1Password](https://1password.com) - password manager for macOS, Windows, iOS and Android
+* `bitwarden` - [bitwarden](https://bitwarden.com) - oepn-source password manager
 * `caffeine` - [Caffeine](http://lightheadsw.com/caffeine/) - don't let your mac fall asleep
 * `dash` - [Dash](https://kapeli.com/dash) - offline documentation for programming languages, libraries, APIs and RFCs that is easily searchable
 * `docker` - [Docker](https://www.docker.com) - container management
@@ -62,6 +61,8 @@ Following apps can be installed via `brew install --cask NAME`:
 * `jetbrains-toolbox` - [Jetbrains Toolbox](https://www.jetbrains.com/toolbox-app/) - Toolbox to install and update Jetbrains IDEs
 * `moneymoney` - [MoneyMoney](https://moneymoney-app.com) - awesome banking tool
 * `phpstorm` - [PhpStorm](https://www.jetbrains.com/phpstorm/) - awesome PHP IDE
+* `raycast` - [Raycast](https://www.raycast.com) - alternative to Spotlight
+* `slack` - [Slack](https://slack.com) - communication tool
 * `sublime-text` - [Sublime Text](https://www.sublimetext.com) - a fast and reliable editor with nice features (keeps all unsafed documents, multi cursor editing, ...) for everything where I don't use PhpStorm
 	* [Package Control](https://packagecontrol.io) - to easily install following packages
 	* [DashDoc](https://github.com/farcaller/DashDoc) - dash integration
