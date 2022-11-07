@@ -528,7 +528,6 @@ Non machines resources state:
 <li><code>tree</code> - <a href="http://mama.indstate.edu/users/ice/tree/">tree</a> - a directory listing command to show a folder and its subfolders in a tree</li>
 <li><code>watch</code> - <a href="https://linux.die.net/man/1/watch">watch</a> - a tool to periodically execute a command and show the output - I often use it together with ls, tree, etc to check the filesystem content - <code>watch -n 1 -d COMMAND</code> to execute <code>COMMAND</code> every second and highlight the changed content</li>
 <li><code>wget</code> - <a href="https://www.gnu.org/software/wget/">Wget</a> - for fetching stuff from the internet</li>
-<li><code>yarn</code> - <a href="https://yarnpkg.com/lang/en/">yarn</a> - JS package manager</li>
 <li><code>youtube-dl</code> - <a href="http://rg3.github.io/youtube-dl/">youtube-dl</a> - download videos from YouTube (and many other sites) - used also to archive my YouTube favorites ;)</li>
 </ul>
 <h3 id="php">PHP</h3>
@@ -540,7 +539,7 @@ Non machines resources state:
 <h2 id="brew-casks">brew casks</h2>
 <p>Following apps can be installed via <code>brew install --cask NAME</code>:</p>
 <ul>
-<li><code>1password</code> - <a href="https://1password.com">1Password</a> - password manager for macOS, Windows, iOS and Android</li>
+<li><code>bitwarden</code> - <a href="https://bitwarden.com">bitwarden</a> - oepn-source password manager</li>
 <li><code>caffeine</code> - <a href="http://lightheadsw.com/caffeine/">Caffeine</a> - don&rsquo;t let your mac fall asleep</li>
 <li><code>dash</code> - <a href="https://kapeli.com/dash">Dash</a> - offline documentation for programming languages, libraries, APIs and RFCs that is easily searchable</li>
 <li><code>docker</code> - <a href="https://www.docker.com">Docker</a> - container management</li>
@@ -552,6 +551,8 @@ Non machines resources state:
 <li><code>jetbrains-toolbox</code> - <a href="https://www.jetbrains.com/toolbox-app/">Jetbrains Toolbox</a> - Toolbox to install and update Jetbrains IDEs</li>
 <li><code>moneymoney</code> - <a href="https://moneymoney-app.com">MoneyMoney</a> - awesome banking tool</li>
 <li><code>phpstorm</code> - <a href="https://www.jetbrains.com/phpstorm/">PhpStorm</a> - awesome PHP IDE</li>
+<li><code>raycast</code> - <a href="https://www.raycast.com">Raycast</a> - alternative to Spotlight</li>
+<li><code>slack</code> - <a href="https://slack.com">Slack</a> - communication tool</li>
 <li><code>sublime-text</code> - <a href="https://www.sublimetext.com">Sublime Text</a> - a fast and reliable editor with nice features (keeps all unsafed documents, multi cursor editing, &hellip;) for everything where I don&rsquo;t use PhpStorm
 <ul>
 <li><a href="https://packagecontrol.io">Package Control</a> - to easily install following packages</li>
