@@ -522,6 +522,7 @@ Non machines resources state:
 </ul>
 </li>
 <li><code>python3</code> - <a href="https://www.python.org">Python</a> - programming language</li>
+<li><code>pwgen</code>- <a href="https://sourceforge.net/projects/pwgen/">pwgen</a> - CLI tool to easily generate secrets locally</li>
 <li><code>nmap</code> - <a href="https://nmap.org">NMAP</a> - looking around on the network</li>
 <li><code>tmate</code> - <a href="https://tmate.io">tmate</a> - sharing a terminal with someone else - nice for remote debugging and &ldquo;screen&rdquo; sharing (at least if &ldquo;screen&rdquo; basically refers to the terminal ;))</li>
 <li><code>tmux</code> - <a href="http://tmux.github.io/">tmux</a> - a terminal multiplexer - <a href="http://www.hamvocke.com/blog/a-quick-and-easy-guide-to-tmux/">an introduction how to use it</a></li>
