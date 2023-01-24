@@ -109,6 +109,11 @@ Wieso bricht eigentlich das Stromnetz nicht durch den Beleuchtungswahn zusammen?
 
 `</Ironie>`
 
+### Netzdienliches Laden
+
+* [Elli und Mitnetz werten Feldversuch zur Netzintegration von E-Autos aus (electrive.net)](https://www.electrive.net/2023/01/23/elli-und-mitnetz-werten-feldversuch-zur-netzintegration-von-e-autos-aus/)
+* [Gridio erlaubt es automatisch netzdienlich über eine App zu laden (gridio.io)](https://www.gridio.io)
+
 ### In Wohnanlagen
 
 > Für alle die Probleme mit Ihrer Hausverwaltung haben bei der Errichtung von Ladeinfrastruktur. Sagt Ihnen, es ist alles halb so wild und haltet Ihnen meine neue Studie unter die Nase.
