@@ -193,7 +193,8 @@ Siehe "CO2 Emisionen 1990-2017 Deutschland.jpg"
 ## Zulassungszahlen
 
 * [Open EV charts](https://open-ev-charts.org/#electric-ratio:DE:year:all-time)
-* [Zulassungszahlen aller Kraftfahrtzeuge in Deutschland (now-gmbh.de)](https://www.now-gmbh.de/datenfinder/neuzulassungen-pkw-lkw-bus-zugmaschinen/)
+* [Zulassungszahlen aller Kraftfahrzeuge in Deutschland (now-gmbh.de)](https://www.now-gmbh.de/datenfinder/neuzulassungen-pkw-lkw-bus-zugmaschinen/)
+* [Bestandszahllen aller Kraftfahrzeuge in Deutschland (now-gmbh.de)](https://www.now-gmbh.de/datenfinder/bestand-pkw-lkw-bus-zugmaschinen/)
 
 ## Feedback zu allgemeinen Dingen
 
