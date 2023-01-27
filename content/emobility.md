@@ -7,7 +7,7 @@ Bei Diskussionen rund um Elektromobilität stößt man immer wieder auf gewisse 
 
 Ich versuche von Zeit zu Zeit Neuigkeiten nachzupflegen. Anmerkungen, Verbesserungen, Korrekturen und sonstiges kann gerne über das entsprechende [Github Repository](https://github.com/MorrisJobke/morrisjobke.github.io) eingereicht werden.
 
-Letztes Update: Juli 2021
+Letztes Update: Januar 2023
 
 ---
 
