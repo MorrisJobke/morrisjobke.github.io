@@ -1,6 +1,6 @@
 baseURL = "https://morrisjobke.de"
 disablePathToLower = true
-languageCode = "en-us"
+locale = "en-us"
 title = "Morris Jobke"
 copyright = "Morris Jobke - Creative Commons Attribution 4.0 International License"
 disableKinds = ["section", "taxonomy", "term"]
