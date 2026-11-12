@@ -1,0 +1,341 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lochmuster Planer</title>
+<style>
+:root {
+  --bg: #f6f5f2; --panel: #ffffff; --text: #1d1d1f; --muted: #6b6b70; --line: #d9d7d2;
+  --plate: #dfeef3; --plate-edge: #7aa6b5; --hole: #1d1d1f; --hole2: #c2410c; --accent: #0f6e8c; --dim: #8a8a90;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #151517; --panel: #1f1f22; --text: #ececee; --muted: #9a9aa2; --line: #34343a;
+    --plate: #1d3540; --plate-edge: #5f97a9; --hole: #f2f2f4; --hole2: #fb923c; --accent: #5fb7d4; --dim: #77777f;
+  }
+}
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--bg); color: var(--text); font: 15px/1.45 system-ui, -apple-system, "Segoe UI", sans-serif; }
+main { max-width: 1200px; margin: 0 auto; padding: 24px 16px 48px; }
+h1 { font-size: 22px; margin: 0 0 4px; }
+.sub { color: var(--muted); margin: 0 0 20px; }
+.grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 12px; }
+.card { background: var(--panel); border: 1px solid var(--line); border-radius: 10px; padding: 14px 16px; }
+.card h2 { font-size: 13px; text-transform: uppercase; letter-spacing: .05em; color: var(--muted); margin: 0 0 10px; }
+label { display: flex; justify-content: space-between; align-items: center; gap: 8px; margin: 6px 0; }
+.step { display: flex; align-items: center; gap: 4px; }
+.step button { width: 30px; height: 30px; border: 1px solid var(--line); background: var(--bg); color: var(--text); border-radius: 6px; font-size: 16px; cursor: pointer; }
+input[type=number], select { width: 80px; padding: 5px 6px; border: 1px solid var(--line); border-radius: 6px; background: var(--bg); color: var(--text); font: inherit; text-align: right; }
+select { width: 150px; text-align: left; }
+.results { display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 12px; margin: 16px 0; }
+.stat { background: var(--panel); border: 1px solid var(--line); border-radius: 10px; padding: 12px 14px; }
+.stat .k { color: var(--muted); font-size: 13px; }
+.stat .v { font-size: 24px; font-weight: 600; font-variant-numeric: tabular-nums; }
+.stat .n { color: var(--muted); font-size: 12px; }
+.warn { color: var(--hole2); font-size: 13px; margin-top: 6px; }
+.hint { font-size: 13px; color: var(--muted); margin-top: 8px; }
+.hint button, .btn { border: 1px solid var(--accent); color: var(--accent); background: transparent; border-radius: 6px; padding: 3px 8px; cursor: pointer; font: inherit; font-size: 13px; }
+.view { background: var(--panel); border: 1px solid var(--line); border-radius: 10px; padding: 12px; overflow-x: auto; }
+.view svg { display: block; width: 100%; height: auto; }
+.zoomrow { display:flex; justify-content: space-between; align-items:center; margin: 18px 0 6px; flex-wrap: wrap; gap: 8px; }
+.zoomrow h3 { margin: 0; font-size: 15px; }
+table { border-collapse: collapse; width: 100%; font-variant-numeric: tabular-nums; font-size: 13px; }
+th, td { text-align: right; padding: 4px 8px; border-bottom: 1px solid var(--line); }
+th:first-child, td:first-child { text-align: left; }
+details { margin-top: 18px; }
+summary { cursor: pointer; font-weight: 600; }
+.printbar { margin: 18px 0 0; display: flex; gap: 12px; align-items: center; flex-wrap: wrap; }
+.btn.primary { background: var(--accent); color: var(--panel); padding: 7px 14px; font-size: 14px; font-weight: 600; }
+#print { display: none; }
+@media print {
+  @page { size: A4 landscape; margin: 10mm; }
+  body { background: #fff; color: #000; }
+  main { display: none; }
+  #print { display: block; }
+  .page { break-after: page; page-break-after: always; font: 10pt system-ui, sans-serif; }
+  .page:last-child { break-after: auto; page-break-after: auto; }
+  .page h4 { margin: 0 0 2mm; font-size: 11pt; }
+  .page p { margin: 0 0 3mm; font-size: 8.5pt; }
+  .page svg { display: block; }
+}
+.tablewrap { max-height: 420px; overflow: auto; margin-top: 8px; background: var(--panel); border: 1px solid var(--line); border-radius: 10px; }
+</style>
+</head>
+<body>
+<main>
+  <h1>Lochmuster-Planer</h1>
+  <p class="sub">Versetztes Lochraster. Reihen liegen entlang der langen Seite, Spalten über die kurze Seite. Jede zweite Reihe hat eine Spalte weniger und ist um einen halben Lochabstand versetzt.</p>
+
+  <div class="grid">
+    <div class="card">
+      <h2>Platte</h2>
+      <label>Länge (mm) <input type="number" id="L" value="988" min="10" step="1"></label>
+      <label>Breite (mm) <input type="number" id="W" value="100" min="10" step="1"></label>
+      <label>Lochdurchmesser (mm) <input type="number" id="d" value="5" min="0.5" step="0.5"></label>
+    </div>
+    <div class="card">
+      <h2>Raster</h2>
+      <label>Reihen (ungerade)
+        <span class="step"><button data-t="R" data-s="-2">−</button><input type="number" id="R" value="31" min="1" step="2"><button data-t="R" data-s="2">+</button></span>
+      </label>
+      <label>Spalten (volle Reihe)
+        <span class="step"><button data-t="C" data-s="-1">−</button><input type="number" id="C" value="5" min="2" step="1"><button data-t="C" data-s="1">+</button></span>
+      </label>
+      <div class="hint" id="eqHint"></div>
+    </div>
+    <div class="card">
+      <h2>Randabstand</h2>
+      <label title="Streifen ohne Löcher entlang der beiden langen Kanten (z. B. Rahmen/Auflage)">Zusatzrand lange Kanten (mm) <input type="number" id="exL" value="15" min="0" step="0.5"></label>
+      <label title="Streifen ohne Löcher an den beiden kurzen Kanten (Enden)">Zusatzrand kurze Kanten (mm) <input type="number" id="exS" value="0" min="0" step="0.5"></label>
+      <div class="hint" style="margin:2px 0 8px">Die Randabstände unten zählen ab dem Zusatzrand.</div>
+      <label>Zu den Enden
+        <select id="mxMode">
+          <option value="eq">= Reihenabstand</option>
+          <option value="half">= ½ Reihenabstand</option>
+          <option value="fix">fest</option>
+        </select>
+      </label>
+      <label id="mxFixL">Rand Enden (mm) <input type="number" id="mxFix" value="20" min="0" step="0.5"></label>
+      <label>Zu den langen Kanten
+        <select id="myMode">
+          <option value="eq">= Lochabstand</option>
+          <option value="half">= ½ Lochabstand</option>
+          <option value="fix" selected>fest</option>
+        </select>
+      </label>
+      <label id="myFixL">Rand lange Kanten (mm) <input type="number" id="myFix" value="15" min="0" step="0.5"></label>
+    </div>
+  </div>
+
+  <div class="results" id="results"></div>
+
+  <div class="zoomrow"><h3>Gesamtansicht</h3><span class="hint" style="margin:0">Neutral: volle Reihen · Orange: versetzte Reihen</span></div>
+  <div class="view"><svg id="full"></svg></div>
+
+  <div class="zoomrow"><h3>Detail (Anfang der Platte, mit Maßen)</h3></div>
+  <div class="view"><svg id="detail"></svg></div>
+
+  <div class="printbar">
+    <button class="btn primary" id="printBtn">Schablone 1:1 drucken / als PDF</button>
+    <span class="hint" style="margin:0" id="printInfo"></span>
+  </div>
+
+  <details>
+    <summary>Bohrkoordinaten (vom Eck unten links)</summary>
+    <p class="hint">x entlang der langen Seite, y entlang der kurzen Seite. <button class="btn" id="copy">Als CSV kopieren</button></p>
+    <div class="tablewrap"><table id="tbl"></table></div>
+  </details>
+</main>
+<div id="print"></div>
+
+<script>
+const $ = id => document.getElementById(id);
+const f1 = v => (Math.round(v * 10) / 10).toLocaleString('de-DE', { minimumFractionDigits: 1, maximumFractionDigits: 1 });
+const f2 = v => (Math.round(v * 100) / 100).toLocaleString('de-DE', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+const css = n => getComputedStyle(document.documentElement).getPropertyValue(n).trim();
+
+document.querySelectorAll('.step button').forEach(b => b.addEventListener('click', () => {
+  const el = $(b.dataset.t); el.value = Math.max(+el.min, (+el.value || 0) + +b.dataset.s); update();
+}));
+['L','W','d','R','C','mxMode','myMode','mxFix','myFix','exL','exS'].forEach(id => $(id).addEventListener('input', update));
+$('R').addEventListener('change', () => { let r = Math.round(+$('R').value || 1); if (r % 2 === 0) r += 1; $('R').value = Math.max(1, r); update(); });
+
+// pitch & margin from length, count of holes along that axis, mode
+function axis(len, n, mode, fix) {
+  if (mode === 'eq')   { const p = len / (n + 1); return { p, m: p }; }
+  if (mode === 'half') { const p = len / n;       return { p, m: p / 2 }; }
+  return { p: n > 1 ? (len - 2 * fix) / (n - 1) : 0, m: n > 1 ? fix : len / 2 };
+}
+
+let holes = [];
+function compute() {
+  const L = +$('L').value, W = +$('W').value, d = +$('d').value;
+  let R = Math.max(1, Math.round(+$('R').value)); if (R % 2 === 0) R += 1;
+  const C = Math.max(2, Math.round(+$('C').value));
+  const exL = Math.max(0, +$('exL').value || 0), exS = Math.max(0, +$('exS').value || 0);
+  const ax = axis(L - 2 * exS, R, $('mxMode').value, +$('mxFix').value); ax.m += exS;
+  const ay = axis(W - 2 * exL, C, $('myMode').value, +$('myFix').value); ay.m += exL;
+  holes = [];
+  for (let i = 0; i < R; i++) {
+    const x = ax.m + i * ax.p, off = i % 2 === 1, n = off ? C - 1 : C;
+    for (let j = 0; j < n; j++) holes.push({ r: i + 1, c: j + 1, x, y: ay.m + (off ? ay.p / 2 : 0) + j * ay.p, off });
+  }
+  const diag = Math.hypot(ax.p, ay.p / 2);
+  return { L, W, d, R, C, exL, exS, px: ax.p, mx: ax.m, py: ay.p, my: ay.m, diag };
+}
+
+function update() {
+  $('mxFixL').style.display = $('mxMode').value === 'fix' ? '' : 'none';
+  $('myFixL').style.display = $('myMode').value === 'fix' ? '' : 'none';
+  const s = compute();
+  const minDist = Math.min(s.py, s.diag, s.R > 2 ? 2 * s.px : Infinity);
+  const ribbon = minDist - s.d;
+  const ratio = s.diag / s.py;
+
+  const warn = [];
+  if (s.px <= 0 || s.py <= 0) warn.push('Randabstand zu groß für diese Plattengröße.');
+  if (ribbon < s.d * 0.5) warn.push('Steg zwischen Löchern sehr schmal (< ½ Durchmesser) – Bruchgefahr bei Plexiglas.');
+  if (Math.min(s.mx, s.my) - s.d / 2 < s.d) warn.push('Lochrand näher als 1× Durchmesser an der Plattenkante.');
+
+  $('results').innerHTML = `
+    <div class="stat"><div class="k">Lochabstand in der Reihe</div><div class="v">${f2(s.py)} mm</div><div class="n">quer, über ${f1(s.W)} mm</div></div>
+    <div class="stat"><div class="k">Reihenabstand</div><div class="v">${f2(s.px)} mm</div><div class="n">längs, über ${f1(s.L)} mm</div></div>
+    <div class="stat"><div class="k">Diagonaler Abstand</div><div class="v">${f2(s.diag)} mm</div><div class="n">zum Nachbarn der versetzten Reihe · ${ratio > 0.99 && ratio < 1.01 ? 'gleichseitig ✓' : 'Verhältnis ' + f2(ratio)}</div></div>
+    <div class="stat"><div class="k">Randabstand</div><div class="v">${f1(s.mx)} / ${f1(s.my)}</div><div class="n">Enden / lange Kanten (Lochmitte ab Plattenkante, mm)</div></div>
+    <div class="stat"><div class="k">Kleinster Steg</div><div class="v">${f1(ribbon)} mm</div><div class="n">Material zwischen zwei Löchern</div></div>
+    <div class="stat"><div class="k">Löcher gesamt</div><div class="v">${holes.length}</div><div class="n">${(s.R + 1) / 2} × ${s.C} + ${(s.R - 1) / 2} × ${s.C - 1}</div>${warn.map(w => `<div class="warn">⚠ ${w}</div>`).join('')}</div>`;
+
+  // suggestion: odd R for equilateral triangles (row pitch = py·√3/2)
+  const target = s.py * Math.sqrt(3) / 2;
+  const mode = $('mxMode').value, fix = +$('mxFix').value;
+  let best = null;
+  for (let r = 1; r <= 999; r += 2) {
+    const p = axis(s.L - 2 * s.exS, r, mode, fix).p; if (p <= 0) continue;
+    const e = Math.abs(p - target); if (!best || e < best.e) best = { r, e, p };
+  }
+  $('eqHint').innerHTML = best && best.r !== s.R
+    ? `Für gleichmäßige Dreiecke (alle Nachbarn gleich weit) passen <b>${best.r} Reihen</b> (Reihenabstand ${f2(best.p)} mm). <button id="applyEq">übernehmen</button>`
+    : best ? `Diese Reihenzahl ergibt das gleichmäßigste Dreiecksraster ✓` : '';
+  const ap = $('applyEq'); if (ap) ap.onclick = () => { $('R').value = best.r; update(); };
+
+  drawFull(s); drawDetail(s); fillTable();
+}
+
+function strips(s, fill, op, edge) {
+  const r = [];
+  if (s.exL > 0) r.push([0, 0, s.L, s.exL], [0, s.W - s.exL, s.L, s.exL]);
+  if (s.exS > 0) r.push([0, 0, s.exS, s.W], [s.L - s.exS, 0, s.exS, s.W]);
+  let o = r.map(([x, y, w, h]) => `<rect x="${x}" y="${y}" width="${w}" height="${h}" fill="${fill}" opacity="${op}"/>`).join('');
+  if (edge) {
+    const x0 = s.exS, x1 = s.L - s.exS, y0 = s.exL, y1 = s.W - s.exL, a = `stroke="${edge}" stroke-width=".25" stroke-dasharray="2 1.5"`;
+    if (s.exL > 0) o += `<line x1="0" y1="${y0}" x2="${s.L}" y2="${y0}" ${a}/><line x1="0" y1="${y1}" x2="${s.L}" y2="${y1}" ${a}/>`;
+    if (s.exS > 0) o += `<line x1="${x0}" y1="0" x2="${x0}" y2="${s.W}" ${a}/><line x1="${x1}" y1="0" x2="${x1}" y2="${s.W}" ${a}/>`;
+  }
+  return o;
+}
+
+function drawFull(s) {
+  const pad = 6, svg = $('full');
+  svg.setAttribute('viewBox', `${-pad} ${-pad} ${s.L + 2 * pad} ${s.W + 2 * pad}`);
+  svg.innerHTML = `<rect x="0" y="0" width="${s.L}" height="${s.W}" rx="2" fill="${css('--plate')}" stroke="${css('--plate-edge')}" stroke-width="1"/>` + strips(s, css('--plate-edge'), .35) +
+    holes.map(h => `<circle cx="${h.x}" cy="${s.W - h.y}" r="${s.d / 2}" fill="${h.off ? css('--hole2') : css('--hole')}"/>`).join('');
+}
+
+function drawDetail(s) {
+  const show = Math.min(s.L, Math.max(s.mx + s.px * 4.5, s.W * 3.5));
+  const padL = 22, padT = 22, padR = 6, padB = 6, svg = $('detail');
+  svg.setAttribute('viewBox', `${-padL} ${-padT} ${show + padL + padR} ${s.W + padT + padB}`);
+  const dim = css('--dim'), acc = css('--accent');
+  const fs = Math.max(4.5, s.W / 18);
+  const arrow = (x1, y1, x2, y2, label, lx, ly, anchor = 'middle', rot = 0) =>
+    `<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" stroke="${acc}" stroke-width=".5" marker-start="url(#a)" marker-end="url(#a)"/>` +
+    `<text x="${lx}" y="${ly}" font-size="${fs}" fill="${acc}" text-anchor="${anchor}" ${rot ? `transform="rotate(${rot} ${lx} ${ly})"` : ''}>${label}</text>`;
+  const vis = holes.filter(h => h.x - s.d < show);
+  const yTop = s.W - s.my; // screen y of first hole in row 1 (y = my)
+  let out = `<defs><marker id="a" viewBox="0 0 6 6" refX="3" refY="3" markerWidth="5" markerHeight="5" orient="auto"><path d="M0 1.5 L3 3 L0 4.5" fill="none" stroke="${acc}" stroke-width=".8"/></marker>
+    <clipPath id="cp"><rect x="-1" y="-1" width="${show + 1}" height="${s.W + 2}"/></clipPath></defs>
+    <g clip-path="url(#cp)"><rect x="0" y="0" width="${s.L}" height="${s.W}" rx="2" fill="${css('--plate')}" stroke="${css('--plate-edge')}" stroke-width=".6"/>` + strips(s, css('--plate-edge'), .3, css('--plate-edge'));
+  // helper lines through hole centres
+  const rowsX = [...new Set(vis.map(h => h.x))];
+  rowsX.forEach(x => out += `<line x1="${x}" y1="0" x2="${x}" y2="${s.W}" stroke="${dim}" stroke-width=".25" stroke-dasharray="1.5 1.5"/>`);
+  out += vis.map(h => `<circle cx="${h.x}" cy="${s.W - h.y}" r="${s.d / 2}" fill="${h.off ? css('--hole2') : css('--hole')}"/>`).join('');
+  // diagonal
+  if (s.R > 1) {
+    const a = vis.find(h => h.r === 1 && h.c === 1), b = vis.find(h => h.r === 2 && h.c === 1);
+    if (a && b) out += `<line x1="${a.x}" y1="${s.W - a.y}" x2="${b.x}" y2="${s.W - b.y}" stroke="${acc}" stroke-width=".5" stroke-dasharray="2 1"/>
+      <text x="${(a.x + b.x) / 2 + 3}" y="${s.W - (a.y + b.y) / 2 + fs / 3}" font-size="${fs * .85}" fill="${acc}">${f1(s.diag)}</text>`;
+  }
+  out += `</g>`;
+  // top dimensions: margin + row pitch
+  const yd = -10;
+  out += arrow(0, yd, s.mx, yd, f1(s.mx), s.mx / 2, yd - 3);
+  if (s.R > 1) out += arrow(s.mx, yd, s.mx + s.px, yd, f1(s.px), s.mx + s.px / 2, yd - 3);
+  // left dimensions: margin + hole pitch (vertical)
+  const xd = -10;
+  out += arrow(xd, s.W, xd, yTop, f1(s.my), xd - 3, (s.W + yTop) / 2, 'middle', -90);
+  out += arrow(xd, yTop, xd, yTop - s.py, f1(s.py), xd - 3, yTop - s.py / 2, 'middle', -90);
+  if (show < s.L) out += `<text x="${show - 2}" y="${-3}" font-size="${fs * .8}" fill="${dim}" text-anchor="end">… Ausschnitt ${Math.round(show)} von ${s.L} mm</text>`;
+  svg.innerHTML = out;
+}
+
+function fillTable() {
+  $('tbl').innerHTML = '<tr><th>Reihe</th><th>Loch</th><th>x (mm)</th><th>y (mm)</th></tr>' +
+    holes.map(h => `<tr><td>${h.r}${h.off ? ' (versetzt)' : ''}</td><td>${h.c}</td><td>${f2(h.x)}</td><td>${f2(h.y)}</td></tr>`).join('');
+}
+
+$('copy').addEventListener('click', () => {
+  const csv = 'reihe;loch;x_mm;y_mm\n' + holes.map(h => `${h.r};${h.c};${h.x.toFixed(2)};${h.y.toFixed(2)}`).join('\n');
+  navigator.clipboard.writeText(csv).then(() => { $('copy').textContent = 'Kopiert ✓'; setTimeout(() => $('copy').textContent = 'Als CSV kopieren', 1500); });
+});
+// ---- 1:1 print template, split across A4 landscape pages (277 × 190 mm usable) ----
+const SEG = 250, OV = 10, PAD = 10;
+function buildPrint() {
+  const s = compute();
+  const pages = Math.max(1, Math.ceil(s.L / SEG - 1e-9));
+  let html = '';
+  for (let p = 0; p < pages; p++) {
+    const x0 = p * SEG, x1 = Math.min(s.L, x0 + SEG);
+    const vx0 = x0 - OV, vx1 = x1 + OV, w = vx1 - vx0, h = s.W + 2 * PAD;
+    const Y = y => s.W - y; // bottom-left origin
+    let g = '';
+    // overlap zones (glue area)
+    if (p > 0) g += `<rect x="${vx0}" y="${-PAD}" width="${OV}" height="${h}" fill="#eee"/>`;
+    if (p < pages - 1) g += `<rect x="${x1}" y="${-PAD}" width="${OV}" height="${h}" fill="#eee"/>`;
+    // extra edge strips (no holes)
+    g += `<clipPath id="pc${p}"><rect x="${vx0}" y="0" width="${w}" height="${s.W}"/></clipPath><g clip-path="url(#pc${p})">${strips(s, '#000', .08, '#000')}</g>`;
+    if (s.exL > 0) g += `<text x="${Math.max(0, vx0) + 2}" y="${s.exL / 2 + 1}" font-size="2.4" fill="#555">Zusatzrand ${f1(s.exL)} mm</text>`;
+    // plate outline
+    const ex0 = Math.max(0, vx0), ex1 = Math.min(s.L, vx1);
+    g += `<line x1="${ex0}" y1="0" x2="${ex1}" y2="0" stroke="#000" stroke-width=".3"/>
+          <line x1="${ex0}" y1="${s.W}" x2="${ex1}" y2="${s.W}" stroke="#000" stroke-width=".3"/>`;
+    if (p === 0) g += `<line x1="0" y1="0" x2="0" y2="${s.W}" stroke="#000" stroke-width=".3"/>`;
+    if (p === pages - 1) g += `<line x1="${s.L}" y1="0" x2="${s.L}" y2="${s.W}" stroke="#000" stroke-width=".3"/>`;
+    // cut / glue lines
+    [p > 0 ? x0 : null, p < pages - 1 ? x1 : null].forEach(x => {
+      if (x === null) return;
+      g += `<line x1="${x}" y1="${-PAD}" x2="${x}" y2="${s.W + PAD}" stroke="#000" stroke-width=".2" stroke-dasharray="2 1.5"/>
+            <text x="${x}" y="${s.W + PAD - 1.5}" font-size="2.6" text-anchor="middle">✂ ${f1(x)} mm</text>`;
+    });
+    // holes: circle + crosshair for centre punch
+    holes.filter(hl => hl.x >= vx0 - s.d && hl.x <= vx1 + s.d).forEach(hl => {
+      const inside = hl.x >= x0 - 1e-6 && hl.x <= x1 + 1e-6, cx = hl.x, cy = Y(hl.y), r = s.d / 2, k = r + 2;
+      g += `<g opacity="${inside ? 1 : .35}"><circle cx="${cx}" cy="${cy}" r="${r}" fill="none" stroke="#000" stroke-width=".2"/>
+            <line x1="${cx - k}" y1="${cy}" x2="${cx + k}" y2="${cy}" stroke="#000" stroke-width=".15"/>
+            <line x1="${cx}" y1="${cy - k}" x2="${cx}" y2="${cy + k}" stroke="#000" stroke-width=".15"/></g>`;
+    });
+    // row labels above plate
+    [...new Map(holes.filter(hl => hl.x >= x0 - 1e-6 && hl.x <= x1 + 1e-6).map(hl => [hl.r, hl.x]))].forEach(([r, x]) => {
+      g += `<text x="${x}" y="-5" font-size="2.4" text-anchor="middle">R${r}</text>
+            <text x="${x}" y="-2" font-size="1.9" text-anchor="middle" fill="#555">${f1(x)}</text>`;
+    });
+    const cal = `<svg width="100mm" height="8mm" viewBox="0 0 100 8">
+      <line x1="0" y1="2" x2="100" y2="2" stroke="#000" stroke-width=".3"/>
+      ${Array.from({ length: 11 }, (_, i) => `<line x1="${i * 10}" y1="0" x2="${i * 10}" y2="${i % 5 ? 3 : 4.5}" stroke="#000" stroke-width=".2"/>`).join('')}
+      <text x="50" y="7.5" font-size="2.6" text-anchor="middle">Prüfmaß: muss genau 100 mm lang sein</text></svg>`;
+    html += `<div class="page">
+      <h4>Lochschablone ${s.L} × ${s.W} mm · Seite ${p + 1} / ${pages} · x = ${f1(x0)} … ${f1(x1)} mm</h4>
+      <p>${s.R} Reihen · ${s.C}/${s.C - 1} Löcher pro Reihe · Ø ${s.d} mm · Lochabstand ${f2(s.py)} mm · Reihenabstand ${f2(s.px)} mm · x von links, Grau = Überlappung zum Anlegen an die Nachbarseite</p>
+      <svg width="${w}mm" height="${h}mm" viewBox="${vx0} ${-PAD} ${w} ${h}" font-family="system-ui, sans-serif">${g}</svg>
+      ${cal}</div>`;
+  }
+  $('print').innerHTML = html;
+  return pages;
+}
+function updatePrintInfo() {
+  const s = compute(), pages = Math.max(1, Math.ceil(s.L / SEG - 1e-9));
+  $('printInfo').innerHTML = s.W > 160
+    ? `⚠ Plattenbreite über 160 mm passt nicht auf A4 quer.`
+    : `${pages} A4-Seiten quer, je ${SEG} mm Platte + ${OV} mm Überlappung. Beim Drucken <b>Skalierung 100 % / „Tatsächliche Größe“</b> wählen.`;
+}
+$('printBtn').addEventListener('click', () => { buildPrint(); window.print(); });
+window.addEventListener('beforeprint', buildPrint);
+['L','W','d','R','C','mxMode','myMode','mxFix','myFix','exL','exS'].forEach(id => $(id).addEventListener('input', updatePrintInfo));
+document.querySelectorAll('.step button').forEach(b => b.addEventListener('click', updatePrintInfo));
+updatePrintInfo();
+
+matchMedia('(prefers-color-scheme: dark)').addEventListener('change', update);
+update();
+</script>
+</body>
+</html>
